@@ -7,7 +7,7 @@ export default (app) => {
       let st,
         et,
         sep = 200;
-      const dragAim = el;
+      let dragAim = el;
       // 判断有没有指定移动的dom，通过data-move进行指定需要移动的父容器
       let checkDragArea = (child) => {
         let { localName, dataset = {} } = child;

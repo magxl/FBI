@@ -11,7 +11,7 @@ const routes = [
     path: '/',
     name: 'Launch',
     meta: {
-      label: '├ I i I ┤',
+      label: '我',
       position: 'navbar',
     },
     component: () => import('../../views/Launch/Launch.vue'),
@@ -21,7 +21,7 @@ const routes = [
     name: 'Contract',
     meta: {
       label: '合同',
-      position: 'navbar',
+      position: '',
     },
     component: () => import('../../views/Contract/Contract.vue'),
   },

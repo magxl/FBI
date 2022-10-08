@@ -7,7 +7,7 @@
         :rows="30"
         resize="vertical"
         type="textarea"
-        placeholder="源数据"
+        :placeholder="$t('format.源数据')"
         @change="originChange"
       />
     </div>

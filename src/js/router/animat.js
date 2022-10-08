@@ -2,7 +2,7 @@ export default {
   path: '/Animat',
   name: 'Animat',
   meta: {
-    label: 'Animat',
+    label: '动画',
     position: 'navbar',
   },
   component: () => import('../../views/Launch/Frame.vue'),

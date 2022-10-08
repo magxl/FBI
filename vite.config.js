@@ -32,7 +32,9 @@ export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
+    // viteFs(),
     defineOptions(),
+
     compressPlugin({
       //gzip
       verbose: true,

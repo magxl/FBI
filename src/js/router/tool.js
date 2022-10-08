@@ -2,7 +2,7 @@ export default {
   path: '/Tool',
   name: 'Tool',
   meta: {
-    label: 'Tool',
+    label: '工具',
     position: 'navbar',
   },
   component: () => import('../../views/Launch/Frame/ToolFrame.vue'),

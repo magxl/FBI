@@ -2,7 +2,7 @@
   <div class="Launch hp100">
     <div class="searchArea flexMode hc">
       <el-input
-        v-model="search.input"
+        v-model="state.search"
         size="large"
         round
         clearable
@@ -23,9 +23,13 @@ defineOptions({
 import { inject, reactive, ref } from 'vue';
 const store = inject('store');
 const { launch } = store;
-const { title } = launch();
+const { title, saveLang } = launch();
+// 初始化语言信息
+saveLang();
 const Launch = ref(title);
-const search = reactive({});
+const state = reactive({
+  search: '',
+});
 </script>
 <style lang="scss" scoped>
 .searchArea {

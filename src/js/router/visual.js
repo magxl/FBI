@@ -20,7 +20,7 @@ export default {
       path: '/Visual/BlueAlpha',
       name: 'BlueAlpha',
       meta: {
-        label: 'BlueAlpha',
+        label: '蓝法',
         position: 'navbar',
       },
       component: () => import('../../views/Visual/BlueAlpha.vue'),

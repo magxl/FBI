@@ -11,7 +11,7 @@ export default {
       path: '/Algorithm/99Table',
       name: '99Table',
       meta: {
-        label: '99乘法表',
+        label: '九九乘法表',
         position: 'navbar',
       },
       component: () => import('../../views/Algorithm/99Table.vue'),
