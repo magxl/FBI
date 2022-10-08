@@ -1,0 +1,130 @@
+.relative {
+  position: relative;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+}
+
+.abs {
+  position: absolute;
+
+  &.t {
+    top: 0;
+  }
+
+  &.l {
+    left: 0;
+  }
+
+  &.r {
+    right: 0;
+  }
+
+  &.b {
+    bottom: 0;
+  }
+}
+
+.absCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.flexMode {
+  display: flex !important;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.flexV {
+  flex-direction: column;
+}
+
+.flexV-1 {
+  flex-direction: column-reverse;
+}
+
+.flexWrap {
+  flex-wrap: wrap;
+}
+
+.flexWrap-1 {
+  flex-wrap: wrap-reverse;
+}
+
+.flexGrow {
+  flex-grow: 1;
+}
+
+.noShrink {
+  flex-shrink: 0;
+}
+
+.hl {
+  justify-content: flex-start;
+}
+
+.hb {
+  justify-content: space-between;
+}
+
+.ha {
+  justify-content: space-around;
+}
+
+.hc {
+  justify-content: center;
+}
+
+.hr {
+  justify-content: flex-end;
+}
+
+.vl {
+  align-items: flex-start;
+}
+
+.vr {
+  align-items: flex-end;
+}
+
+.vc {
+  align-items: center;
+  align-content: center;
+}
+
+.vs {
+  align-items: stretch;
+}
+
+.clear {
+  clear: both;
+}
+
+.txt-c {
+  text-align: center;
+}
+
+.txt-r {
+  text-align: right;
+}
+
+.z0 {
+  z-index: 0;
+}
+
+.z1 {
+  z-index: 1;
+}
+
+.z9 {
+  z-index: 9;
+}

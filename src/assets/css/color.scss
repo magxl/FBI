@@ -1,0 +1,102 @@
+$colors: (red: $red,
+  red1: $red1,
+  red3: $red3,
+  red5: $red5,
+  red7: $red7,
+  blue: $blue,
+  blue1: $blue1,
+  blue3: $blue3,
+  blue5: $blue5,
+  blue7: $blue7,
+  green: $green,
+  green1: $green1,
+  green3: $green3,
+  green5: $green5,
+  green7: $green7,
+  orange: $orange,
+  orange1: $orange1,
+  orange3: $orange3,
+  orange5: $orange5,
+  orange7: $orange7,
+  dark: $dark,
+  dark1: $dark1,
+  dark3: $dark3,
+  dark5: $dark5,
+  dark7: $dark7,
+  dark9: $dark9,
+  white: $white,
+  white1: $white1,
+  white3: $white3,
+  white5: $white5,
+  white7: $white7,
+  white9: $white9,
+  littleBlue: $littleBlue,
+  littleGreen: $littleGreen,
+  littleRed: $littleRed,
+  littleOrange: $littleOrange,
+  littlePurple: $littlePurple,
+  littleGray: $littleGray,
+);
+
+@each $key,
+$var in $colors {
+  .txt-#{''+$key} {
+    color: #{$var};
+  }
+
+  .bg-#{''+$key} {
+    background-color: #{$var};
+  }
+
+  .hover-txt-#{''+$key} {
+    cursor: pointer;
+    transition: color .3s linear;
+
+    &:hover {
+      color: #{$var};
+    }
+  }
+
+  .hover-bg-#{''+$key} {
+    cursor: pointer;
+    transition: background .3s linear;
+
+    &:hover {
+      background-color: #{$var};
+    }
+  }
+
+  .box-shadow-#{''+$key} {
+    box-shadow: 0 0 10px #{$var};
+  }
+
+  .hover-box-shadow-#{''+$key} {
+    &:hover {
+      box-shadow: 0 0 10px #{$var};
+    }
+  }
+
+  .border-#{''+$key} {
+    border: 1px solid #{$var};
+  }
+
+  .border-#{''+$key}-dashed {
+    border: 1px dashed #{$var};
+  }
+
+  .border-l-#{''+$key} {
+    border-left: 1px solid #{$var};
+  }
+
+  .border-l-#{''+$key}-dashed {
+    border-left: 1px dashed #{$var};
+  }
+
+  .border-b-#{''+$key} {
+    border-bottom: 1px solid #{$var};
+  }
+
+  .border-b-#{''+$key}-dashed {
+    border-bottom: 1px dashed #{$var};
+  }
+}

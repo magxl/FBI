@@ -1,0 +1,35 @@
+$radius: 0,
+2,
+4,
+6,
+8,
+10,
+12,
+14,
+16,
+18,
+20;
+
+@each $var in $radius {
+  .radius#{$var} {
+    border-radius: #{$var}px;
+  }
+}
+
+@for $var from 1 through 9 {
+  .z#{$var} {
+    z-index: #{$var};
+  }
+}
+
+.radius {
+  overflow: hidden;
+}
+
+.radiusP50 {
+  border-radius: 50%;
+}
+
+.backdrop {
+  @include backdrop();
+}

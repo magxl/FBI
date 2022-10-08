@@ -1,0 +1,50 @@
+$blue: rgb(97, 97, 242);
+$blue1: rgba(97, 97, 242, .1);
+$blue3: rgba(97, 97, 242, .3);
+$blue5: rgba(97, 97, 242, .5);
+$blue7: rgba(97, 97, 242, .7);
+$orange: rgb(220, 161, 52);
+$orange1: rgba(220, 161, 52, .1);
+$orange3: rgba(220, 161, 52, .3);
+$orange5: rgba(220, 161, 52, .5);
+$orange7: rgba(220, 161, 52, .7);
+$red: rgb(231, 53, 53);
+$red1: rgba(231, 53, 53, .1);
+$red3: rgba(231, 53, 53, .3);
+$red5: rgba(231, 53, 53, .5);
+$red7: rgba(231, 53, 53, .7);
+$green: rgb(52, 205, 93);
+$green1: rgba(52, 205, 93, .1);
+$green3: rgba(52, 205, 93, .3);
+$green5: rgba(52, 205, 93, .5);
+$green7: rgba(52, 205, 93, .7);
+
+$dark: #000;
+$dark1:rgba(0, 0, 0, .1);
+$dark3:rgba(0, 0, 0, .3);
+$dark5:rgba(0, 0, 0, .5);
+$dark7:rgba(0, 0, 0, .7);
+$dark9:rgba(0, 0, 0, .9);
+
+$white: #fff;
+$white1: rgba(255, 255, 255, .1);
+$white3: rgba(255, 255, 255, .3);
+$white5: rgba(255, 255, 255, .5);
+$white7: rgba(255, 255, 255, .7);
+$white9: rgba(255, 255, 255, .9);
+
+$trans1: all .1s linear;
+$trans2: all .2s linear;
+$trans3: all .3s linear;
+$trans5: all .5s ease-in;
+
+$littleRed:#fff0f0;
+$littleGreen:#eefff2;
+$littleOrange:#FFFDEF;
+$littlePurple:#f1e7ff;
+$littleBlue:#f3f4ff;
+$littleGray:#f7f8f9;
+
+@mixin backdrop($saturate: 100%, $blur: 4px, $contrast: 100%) {
+  backdrop-filter: saturate($saturate) blur($blur) contrast($saturate);
+}
