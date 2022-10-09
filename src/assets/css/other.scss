@@ -33,3 +33,30 @@ $radius: 0,
 .backdrop {
   @include backdrop();
 }
+
+.hover-type1 {
+  transition: $trans1;
+
+  &:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1),
+      0 0px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-30px);
+    z-index: 1;
+  }
+}
+
+.transition1 {
+  transition: $trans1;
+}
+
+.transition2 {
+  transition: $trans2;
+}
+
+.transition3 {
+  transition: $trans3;
+}
+
+.transition5 {
+  transition: $trans5;
+}

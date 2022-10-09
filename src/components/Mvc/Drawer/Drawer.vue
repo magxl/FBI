@@ -3,7 +3,7 @@
     <el-drawer
       ref="drawer"
       v-model="state.drawerInfo.visible"
-      v-bind="attrs"
+      v-bind="$attrs"
       :title="state.drawerInfo.title"
       :with-header="widthHeader"
       append-to-body

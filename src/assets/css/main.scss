@@ -48,3 +48,8 @@ $littleGray:#f7f8f9;
 @mixin backdrop($saturate: 100%, $blur: 4px, $contrast: 100%) {
   backdrop-filter: saturate($saturate) blur($blur) contrast($saturate);
 }
+
+@mixin fs($var) {
+  font-size: 16px;
+  transform: scale(#{$var / 16});
+}

@@ -25,14 +25,5 @@ export default {
       },
       component: () => import('../../views/UI/WePoem.vue'),
     },
-    {
-      path: '/UI/Moban',
-      name: 'Moban',
-      meta: {
-        label: '模版',
-        position: 'navbar',
-      },
-      component: () => import('../../views/UI/Moban.vue'),
-    },
   ],
 };

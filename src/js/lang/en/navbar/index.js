@@ -16,11 +16,12 @@ export default {
   UI: 'UI',
   钉钉: 'DingDing',
   VP: 'VP',
-  模版: 'Template',
   动画: 'Animate',
   DEMO: 'DEMO',
   工具: 'Tool',
   打点: 'HitPoint',
   剪切板: 'Clipboard',
+  模版: 'Template',
+  One: 'One',
   语言: 'language:',
 };

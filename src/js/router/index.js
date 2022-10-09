@@ -6,6 +6,7 @@ import ui from './ui.js';
 import animat from './animat.js';
 import tool from './tool.js';
 import test from './test.js';
+import template from './template.js';
 const routes = [
   {
     path: '/',
@@ -41,6 +42,7 @@ const routes = [
   { ...ui },
   { ...animat },
   { ...tool },
+  { ...template },
 ];
 window.routes = routes;
 const router = createRouter({

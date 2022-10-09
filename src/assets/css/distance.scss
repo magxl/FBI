@@ -19,7 +19,8 @@ $vars: 12,
 200,
 240,
 300,
-400;
+400,
+600;
 
 @each $var in $vars {
   .w#{$var} {
@@ -41,6 +42,10 @@ $vars: 12,
   .maxh#{$var} {
     max-height: #{$var}px;
   }
+}
+
+.wp30 {
+  width: calc(100% / 3);
 }
 
 .wp50 {

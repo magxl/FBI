@@ -407,7 +407,8 @@
 }
 
 .el-drawer {
-  background-color: $white7 !important;
+  background-color: $white9 !important;
+  @include backdrop();
 }
 
 .el-drawer__wrapper {
