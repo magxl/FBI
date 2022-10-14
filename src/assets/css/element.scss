@@ -1,11 +1,51 @@
 // element 覆写
-// $--color-primary: #3553fe;
-// $--color-success: #13ce66;
-// $--color-warning: #ffba00;
-// $--color-danger: #ff4949;
+:root {
+  // --el-color-primary: #3553fe;
+  // --el-color-success: #13ce66;
+  // --el-color-warning: #ffba00;
+  // --el-color-danger: #ff4949;
+}
+
+.el-input {
+  --el-input-bg-color: rgba(255, 255, 255, .9);
+}
 
 // $--font-path: "~element-ui/lib/theme-chalk/fonts";
 // @import "~element-ui/packages/theme-chalk/src/index";
+// @forward 'element-plus/theme-chalk/src/common/var.scss' width (
+//   $colors: (
+
+//   )
+// )
+
+.el-menu {
+  border-right: none;
+
+  .el-menu-item-group__title {
+    padding: 0;
+  }
+
+  .el-menu-item {
+    min-width: 0;
+
+    &:hover {
+      background-color: transparent;
+      background-image: linear-gradient(to right, $white1, $blue1);
+    }
+  }
+
+  .el-sub-menu__title {
+
+    background-color: transparent;
+  }
+  // .is-opened,
+  // .is-active {
+  //   .el-sub-menu__title {
+  //     color: $blue;
+  //     // background-image: linear-gradient(to right, $white1, $blue1);
+  //   }
+  // }
+}
 
 .el-table {
 
@@ -30,7 +70,7 @@
 #el-drawer__title {
   padding: 1rem;
   margin: 0;
-  border-bottom: 1px $dark1 solid;
+  border-bottom: 1px rgba(0, 0, 0, 0.1) solid;
 }
 
 .el-tooltip__popper {
@@ -117,7 +157,7 @@
 
 .el-scrollbar__bar {
   z-index: 9;
-  // background-color: $dark1;
+  // background-color: rgba(0,0,0,0.1);
 
   &.is-horizontal {
     display: none;
@@ -159,7 +199,7 @@
 .mgslider {
   .el-slider__runway {
     margin: 0;
-    background-color: $dark5 !important;
+    background-color: rgba(0, 0, 0, 0.5) !important;
     box-shadow: #fff 0 0 2px;
 
     .el-slider__bar {
@@ -292,30 +332,30 @@
 // 以下backdrop
 .el-message-box {
   backdrop-filter: saturate(100%) blur(4px);
-  border-color: $white3 !important;
-  background-color: $white7 !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  background-color: rgba(255, 255, 255, 0.7) !important;
 
   .el-message-box__message {
-    color: $dark5 !important;
+    color: rgba(0, 0, 0, 0.5) !important;
   }
 }
 
 .el-message {
   background-color: #fff !important;
   border-color: #f0f0f0 !important;
-  box-shadow: $dark1 0 0 8px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 0 8px;
 }
 
 .el-message {
   min-width: 0;
   padding: 16px;
   @include backdrop(100%, 8px);
-  border-color: $white3 !important;
-  background-color: $white9 !important;
-  box-shadow: $dark1 0 0 10px;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 0 10px;
 
   .el-message__content {
-    color: $dark7 !important;
+    color: rgba(0, 0, 0, 0.7) !important;
   }
 
   &.el-message--success {
@@ -353,7 +393,7 @@
   }
 
   .el-notification__content {
-    color: $dark5;
+    color: rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -367,7 +407,7 @@
 }
 
 .el-notification__closeBtn {
-  color: $dark5 !important;
+  color: rgba(0, 0, 0, 0.5) !important;
   transition: $trans1;
 
   &:hover {
@@ -406,9 +446,24 @@
   opacity: 0.2 !important;
 }
 
+.el-overlay {
+  background-color: transparent;
+  @include backdrop(70%, 2px);
+}
+
 .el-drawer {
-  background-color: $white9 !important;
+  background-color: rgba(255, 255, 255, 0.9) !important;
   @include backdrop();
+
+  .el-drawer__header {
+    padding: 20px;
+    margin-bottom: 0;
+    border-bottom: 1px solid $dark1;
+  }
+
+  .el-drawer__body {
+    padding: 10px;
+  }
 }
 
 .el-drawer__wrapper {
@@ -421,7 +476,7 @@
 
   .el-dialog__header {
     backdrop-filter: saturate(100%) blur(4px);
-    background-color: $white7;
+    background-color: rgba(255, 255, 255, 0.7);
     border-radius: 4px 4px 0 0;
   }
 
@@ -456,5 +511,12 @@
     .CPT_ScrollbarTableItem {
       padding: 5px;
     }
+  }
+}
+
+.el-popper {
+  &.is-light {
+    background-color: $white9;
+    @include backdrop();
   }
 }

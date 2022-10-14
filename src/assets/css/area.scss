@@ -1,0 +1,641 @@
+.areaicon {
+  background-image: url('@img/lang/langSprite.png');
+  background-repeat: no-repeat;
+  background-size: 172.4047619047619px 786.5px;
+  border: 1px solid #f1f1f1;
+  display: inline-block;
+  height: 18px;
+  width: 28px;
+}
+
+.areaicon,
+.area-cn {
+  background-position: 0 0
+}
+
+// 英语
+.area-en_us {
+  background-position: 74.841437632135% 0
+}
+.area-zh_hk {
+  background-position: 24.947145877378% 0
+}
+.area-zh_tw {
+  background-position: 49.894291754757% 0
+}
+
+.area-hk {
+  background-position: 24.947145877378% 0
+}
+
+.area-tw {
+  background-position: 49.894291754757% 0
+}
+
+.area-us {
+  background-position: 74.841437632135% 0
+}
+
+.area-jp {
+  background-position: 99.788583509514% 0
+}
+
+.area-kr {
+  background-position: 0 3.341384863124%
+}
+
+.area-au {
+  background-position: 24.947145877378% 3.341384863124%
+}
+
+.area-ca {
+  background-position: 49.894291754757% 3.341384863124%
+}
+
+.area-ar {
+  background-position: 74.841437632135% 3.341384863124%
+}
+
+.area-ai {
+  background-position: 99.788583509514% 3.341384863124%
+}
+
+.area-ag {
+  background-position: 0 6.682769726248%
+}
+
+.area-bb {
+  background-position: 24.947145877378% 6.682769726248%
+}
+
+.area-bs {
+  background-position: 49.894291754757% 6.682769726248%
+}
+
+.area-py {
+  background-position: 74.841437632135% 6.682769726248%
+}
+
+.area-pa {
+  background-position: 99.788583509514% 6.682769726248%
+}
+
+.area-br {
+  background-position: 0 10.024154589372%
+}
+
+.area-bm {
+  background-position: 24.947145877378% 10.024154589372%
+}
+
+.area-bo {
+  background-position: 49.894291754757% 10.024154589372%
+}
+
+.area-bz {
+  background-position: 74.841437632135% 10.024154589372%
+}
+
+.area-do {
+  background-position: 99.788583509514% 10.024154589372%
+}
+
+.area-dm {
+  background-position: 0 13.365539452496%
+}
+
+.area-ec {
+  background-position: 24.947145877378% 13.365539452496%
+}
+
+.area-co {
+  background-position: 49.894291754757% 13.365539452496%
+}
+
+.area-cr {
+  background-position: 74.841437632135% 13.365539452496%
+}
+
+.area-gd {
+  background-position: 99.788583509514% 13.365539452496%
+}
+
+.area-gy {
+  background-position: 0 16.70692431562%
+}
+
+.area-hn {
+  background-position: 24.947145877378% 16.70692431562%
+}
+
+.area-ky {
+  background-position: 49.894291754757% 16.70692431562%
+}
+
+.area-ms {
+  background-position: 74.841437632135% 16.70692431562%
+}
+
+.area-pe {
+  background-position: 99.788583509514% 16.70692431562%
+}
+
+.area-mx {
+  background-position: 0 20.048309178744%
+}
+
+.area-ni {
+  background-position: 24.947145877378% 20.048309178744%
+}
+
+.area-sv {
+  background-position: 49.894291754757% 20.048309178744%
+}
+
+.area-kn {
+  background-position: 74.841437632135% 20.048309178744%
+}
+
+.area-lc {
+  background-position: 99.788583509514% 20.048309178744%
+}
+
+.area-vc {
+  background-position: 0 23.389694041868%
+}
+
+.area-sr {
+  background-position: 24.947145877378% 23.389694041868%
+}
+
+.area-tc {
+  background-position: 49.894291754757% 23.389694041868%
+}
+
+.area-tt {
+  background-position: 74.841437632135% 23.389694041868%
+}
+
+.area-gt {
+  background-position: 99.788583509514% 23.389694041868%
+}
+
+.area-ve {
+  background-position: 0 26.731078904992%
+}
+
+.area-uy {
+  background-position: 24.947145877378% 26.731078904992%
+}
+
+.area-jm {
+  background-position: 49.894291754757% 26.731078904992%
+}
+
+.area-vg {
+  background-position: 74.841437632135% 26.731078904992%
+}
+
+.area-cl {
+  background-position: 99.788583509514% 26.731078904992%
+}
+
+.area-al {
+  background-position: 0 30.072463768116%
+}
+
+.area-ie {
+  background-position: 24.947145877378% 30.072463768116%
+}
+
+.area-ee {
+  background-position: 49.894291754757% 30.072463768116%
+}
+
+.area-at {
+  background-position: 74.841437632135% 30.072463768116%
+}
+
+.area-by {
+  background-position: 99.788583509514% 30.072463768116%
+}
+
+.area-bg {
+  background-position: 0 33.41384863124%
+}
+
+.area-be {
+  background-position: 24.947145877378% 33.41384863124%
+}
+
+.area-is {
+  background-position: 49.894291754757% 33.41384863124%
+}
+
+.area-pl {
+  background-position: 74.841437632135% 33.41384863124%
+}
+
+.area-dk {
+  background-position: 99.788583509514% 33.41384863124%
+}
+
+.area-de {
+  background-position: 0 36.755233494364%
+}
+
+.area-ru {
+  background-position: 24.947145877378% 36.755233494364%
+}
+
+.area-fr {
+  background-position: 49.894291754757% 36.755233494364%
+}
+
+.area-fi {
+  background-position: 74.841437632135% 36.755233494364%
+}
+
+.area-nl {
+  background-position: 99.788583509514% 36.755233494364%
+}
+
+.area-cz {
+  background-position: 0 40.096618357488%
+}
+
+.area-hr {
+  background-position: 24.947145877378% 40.096618357488%
+}
+
+.area-lv {
+  background-position: 49.894291754757% 40.096618357488%
+}
+
+.area-lt {
+  background-position: 74.841437632135% 40.096618357488%
+}
+
+.area-lu {
+  background-position: 99.788583509514% 40.096618357488%
+}
+
+.area-ro {
+  background-position: 0 43.438003220612%
+}
+
+.area-mt {
+  background-position: 24.947145877378% 43.438003220612%
+}
+
+.area-mk {
+  background-position: 49.894291754757% 43.438003220612%
+}
+
+.area-md {
+  background-position: 74.841437632135% 43.438003220612%
+}
+
+.area-no {
+  background-position: 99.788583509514% 43.438003220612%
+}
+
+.area-pt {
+  background-position: 0 46.779388083736%
+}
+
+.area-se {
+  background-position: 24.947145877378% 46.779388083736%
+}
+
+.area-ch {
+  background-position: 49.894291754757% 46.779388083736%
+}
+
+.area-cy {
+  background-position: 74.841437632135% 46.779388083736%
+}
+
+.area-sk {
+  background-position: 99.788583509514% 46.779388083736%
+}
+
+.area-si {
+  background-position: 0 50.12077294686%
+}
+
+.area-tr {
+  background-position: 24.947145877378% 50.12077294686%
+}
+
+.area-ua {
+  background-position: 49.894291754757% 50.12077294686%
+}
+
+.area-gr {
+  background-position: 74.841437632135% 50.12077294686%
+}
+
+.area-es {
+  background-position: 99.788583509514% 50.12077294686%
+}
+
+.area-hu {
+  background-position: 0 53.462157809984%
+}
+
+.area-it {
+  background-position: 24.947145877378% 53.462157809984%
+}
+
+.area-gb {
+  background-position: 49.894291754757% 53.462157809984%
+}
+
+.area-mo {
+  background-position: 74.841437632135% 53.462157809984%
+}
+
+.area-pg {
+  background-position: 99.788583509514% 53.462157809984%
+}
+
+.area-pk {
+  background-position: 0 56.803542673108%
+}
+
+.area-bt {
+  background-position: 24.947145877378% 56.803542673108%
+}
+
+.area-ph {
+  background-position: 49.894291754757% 56.803542673108%
+}
+
+.area-fj {
+  background-position: 74.841437632135% 56.803542673108%
+}
+
+.area-kz {
+  background-position: 99.788583509514% 56.803542673108%
+}
+
+.area-kg {
+  background-position: 0 60.144927536232%
+}
+
+.area-kh {
+  background-position: 24.947145877378% 60.144927536232%
+}
+
+.area-la {
+  background-position: 49.894291754757% 60.144927536232%
+}
+
+.area-my {
+  background-position: 74.841437632135% 60.144927536232%
+}
+
+.area-mn {
+  background-position: 99.788583509514% 60.144927536232%
+}
+
+.area-fm {
+  background-position: 0 63.486312399356%
+}
+
+.area-np {
+  background-position: 24.947145877378% 63.486312399356%
+}
+
+.area-pw {
+  background-position: 49.894291754757% 63.486312399356%
+}
+
+.area-lk {
+  background-position: 74.841437632135% 63.486312399356%
+}
+
+.area-sb {
+  background-position: 99.788583509514% 63.486312399356%
+}
+
+.area-tj {
+  background-position: 0 66.82769726248%
+}
+
+.area-th {
+  background-position: 24.947145877378% 66.82769726248%
+}
+
+.area-tm {
+  background-position: 49.894291754757% 66.82769726248%
+}
+
+.area-bn {
+  background-position: 74.841437632135% 66.82769726248%
+}
+
+.area-uz {
+  background-position: 99.788583509514% 66.82769726248%
+}
+
+.area-sg {
+  background-position: 0 70.169082125604%
+}
+
+.area-nz {
+  background-position: 24.947145877378% 70.169082125604%
+}
+
+.area-id {
+  background-position: 49.894291754757% 70.169082125604%
+}
+
+.area-vn {
+  background-position: 74.841437632135% 70.169082125604%
+}
+
+.area-dz {
+  background-position: 99.788583509514% 70.169082125604%
+}
+
+.area-ae {
+  background-position: 0 73.510466988728%
+}
+
+.area-om {
+  background-position: 24.947145877378% 73.510466988728%
+}
+
+.area-az {
+  background-position: 49.894291754757% 73.510466988728%
+}
+
+.area-eg {
+  background-position: 74.841437632135% 73.510466988728%
+}
+
+.area-ao {
+  background-position: 99.788583509514% 73.510466988728%
+}
+
+.area-bh {
+  background-position: 0 76.851851851852%
+}
+
+.area-bj {
+  background-position: 24.947145877378% 76.851851851852%
+}
+
+.area-bw {
+  background-position: 49.894291754757% 76.851851851852%
+}
+
+.area-bf {
+  background-position: 74.841437632135% 76.851851851852%
+}
+
+.area-cv {
+  background-position: 99.788583509514% 76.851851851852%
+}
+
+.area-gm {
+  background-position: 0 80.193236714976%
+}
+
+.area-cg {
+  background-position: 24.947145877378% 80.193236714976%
+}
+
+.area-gw {
+  background-position: 49.894291754757% 80.193236714976%
+}
+
+.area-gh {
+  background-position: 74.841437632135% 80.193236714976%
+}
+
+.area-zw {
+  background-position: 99.788583509514% 80.193236714976%
+}
+
+.area-qa {
+  background-position: 0 83.5346215781%
+}
+
+.area-kw {
+  background-position: 24.947145877378% 83.5346215781%
+}
+
+.area-ke {
+  background-position: 49.894291754757% 83.5346215781%
+}
+
+.area-lb {
+  background-position: 74.841437632135% 83.5346215781%
+}
+
+.area-lr {
+  background-position: 99.788583509514% 83.5346215781%
+}
+
+.area-mg {
+  background-position: 0 86.876006441224%
+}
+
+.area-mw {
+  background-position: 24.947145877378% 86.876006441224%
+}
+
+.area-ml {
+  background-position: 49.894291754757% 86.876006441224%
+}
+
+.area-mu {
+  background-position: 74.841437632135% 86.876006441224%
+}
+
+.area-mr {
+  background-position: 99.788583509514% 86.876006441224%
+}
+
+.area-mz {
+  background-position: 0 90.217391304348%
+}
+
+.area-na {
+  background-position: 24.947145877378% 90.217391304348%
+}
+
+.area-za {
+  background-position: 49.894291754757% 90.217391304348%
+}
+
+.area-ne {
+  background-position: 74.841437632135% 90.217391304348%
+}
+
+.area-ng {
+  background-position: 99.788583509514% 90.217391304348%
+}
+
+.area-sl {
+  background-position: 0 93.558776167472%
+}
+
+.area-sn {
+  background-position: 24.947145877378% 93.558776167472%
+}
+
+.area-sc {
+  background-position: 49.894291754757% 93.558776167472%
+}
+
+.area-sa {
+  background-position: 74.841437632135% 93.558776167472%
+}
+
+.area-st {
+  background-position: 99.788583509514% 93.558776167472%
+}
+
+.area-sz {
+  background-position: 0 96.900161030596%
+}
+
+.area-tz {
+  background-position: 24.947145877378% 96.900161030596%
+}
+
+.area-tn {
+  background-position: 49.894291754757% 96.900161030596%
+}
+
+.area-ug {
+  background-position: 74.841437632135% 96.900161030596%
+}
+
+.area-am {
+  background-position: 99.788583509514% 96.900161030596%
+}
+
+.area-ye {
+  background-position: 0 100.24154589372%
+}
+
+.area-il {
+  background-position: 24.947145877378% 100.24154589372%
+}
+
+.area-in {
+  background-position: 49.894291754757% 100.24154589372%
+}
+
+.area-jo {
+  background-position: 74.841437632135% 100.24154589372%
+}
+
+.area-td {
+  background-position: 99.788583509514% 100.24154589372%
+}

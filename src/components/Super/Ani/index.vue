@@ -1,10 +1,10 @@
 <template>
-  <div class="Ani">Ani</div>
+  <div class="SuperAni">SuperAni</div>
 </template>
 <script setup>
 import sock from 'gsap';
 defineOptions({
-  name: 'Ani',
+  name: 'SuperAni',
 });
 import { reactive } from 'vue';
 const state = reactive({});

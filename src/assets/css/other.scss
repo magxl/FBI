@@ -20,6 +20,10 @@ $radius: 0,
   .z#{$var} {
     z-index: #{$var};
   }
+
+  .opacity#{$var} {
+    opacity: #{calc($var/10)};
+  }
 }
 
 .radius {
@@ -59,4 +63,47 @@ $radius: 0,
 
 .transition5 {
   transition: $trans5;
+}
+
+.dot4 {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+}
+.dot6 {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+.dot8 {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+
+// cursor
+
+.point {
+  cursor: pointer;
+}
+
+.cursor-default{
+  cursor: default !important;
+}
+
+.noselect {
+  user-select: none;
+}
+
+.useselect {
+  user-select: auto;
+}
+
+.noevent {
+  pointer-events: none;
+}
+
+.useevent {
+  pointer-events: auto;
 }

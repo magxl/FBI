@@ -41,7 +41,7 @@
             :to="it.path"
             :class="path === it.path ? 'txt-blue' : 'txt-dark5 hover-txt-blue'"
           >
-            {{ it.langLabel }}
+            {{ it.langLabel }} {{it.key}}
           </router-link>
         </div>
       </template>
@@ -51,7 +51,7 @@
     <div>
       <el-dropdown placement="bottom-end" @command="changeLang">
         <span class="fs12 point txt-dark5 hover-txt-blue">
-          {{ $t('navbar.语言') }} {{ lang }}
+          {{ $l('语言') }} {{ lang }}
         </span>
         <template #dropdown>
           <el-dropdown-menu>
@@ -75,15 +75,6 @@
 defineOptions({
   name: 'Navbar',
 });
-import {
-  reactive,
-  computed,
-  inject,
-  getCurrentInstance,
-  watch,
-  onMounted,
-} from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 const state = reactive({
   navbar: [],
   mounted: false,
@@ -117,8 +108,9 @@ watch(
   langWatch,
   (n) => {
     if (n) {
-      proxy.$i18n.locale = n;
-      state.menu = initMenu(window.routes);
+      // 重置语言
+      // proxy.$i18n.locale = n;
+      // state.menu = initMenu(window.routes);
     }
   },
   { immediate: true },
@@ -135,7 +127,7 @@ const changeLang = (v) => {
 // 初始化路由
 const initMenu = (v) => {
   return v.map((it) => {
-    it.langLabel = proxy.$t(`navbar.${it.meta.label}`);
+    it.langLabel = proxy.$l(`navbar.${it.meta.label}`);
     if (it.children) {
       it.children = initMenu(it.children);
     }

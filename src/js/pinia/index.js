@@ -1,12 +1,14 @@
 import { createPinia, defineStore } from 'pinia';
-export const pinia = createPinia();
+const pinia = createPinia();
 
-import launch from './store/launch.js';
-import contract from './store/contract.js';
-import dingding from './store/dingding.js';
+const store = {};
+const files = import.meta.glob('./store/*.js', { eager: true });
+Object.keys(files).forEach((it) => {
+  const name = it.match(/store\/(\S*).js/)[1];
+  store[name] = defineStore(name, files[it].default);
+});
 
-export const store = {
-  launch: defineStore('launch', launch),
-  contract: defineStore('contract', contract),
-  dingding: defineStore('dingding', dingding),
+export {
+  pinia,
+  store,
 };

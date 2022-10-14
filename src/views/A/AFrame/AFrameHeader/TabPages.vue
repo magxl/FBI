@@ -1,0 +1,127 @@
+<template>
+  <div class="tabPagesArea">
+    <el-scrollbar ref="scrollbar" class="tabScrollArea">
+      <div class="tabArea flexMode vs">
+        <div
+          v-for="(it, i) in tabPages"
+          :key="it.key"
+          :id="it.key"
+          class="tab flexMode vc noselect txt-nowrap noShrink"
+          :class="currentPage.key === it.key && 'current'"
+          @click.stop="toPage(it)"
+        >
+          <span class="pr2 fs12 lh12">{{ it.meta.langLabel }}</span>
+          <Icon
+            v-if="tabPages.length > 1"
+            name="close"
+            class="icon fs16 txt-shadow-white drop-shadow-red"
+            @click.stop="toClose(i)"
+          />
+        </div>
+        <div class="pl4" />
+      </div>
+    </el-scrollbar>
+  </div>
+</template>
+<script setup>
+defineOptions({
+  name: 'TabPages',
+});
+// 数据
+const state = reactive({
+  scrollbar: {},
+  mounted: false,
+});
+const store = inject('store');
+const launch = store.launch();
+const { proxy } = getCurrentInstance();
+
+const login = computed(() => {
+  return launch.login;
+});
+// 历史tab
+const tabPages = computed(() => {
+  return launch.tabPages;
+});
+const currentPage = computed(() => {
+  return launch.currentPage;
+});
+const canScrollToTab = computed(() => {
+  return state.mounted && currentPage.value.key ? currentPage.value.key : false;
+});
+// 监听
+watch(
+  canScrollToTab,
+  (n) => {
+    if (n) {
+      // page变更时 进行tab定位
+      nextTick(() => {
+        scrollToTab(n);
+      });
+    }
+  },
+  {
+    immediate: true,
+  },
+);
+// 挂载
+onMounted(() => {
+  state.scrollbar = proxy.$refs.scrollbar;
+  state.mounted = true;
+});
+// 事件
+const router = useRouter();
+const toPage = ({ name, key }) => {
+  if (key !== currentPage.value.key) {
+    router.push({ name });
+  }
+};
+const toClose = (i) => {
+  launch.closePage(i);
+};
+const scrollToTab = (v) => {
+  // 定位到tab
+  state.scrollbar.wrap$
+    .querySelector(`#${v}`)
+    .scrollIntoView({ behavior: 'smooth' });
+};
+
+// 卸载
+</script>
+<style lang="scss" scoped>
+.tabScrollArea {
+  height: 28px;
+  width: 100%;
+}
+.tabArea {
+  height: 28px;
+  .tab {
+    padding: 4px 8px;
+    margin-left: 4px;
+    border: 1px solid $dark1;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    color: $dark5;
+    transform: $trans1;
+    .icon {
+      opacity: .3;
+      transform: $trans1;
+      &:hover{
+        opacity: .6;
+      }
+    }
+    &.current {
+      color: $white;
+      border-color: $blue3 !important;
+      background-color: $blue;
+      .icon {
+        opacity: 1;
+      }
+    }
+    &:hover {
+      border-color: $blue3;
+      box-shadow: 0 -2px 4px $littleBlue;
+    }
+  }
+}
+</style>

@@ -1,0 +1,55 @@
+export default {
+  label: '热门',
+  sort: 0,
+  list: [
+    {
+      icon: 'area-cn',
+      addr: 'CN',
+      name: '中国',
+      label: 'China',
+      addrlower: 'cn',
+    },
+    {
+      icon: 'area-us',
+      addr: 'US',
+      name: '美国',
+      label: 'United',
+      addrlower: 'us',
+    },
+    {
+      icon: 'area-jp',
+      addr: 'JP',
+      name: '日本',
+      label: 'Japan',
+      addrlower: 'jp',
+    },
+    {
+      icon: 'area-kr',
+      addr: 'KR',
+      name: '韩国',
+      label: 'South',
+      addrlower: 'kr',
+    },
+    {
+      icon: 'area-tw',
+      addr: 'TW',
+      name: '中国台湾',
+      label: 'Taiwan',
+      addrlower: 'tw',
+    },
+    {
+      icon: 'area-hk',
+      addr: 'HK',
+      name: '中国香港',
+      label: 'Hong',
+      addrlower: 'hk',
+    },
+    {
+      icon: 'area-vn',
+      addr: 'VN',
+      name: '越南',
+      label: 'Vietnam',
+      addrlower: 'vn',
+    },
+  ],
+};

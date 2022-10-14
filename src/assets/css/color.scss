@@ -53,21 +53,27 @@ $var in $colors {
     transition: color .3s linear;
 
     &:hover {
-      color: #{$var};
+      color: #{$var} !important;
     }
   }
 
   .hover-bg-#{''+$key} {
     cursor: pointer;
-    transition: background .3s linear;
+    transition: background .1s linear;
 
     &:hover {
-      background-color: #{$var};
+      background-color: #{$var} !important;
     }
   }
 
   .box-shadow-#{''+$key} {
     box-shadow: 0 0 10px #{$var};
+  }
+
+  .hover-txt-shadow-#{''+$key} {
+    &:hover {
+      text-shadow: 0 0 2px #{$var};
+    }
   }
 
   .hover-box-shadow-#{''+$key} {
@@ -98,5 +104,27 @@ $var in $colors {
 
   .border-b-#{''+$key}-dashed {
     border-bottom: 1px dashed #{$var};
+  }
+}
+
+.drop-shadow-blue {
+  cursor: pointer;
+
+  &:hover {
+    filter: drop-shadow(0 0 3px $blue);
+  }
+}
+
+.drop-shadow-red {
+  cursor: pointer;
+
+  &:hover {
+    filter: drop-shadow(0 0 3px $red);
+  }
+}
+.drop-shadow-white {
+  cursor: pointer;
+  &:hover {
+    filter: drop-shadow(0 0 3px $white);
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="Sign flexMode hc vc flexV">
+  <div class="SuperSign flexMode hc vc flexV">
     <div class="signBox p20">
       <div class="signArea" :style="signAreaStyle">
         <vue-esign ref="esign" v-bind="toptions" />
@@ -15,7 +15,7 @@
 <script setup>
 import vueEsign from 'vue-esign';
 defineOptions({
-  name: 'Sign',
+  name: 'SuperSign',
   components: { vueEsign },
 });
 const prop = defineProps({
@@ -61,7 +61,7 @@ const toCancel = () => {
 };
 </script>
 <style lang="scss" scoped>
-.Sign {
+.SuperSign {
   width: 100%;
   height: 100%;
   .signBox {

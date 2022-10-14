@@ -1,9 +1,9 @@
 <template>
-  <div class="WaterMark"></div>
+  <div class="SuperWatermark"></div>
 </template>
 <script setup>
 defineOptions({
-  name: 'WaterMark',
+  name: 'SuperWatermark',
 });
 const prop = defineProps({
   watermark: {
@@ -69,7 +69,7 @@ const initWatermark = () => {
 };
 </script>
 <style lang="scss" scoped>
-.WaterMark {
+.SuperWatermark {
   position: absolute;
   top: 0;
   left: 0;

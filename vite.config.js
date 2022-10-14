@@ -4,6 +4,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 import defineOptions from 'unplugin-vue-define-options/vite';
 // import eslintPlugin from 'vite-plugin-eslint';
 import compressPlugin from 'vite-plugin-compression';
+import autoImport from 'unplugin-auto-import/vite';
 
 export default defineConfig({
   lintOnSave: true,
@@ -13,6 +14,7 @@ export default defineConfig({
     host: '0.0.0.0',
   },
   build: {
+    minify: 'terser',
     terserOptions: {
       compress: {
         drop_console: true,
@@ -32,9 +34,16 @@ export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
-    // viteFs(),
+    autoImport({
+      include:[/\.vue$/,/\.vue\?vue/],
+      imports: [
+        'vue',
+        'vue-router'
+      ]
+    }),
     defineOptions(),
-
+    // ElementPlus({
+    // }),
     compressPlugin({
       //gzip
       verbose: true,
@@ -48,8 +57,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': '/src/',
-      '@Super': '/src/components/Super/',
-      '@view': '/src/views/',
+      '@cpt': '/src/components/',
+      '@views': '/src/views/',
       '@js': '/src/js/',
       '@img': '/src/assets/img/',
     },

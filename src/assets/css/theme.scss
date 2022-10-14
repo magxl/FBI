@@ -1,4 +1,4 @@
-@import url('//at.alicdn.com/t/c/font_3661748_mvnaxy5ac4.css');
+@import url('//at.alicdn.com/t/c/font_3701322_21ay94l6bwy.css');
 @import './distance.scss';
 @import './font.scss';
 @import './layout.scss';
@@ -6,4 +6,5 @@
 @import './normal.scss';
 @import './other.scss';
 @import 'element-plus/dist/index.css';
-@import './element.scss';
+@import './element.scss'; // element覆写
+@import './area.scss'; // 地区图标

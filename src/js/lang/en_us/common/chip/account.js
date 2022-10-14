@@ -1,0 +1,15 @@
+export default {
+  用户中心: 'AccountCenter',
+  登录账号: 'Login Account',
+  登录账号不允许修改: 'Login Account Cannot Be Modified',
+  真实姓名: 'Real Name',
+  真实姓名不允许修改: 'Real Name Cannot Be Modified',
+  手机号码: 'Mobile',
+  电子邮箱: 'Email',
+  修改密码: 'Change Password',
+  旧密码: 'Old Password',
+  新密码: 'New Password',
+  确认新密码: 'Confirm New Password',
+  提交: 'Submit',
+  重置: 'Reset',
+};

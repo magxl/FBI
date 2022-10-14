@@ -1,9 +1,8 @@
 <template>
-  <div class="Frame">
-    <router-view></router-view>
-  </div>
+  <router-view />
 </template>
 <script setup>
+console.info('Launch Frame');
 defineOptions({
   name: 'Frame',
 });

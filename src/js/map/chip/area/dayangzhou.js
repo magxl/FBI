@@ -1,0 +1,55 @@
+export default {
+  label: '大洋洲',
+  sort: 50,
+  list: [
+    {
+      icon: 'area-au',
+      addr: 'AU',
+      name: '澳大利亚',
+      label: 'Australia',
+      addrlower: 'au',
+    },
+    {
+      icon: 'area-pg',
+      addr: 'PG',
+      name: '巴布亚新几内亚',
+      label: 'Papua',
+      addrlower: 'pg',
+    },
+    {
+      icon: 'area-fj',
+      addr: 'FJ',
+      name: '斐济',
+      label: 'Fiji',
+      addrlower: 'fj',
+    },
+    {
+      icon: 'area-fm',
+      addr: 'FM',
+      name: '密克罗尼西亚联邦',
+      label: 'Micronesia,',
+      addrlower: 'fm',
+    },
+    {
+      icon: 'area-pw',
+      addr: 'PW',
+      name: '帕劳',
+      label: 'Palau',
+      addrlower: 'pw',
+    },
+    {
+      icon: 'area-sb',
+      addr: 'SB',
+      name: '所罗门群岛',
+      label: 'Solomon',
+      addrlower: 'sb',
+    },
+    {
+      icon: 'area-nz',
+      addr: 'NZ',
+      name: '新西兰',
+      label: 'New',
+      addrlower: 'nz',
+    },
+  ],
+};

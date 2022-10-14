@@ -18,6 +18,10 @@
   word-break: keep-all;
   overflow: hidden;
 }
+.txt-wrap {
+  word-break: break-all;
+  white-space: wrap;
+}
 
 .fs10 {
   transform: scale(.625);
