@@ -1,8 +1,8 @@
 <template>
-  <div class="Frame AFrame flexMode" :class="{ collapseMenu }" :key="lang">
-    <AFrameMenu :menu="state.menu" />
-    <div class="AFrameRight">
-      <AFrameHeader />
+  <div class="Frame AFrame" :class="{ collapseMenu }" :key="lang">
+    <AFrameHeader />
+    <div class="AFrameRight flexMode">
+      <AFrameMenu :menu="state.menu" />
       <AFrameBody />
     </div>
   </div>
@@ -33,4 +33,22 @@ const collapseMenu = computed(() => {
   return launch.collapseMenu;
 });
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.AFrame {
+  border-radius: 12px;
+  box-shadow: $dark1 0 40px 20px, $blue1 0 20px 20px;
+  .AFrameRight {
+    height: calc(100% - 56px);
+    width: 100%;
+    overflow: hidden;
+  }
+  &.collapseMenu {
+    .AFrameMenu {
+      width: 64px;
+      .logoTxt {
+        display: none;
+      }
+    }
+  }
+}
+</style>

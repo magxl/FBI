@@ -14,7 +14,7 @@
           <Icon
             v-if="tabPages.length > 1"
             name="close"
-            class="icon fs16 txt-shadow-white drop-shadow-red"
+            class="icon ml5 fs16 txt-shadow-white drop-shadow-red"
             @click.stop="toClose(i)"
           />
         </div>
@@ -90,36 +90,36 @@ const scrollToTab = (v) => {
 </script>
 <style lang="scss" scoped>
 .tabScrollArea {
-  height: 28px;
+  height: 32px;
   width: 100%;
 }
 .tabArea {
-  height: 28px;
+  height: 32px;
   .tab {
-    padding: 4px 8px;
+    padding: 4px 12px;
     margin-left: 4px;
-    border: 1px solid $dark1;
+    border: 1px solid transparent;
     border-bottom: none;
-    border-radius: 4px 4px 0 0;
-    color: $dark5;
-    transform: $trans1;
+    border-radius: 6px 6px 0 0;
+    color: $dark9;
+    transition: $trans3;
     .icon {
       opacity: .3;
-      transform: $trans1;
+      transition: $trans3;
       &:hover{
         opacity: .6;
       }
     }
     &.current {
       color: $white;
-      border-color: $blue3 !important;
-      background-color: $blue;
+      border-color: $primary3 !important;
+      background-color: $primary;
       .icon {
         opacity: 1;
       }
     }
     &:hover {
-      border-color: $blue3;
+      border-color: $primary3;
       box-shadow: 0 -2px 4px $littleBlue;
     }
   }

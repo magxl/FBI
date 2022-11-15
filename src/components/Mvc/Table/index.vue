@@ -1,31 +1,41 @@
 <template>
   <div class="MvcTable" v-loading="state.loading">
-    <div v-if="prop.useFilter" class="tableTopArea flexMode hr">
-      <el-tooltip :content="$l('表格列自定义')" placement="top">
-        <el-button circle size="mini" @click="toSetTable">
-          <i class="adicon ad-config" />
-        </el-button>
-      </el-tooltip>
+    <div v-if="topShow" class="h64 flexMode vc hb">
+      <div class="flexGrow"><slot name="actions"></slot></div>
+      <div v-if="prop.tool !== false" class="flexMode vc noShrink pr20">
+        <template v-for="it in toolBtn">
+          <div
+            v-if="!it.hide"
+            :key="it.action"
+            class="mgbtn circle30"
+            @click="toolEvent(it)"
+          >
+            <i :class="it.icon" class="fs20"></i>
+          </div>
+        </template>
+      </div>
     </div>
     <el-table
       ref="table"
       :class="[
-        prop.borderTop ? 'borderTop' : '',
-        prop.borderBottom ? '' : 'noBottomBorder',
+        prop.borderTop ? 'border-t' : '',
+        prop.borderBottom ? 'border-b' : '',
       ]"
-      size="small"
+      :key="state.tableKey"
       :data="state.dt.list"
-      highlight-current-row
       :height="state.tableHeight"
       v-bind="$attrs"
       @selection-change="selectionChange"
       @row-click="rowClick"
     >
-      <TableColumnFilter ref="tableColumnFilter">
-        <slot />
+      <TableColumnFilter ref="tableColumnFilter" :table-name="prop.tableName">
+        <slot name="default" />
       </TableColumnFilter>
     </el-table>
-    <div v-if="state.pagination" class="flexMode hr p10">
+    <div
+      v-if="state.pagination"
+      class="relative flexMode hr h56 p10 bg-white9 backdrop z2"
+    >
       <el-pagination
         background
         locale="zh-CN"
@@ -43,7 +53,6 @@
     <Drawer
       v-model:current="state.currentDrawer"
       :drawer="state.drawer"
-      :column-options="state.columnOptions"
       @configSubmit="configSubmit"
     />
   </div>
@@ -53,9 +62,14 @@ import TableColumnFilter from './TableColumnFilter.js';
 import TableColumnConfig from './TableColumnConfig.vue';
 defineOptions({
   name: 'MvcTable',
+  components: { TableColumnFilter },
 });
 // 传参
 const prop = defineProps({
+  tableName: {
+    dtype: String,
+    default: '',
+  },
   list: {
     // 没有分页时，用list填充数据
     type: [Array, String],
@@ -99,10 +113,13 @@ const prop = defineProps({
     type: Boolean,
     default: true,
   },
-  useFilter: {
-    // 可显隐列
-    type: Boolean,
-    default: true,
+  tool: {
+    type: [Object, Boolean],
+    default: () => {},
+  },
+  setRowClass: {
+    type: Function,
+    default: () => {},
   },
 });
 // 数据
@@ -111,6 +128,7 @@ const state = reactive({
   pageNum: 1,
   pageSize: 20,
   loading: false,
+  tableKey: 0,
   dt: { pageNum: 1, list: [], total: null },
   tableHeight: 0,
   pagination: true,
@@ -119,19 +137,15 @@ const state = reactive({
     {
       title: '表格列自定义',
       cpt: TableColumnConfig,
+      size: 700,
+      params: {
+        tableName: prop.tableName
+      }
     },
   ],
   currentDrawer: '',
   columnOptions: [],
 });
-// 表格高度一页适配
-let height =
-  parseInt(prop.height) || document.body.clientHeight - 56 - 4 - 32 - 20;
-height = height - parseInt(prop.minusHeight);
-if (prop.useFilter) {
-  height -= 40;
-}
-state.tableHeight = height;
 
 const { proxy } = getCurrentInstance();
 
@@ -164,6 +178,41 @@ const getData = async (v = {}) => {
 // 计算属性
 const slots = computed(() => {
   return proxy.$slots;
+});
+const topShow = computed(() => {
+  return prop.tool !== false || proxy.$slots.actions || false;
+});
+const defaultTool = computed(() => {
+  return {
+    filter: true,
+    download: true,
+    print: true,
+    refresh: true,
+    ...prop.tool,
+  };
+});
+const toolBtn = computed(() => {
+  const { filter, download, print, refresh } = defaultTool.value;
+  return [
+    {
+      label: 'Filter',
+      icon: 'adicon ad-config1',
+      action: 'filter',
+      hide: !prop.tableName || !filter,
+    },
+    {
+      label: 'Download',
+      icon: 'adicon ad-download1',
+      action: 'download',
+      hide: !download,
+    },
+    {
+      label: 'Refresh',
+      icon: 'adicon ad-refresh',
+      action: 'refresh',
+      hide: prop.list || !refresh,
+    },
+  ];
 });
 // 监听
 watch(
@@ -209,6 +258,13 @@ watch(
     immediate: true,
   },
 );
+// 初始化
+
+// 表格高度一页适配
+let height = parseInt(prop.height) || document.body.clientHeight - 56 - 32 - 56;
+height = height - parseInt(prop.minusHeight);
+height = topShow && (height -= 64);
+state.tableHeight = height;
 
 // 挂载
 onMounted(() => {
@@ -308,14 +364,27 @@ const doLayout = () => {
 
 // 配置表格显隐列
 const toSetTable = () => {
-  const columnOptions = proxy.$refs.tableColumnFilter.getColumnOptions();
-  state.columnOptions = columnOptions;
   state.drawer[0].title = proxy.$l(state.drawer[0].title);
   state.currentDrawer = 0;
 };
 
 const configSubmit = (v) => {
   proxy.$refs.tableColumnFilter.initColumns();
+};
+
+const toolEvent = (it) => {
+  switch (it.action) {
+    case 'download':
+      emit('download');
+      break;
+    case 'refresh':
+      initTable();
+      emit('refresh');
+      break;
+    case 'filter':
+      toSetTable();
+      break;
+  }
 };
 
 defineExpose({

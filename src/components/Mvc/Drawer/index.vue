@@ -16,6 +16,7 @@
         v-if="state.drawerInfo.cpt"
         :is="state.drawerInfo.cpt"
         v-bind="$attrs"
+        :params="state.drawerInfo.params"
         @closeDrawer="closeDrawer"
       />
       <slot v-else />
@@ -42,6 +43,7 @@ const state = reactive({
     title: '',
     cpt: '',
     size: 500,
+    params: {},
     direction: 'rtl',
     keepalive: false,
   },

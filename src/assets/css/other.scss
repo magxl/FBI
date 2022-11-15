@@ -14,6 +14,12 @@ $radius: 0,
   .radius#{$var} {
     border-radius: #{$var}px;
   }
+  .radius-t#{$var} {
+    border-radius: #{$var}px #{$var}px 0 0;
+  }
+  .radius-b#{$var} {
+    border-radius: 0 0 #{$var}px #{$var}px;
+  }
 }
 
 @for $var from 1 through 9 {
@@ -91,6 +97,9 @@ $radius: 0,
 .cursor-default{
   cursor: default !important;
 }
+.cursor-move{
+  cursor: move;
+}
 
 .noselect {
   user-select: none;
@@ -106,4 +115,8 @@ $radius: 0,
 
 .useevent {
   pointer-events: auto;
+}
+
+.yscroll {
+  overflow-y: auto;
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="MvcMainPage PageAfter">
+  <div class="MvcMainPage PageAfter bg-white">
     <template v-if="prop.noscroll">
       <slot />
     </template>
@@ -40,4 +40,8 @@ const state = reactive({
 
 // 卸载
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.MvcMainPage {
+  min-height: 100%;
+}
+</style>

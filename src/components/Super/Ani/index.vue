@@ -2,7 +2,6 @@
   <div class="SuperAni">SuperAni</div>
 </template>
 <script setup>
-import sock from 'gsap';
 defineOptions({
   name: 'SuperAni',
 });

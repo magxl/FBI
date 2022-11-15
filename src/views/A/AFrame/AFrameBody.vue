@@ -1,5 +1,6 @@
 <template>
-  <div class="AFrameBody">
+  <div class="AFrameBody" :class="{collapseMenu}">
+    <div class="BodyArea">
       <transition name="fade" :key="$route.meta.key">
         <router-view v-slot="{ Component }">
           <keep-alive>
@@ -16,6 +17,7 @@
           />
         </router-view>
       </transition>
+    </div>
   </div>
 </template>
 <script setup>
@@ -25,9 +27,13 @@ defineOptions({
 import { reactive } from 'vue';
 // 数据
 const state = reactive({});
-
+const store = inject('store');
+const launch = store.launch();
 // 计算属性
 
+const collapseMenu = computed(() => {
+  return launch.collapseMenu;
+});
 // 监听
 
 // 挂载
@@ -38,10 +44,19 @@ const state = reactive({});
 </script>
 <style lang="scss" scoped>
 .AFrameBody {
-  margin: 4px 0 0 4px;
-  height: calc(100% - 60px);
+  padding: 16px;
+  height: 100%;
+  width: 100%;
   overflow: hidden;
-  background-color: $white;
-  border-radius: 8px 0 0 0;
+  // &.collapseMenu {
+  //   width: 
+  // }
+  .BodyArea {
+    height: 100%;
+    overflow: hidden;
+    // background-color: $white;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px $dark1;
+  }
 }
 </style>

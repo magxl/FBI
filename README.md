@@ -47,5 +47,4 @@ axios
 autoImport
 defineOptions
 vue-esign
-gsap
 ```

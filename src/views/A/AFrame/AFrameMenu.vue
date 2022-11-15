@@ -1,9 +1,5 @@
 <template>
-  <div class="AFrameMenu relative bg-white9 noselect">
-    <div class="logoArea wp100 flexMode hc vc h56 noShrink noselect point" @click="gotoBoard">
-      <img :src="getImg('favicon.ico','/public/')" class="w24 h24"/>
-      <span class="logoTxt pl10 txt-dark9">iADBrain</span>
-    </div>
+  <div class="AFrameMenu">
     <el-scrollbar class="scrollbarArea">
       <el-menu
         :default-active="state.active"
@@ -76,6 +72,11 @@ const state = reactive({
   openeds: '',
 });
 
+const miniMenu = localStorage.getItem('miniMenu');
+if (miniMenu) {
+  toCollaspeMenu(miniMenu);
+}
+
 // 计算
 const currentPage = computed(() => {
   return launch.currentPage;
@@ -103,31 +104,38 @@ watch(
 
 // 事件
 const goto = (name) => {
-  if(name===route.name){
+  if (name === route.name) {
     return;
   }
   router.push({ name });
 };
-const toCollaspeMenu = () => {
-  launch.saveData('collapseMenu', !collapseMenu.value);
+const toCollaspeMenu = (miniMenu) => {
+  if(miniMenu) {
+    
+  }
+  const v = !collapseMenu.value;
+  if (v) {
+    miniMenu = false;
+  } else {
+    v = true;
+  }
+
+  launch.saveData('collapseMenu', v);
+  localStorage.setItem('miniMenu', miniMenu);
 };
-const gotoBoard = ()=>{
-  router.push({
-    name: 'ABoardMain'
-  })
-}
 </script>
 <style lang="scss" scoped>
 .AFrameMenu {
-  height: 100vh;
+  position: relative;
+  flex-shrink: 0;
+  height: calc(100vh - 56px);
   width: 200px;
+  padding: 10px 0;
   border-radius: 0 0 4px 0;
   overflow: hidden;
-  .logoArea {
-    &:hover{
-      filter: drop-shadow(0 0 20px $orange);
-    }
-  }
+  background: $white9;
+  user-select: none;
+  transition: $trans3;
   .scrollbarArea {
     height: calc(100% - 56px);
   }
@@ -141,7 +149,7 @@ const gotoBoard = ()=>{
     align-items: center;
     justify-content: center;
     z-index: 2;
-    transition: $trans1;
+    transition: $trans3;
     background-color: $littleBlue;
     border-radius: 3px 0 0 3px;
     cursor: pointer;
@@ -151,12 +159,13 @@ const gotoBoard = ()=>{
       border-top: 1px solid $dark5;
       border-left: 1px solid $dark5;
       transform: translateX(2px) rotate(-45deg);
-      transition: $trans1;
+      transition: $trans3;
       &.collapseMenu {
         transform: translateX(-1px) rotate(135deg);
       }
     }
     &:hover {
+      width: 24px;
       background-color: $blue;
       .collaspe {
         border-color: $white9;

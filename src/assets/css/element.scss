@@ -1,9 +1,43 @@
 // element 覆写
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'primary': (
+      'base': #5F63F2,
+    ),
+    'success': (
+      'base': #20c997,
+    ),
+    'warning': (
+      'base': #fa8b0c,
+    ),
+    'danger': (
+      'base': #ff4d4f,
+    ),
+    'info': (
+      'base': #2c99ff,
+    )
+  ),
+);
+@import 'element-plus/theme-chalk/src/index.scss';
 :root {
-  // --el-color-primary: #3553fe;
-  // --el-color-success: #13ce66;
-  // --el-color-warning: #ffba00;
-  // --el-color-danger: #ff4949;
+  --el-color-primary-light-7: rgba(95, 99, 242, .3);
+  --el-color-primary-light-8: rgba(95, 99, 242, .2);
+  --el-color-primary-light-9: rgba(95, 99, 242, .1);
+  --el-color-primary-dark-2: #4e53f2;
+  --el-color-black: #272b41;
+
+  --el-border-color: rgba(153, 153, 153, .2);
+  --el-border-color-hover: rgba(153, 153, 153, .3);
+  --el-switch-border-color: rgba(153, 153, 153, .2);
+  --el-switch-off-color: rgba(153, 153, 153, .2);
+
+  --el-overlay-color-lighter: rgba(255, 255, 255, .5);
+  --el-box-shadow-dark: 0 5px 20px rgba(39, 43, 65, .1);
+
+}
+.el-date-range-picker {
+  --el-datepicker-inrange-bg-color: rgba(95, 99, 242, .1);
+  --el-datepicker-inrange-hover-bg-color: rgba(95, 99, 242, .2);
 }
 
 .el-input {
@@ -20,31 +54,33 @@
 
 .el-menu {
   border-right: none;
-
+  transition: $trans3;
   .el-menu-item-group__title {
     padding: 0;
   }
 
   .el-menu-item {
     min-width: 0;
-
+    transition: $trans3;
     &:hover {
+      padding-left: 24px !important;
       background-color: transparent;
       background-image: linear-gradient(to right, $white1, $blue1);
     }
   }
 
   .el-sub-menu__title {
-
+    transition: $trans3;
     background-color: transparent;
+    &:hover{
+      padding-left: 24px !important;
+    }
   }
-  // .is-opened,
-  // .is-active {
-  //   .el-sub-menu__title {
-  //     color: $blue;
-  //     // background-image: linear-gradient(to right, $white1, $blue1);
-  //   }
-  // }
+  .el-menu-item-group {
+    .el-menu-item:hover{
+      padding-left: 46px !important;
+    }
+  }
 }
 
 .el-table {
@@ -56,6 +92,9 @@
     th {
       background-color: rgba(248, 248, 248, 1);
     }
+  }
+  &.border-b {
+    border-bottom: 1px solid rgba(153,153,153,.1);
   }
 }
 
@@ -341,12 +380,6 @@
 }
 
 .el-message {
-  background-color: #fff !important;
-  border-color: #f0f0f0 !important;
-  box-shadow: rgba(0, 0, 0, 0.1) 0 0 8px;
-}
-
-.el-message {
   min-width: 0;
   padding: 16px;
   @include backdrop(100%, 8px);
@@ -462,7 +495,19 @@
   }
 
   .el-drawer__body {
-    padding: 10px;
+    padding: 0px;
+    .drawerBody {
+      height: calc(100% - 56px);
+      overflow: hidden;
+    }
+    .drawerFooter {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      height: 56px;
+      padding: 0 20px;
+      border-top: 1px solid rgba(153,153,153,.1);
+    }
   }
 }
 

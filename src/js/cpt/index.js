@@ -20,11 +20,12 @@ Object.keys(MvcCpts).forEach((it) => {
     cpt: MvcCpts[it],
   });
 });
-
+// import TableColumn from '/src/components/Mvc/Table/TableColumn.js';
 export default (app) => {
   [...Super, ...Mvc].forEach((it) => {
     it.cpt().then((r) => {
       app.component(it.name, r.default);
     });
+    // app.component('TableColumn',TableColumn);
   });
 };

@@ -47,5 +47,16 @@ export default {
       },
       component: () => import('@views/A/Test/NumberRange.vue'),
     },
+    {
+      path: '/A/Test/SnippetsFormatter',
+      name: 'ATestSnippetsFormatter',
+      meta: {
+        sort: 1000,
+        label: '片段格式器',
+        icon: 'ad-board1',
+        position: ['menu'],
+      },
+      component: () => import('@views/A/Test/SnippetsFormatter.vue'),
+    },
   ],
 };

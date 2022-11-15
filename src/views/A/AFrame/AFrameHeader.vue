@@ -1,5 +1,13 @@
 <template>
-  <div class="AFrameHeader relative">
+  <div class="AFrameHeader">
+    <div
+      class="logoArea wp100 flexMode hc vc h56 noShrink noselect point"
+      @click="gotoBoard"
+    >
+      <img :src="getImg('favicon.ico', '/public/')" class="w24 h24" />
+      <span class="logoTxt pl10 txt-dark9">iADBrain</span>
+    </div>
+    <!-- Logo ↑ -->
     <div class="leftArea">
       <div class="adArea flexMode vc p0-10">
         <!-- <div class="dot6 bg-blue" />
@@ -9,15 +17,15 @@
       </div>
       <TabPages />
     </div>
-
-    <div class="rightArea flexMode hr vs w160 h56 pr10 bg-white9 backdrop">
+    <!-- tab nav ↑ -->
+    <div class="rightArea flexMode hr vc w160 h56 pr10 bg-white9 backdrop">
       <el-dropdown
         trigger="click"
         placement="bottom-end"
         @command="avatarCommand"
       >
-        <div class="flexMode vc p0-10 hover-bg-dark1">
-          <div class="p4 radiusP50 bg-dark1">
+        <div class="flexMode vc p0-10">
+          <div class="mgbtn circle30 bg-dark1">
             <Icon name="user" class="fs20" />
           </div>
         </div>
@@ -43,10 +51,10 @@
       </el-dropdown>
       <!-- ↑ avatar ↑ -->
       <!-- ↓ setting ↓ -->
-      <div class="flexMode hc vc p0-10 ml4 hover-bg-dark1" @click="toSetting">
+      <div class="mgbtn circle30 mr10" @click="toSetting">
         <i class="adicon ad-nav-system-set fs24" />
       </div>
-      <div class="flexMode vc p0-10 hover-bg-dark1">
+      <div class="pr10">
         <Lang class="flexMode vs hp100" />
       </div>
     </div>
@@ -122,19 +130,38 @@ const toSetting = () => {
   state.drawer[1].title = proxy.$l(state.drawer[1].title);
   state.currentDrawer = 1;
 };
+
+const gotoBoard = () => {
+  router.push({
+    name: 'ABoardMain',
+  });
+};
 // 卸载
 </script>
 <style lang="scss" scoped>
 .AFrameHeader {
+  position: relative;
+  display: flex;
+  align-items: stretch;
   height: 56px;
   background-color: $white;
+  box-shadow: 0 5px 20px $dark1;
+  z-index: 2;
+  .logoArea {
+    width: 200px;
+    &:hover {
+      filter: drop-shadow(0 0 20px $orange);
+    }
+  }
   .topArea {
     height: 28px;
   }
   .leftArea {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     width: 100%;
     .adArea {
-      height: 28px;
       width: 100%;
     }
   }

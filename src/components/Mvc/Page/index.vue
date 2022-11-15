@@ -9,6 +9,7 @@
 import MainPage from './chip/MainPage.vue';
 defineOptions({
   name: 'PAGE',
+  components: { MainPage },
 });
 const prop = defineProps({
   type: {
