@@ -7,44 +7,46 @@
         :collapse="collapseMenu"
       >
         <template v-for="it in prop.menu">
-          <el-sub-menu
-            v-if="it.children && it.children.length"
-            :key="it.name"
-            :index="it.name"
-          >
-            <template #title>
+          <template v-if="!it.meta.hide">
+            <el-sub-menu
+              v-if="it.children && it.children.length"
+              :key="it.name"
+              :index="it.name"
+            >
+              <template #title>
+                <em class="w24 noShrink">
+                  <i class="adicon" :class="it.meta.icon" />
+                </em>
+                <span class="txt-nowrap" :title="it.meta.langLabel">
+                  {{ it.meta.langLabel }}
+                </span>
+              </template>
+              <el-menu-item-group>
+                <el-menu-item
+                  v-for="ct in it.children"
+                  :key="ct.name"
+                  :index="ct.name"
+                  @click="goto(ct.name)"
+                  :title="ct.meta.langLabel"
+                >
+                  <span class="pl4 txt-nowrap">{{ ct.meta.langLabel }}</span>
+                </el-menu-item>
+              </el-menu-item-group>
+            </el-sub-menu>
+            <el-menu-item
+              v-else
+              :key="it.name"
+              :index="it.name"
+              @click="goto(it.name)"
+              :title="it.meta.langLabel"
+              class="hover-txt-shadow-blue3"
+            >
               <em class="w24 noShrink">
                 <i class="adicon" :class="it.meta.icon" />
               </em>
-              <span class="txt-nowrap" :title="it.meta.langLabel">
-                {{ it.meta.langLabel }}
-              </span>
-            </template>
-            <el-menu-item-group>
-              <el-menu-item
-                v-for="ct in it.children"
-                :key="ct.name"
-                :index="ct.name"
-                @click="goto(ct.name)"
-                :title="ct.meta.langLabel"
-              >
-                <span class="pl4 txt-nowrap">{{ ct.meta.langLabel }}</span>
-              </el-menu-item>
-            </el-menu-item-group>
-          </el-sub-menu>
-          <el-menu-item
-            v-else
-            :key="it.name"
-            :index="it.name"
-            @click="goto(it.name)"
-            :title="it.meta.langLabel"
-            class="hover-txt-shadow-blue3"
-          >
-            <em class="w24 noShrink">
-              <i class="adicon" :class="it.meta.icon" />
-            </em>
-            <span class="txt-nowrap">{{ it.meta.langLabel }}</span>
-          </el-menu-item>
+              <span class="txt-nowrap">{{ it.meta.langLabel }}</span>
+            </el-menu-item>
+          </template>
         </template>
       </el-menu>
     </el-scrollbar>
@@ -110,8 +112,7 @@ const goto = (name) => {
   router.push({ name });
 };
 const toCollaspeMenu = (miniMenu) => {
-  if(miniMenu) {
-    
+  if (miniMenu) {
   }
   const v = !collapseMenu.value;
   if (v) {

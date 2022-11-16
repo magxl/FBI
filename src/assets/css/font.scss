@@ -1,4 +1,4 @@
-@for $var from 5 to 40 {
+@for $var from 5 to 48 {
   .fs#{$var * 2} {
     font-size: #{$var * 2}px;
   }

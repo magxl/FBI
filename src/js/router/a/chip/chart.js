@@ -2,6 +2,7 @@ export default {
   path: '/A/Chart',
   name: 'AChart',
   meta: {
+    hide: true,
     sort: 100,
     label: '图表',
     icon: 'ad-board1',

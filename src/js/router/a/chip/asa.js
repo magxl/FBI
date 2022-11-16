@@ -2,7 +2,8 @@ export default {
   path: '/A/Asa',
   name: 'AAsa',
   meta: {
-    sort: 10,
+    hide: true,
+    sort: 101,
     label: 'ASA数据量化衡量',
     icon: 'ad-chart1',
     position: ['menu'],

@@ -71,7 +71,17 @@ router.beforeEach((to, from, next) => {
       }
     }
   }
-  next(nextPage);
+  // 404
+  const module = to.fullPath.split('/')[1];
+  const name404 = module + '404';
+  if (
+    to.matched.length === 0 ||
+    (to.matched.length === 1 && !to.matched.children)
+  ) {
+    next({ name: name404 });
+  } else {
+    next(nextPage);
+  }
 });
 router.afterEach((to, from) => {
   const launch = store.launch();
