@@ -1,8 +1,8 @@
 export default {
   path: '/A/Chart',
-  name: 'AChart',
+  name: 'A_Chart',
   meta: {
-    hide: true,
+    // hide: true,
     sort: 100,
     label: '图表',
     icon: 'ad-board1',

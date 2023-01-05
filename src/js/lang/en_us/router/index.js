@@ -1,4 +1,7 @@
 export default {
+  首页: 'Home',
+  概览: 'Overview',
+
   图表: 'Chart',
   主看板: 'Main Board',
   // 自动化服务 Automation

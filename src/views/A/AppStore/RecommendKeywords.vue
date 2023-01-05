@@ -1,11 +1,11 @@
 <template>
-  <Page class='RealtimeRanking'>
-    RealtimeRanking
+  <Page class='RecommendKeywords'>
+    RecommendKeywords
   </Page>
 </template>
 <script setup>
   defineOptions({
-    name: 'RealtimeRanking'
+    name: 'RecommendKeywords'
   });
   // 数据
   const state = reactive({});

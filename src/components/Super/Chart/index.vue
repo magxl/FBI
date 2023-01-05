@@ -11,6 +11,10 @@ const prop = defineProps({
     type: Object,
     default: () => {},
   },
+  type: {
+    type: String,
+    default: '',
+  },
 });
 import { reactive, getCurrentInstance, onMounted, watch } from 'vue';
 const { proxy } = getCurrentInstance();
@@ -25,12 +29,19 @@ const state = reactive({
       bottom: 40,
     },
     color: [
-      'RGBA(86, 162, 253, 1)',
-      'RGBA(96, 184, 112, 1)',
-      'RGBA(240, 66, 52, 1)',
-      'RGBA(255, 176, 45, 1)',
-      'RGBA(112, 128, 145, 1)',
-      'RGBA(143, 157, 241, 1)',
+      '#5F63F2',
+      '#409EFF',
+      '#20C997',
+      '#6CEC8E',
+      '#35D5EB',
+      '#39EBCB',
+      '#619AEF',
+      '#908EFE',
+      '#7869D2',
+      '#854CFF',
+      '#AF73EC',
+      '#CF47FF',
+      '#6A717D',
     ],
     tooltip: {
       show: true,
@@ -58,18 +69,26 @@ const state = reactive({
         },
       },
     },
+    mounted: false,
   },
 });
 state.chartID = `chart${+new Date()}${parseInt(Math.random() * 10000)}`;
 
+let chart = null;
+
 onMounted(() => {
+  state.mounted = true;
   initEcharts();
 });
-
+const canInit = computed(() => {
+  console.info(state.mounted,prop.options);
+  return state.mounted && Object.keys(prop.options).length;
+ });
 watch(
-  () => prop.options,
+  () => canInit.value,
   (n) => {
     if (n) {
+      console.info('can');
       setOptions();
     }
   },
@@ -78,14 +97,17 @@ watch(
   },
 );
 
-let chart = null;
 const initEcharts = async () => {
   chart = await echarts.init(proxy.$refs.chart);
   setOptions();
 };
 const setOptions = () => {
   let options = window.$deepClone(prop.options);
-  options = combineObject(state.defaultOptions, options);
+  if (prop.type === 'pie') {
+    options = { ...options, color: state.defaultOptions.color };
+  } else {
+    options = combineObject(state.defaultOptions, options);
+  }
   chart.setOption(options);
 };
 

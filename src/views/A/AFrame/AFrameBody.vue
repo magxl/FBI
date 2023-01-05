@@ -1,7 +1,7 @@
 <template>
   <div class="AFrameBody" :class="{collapseMenu}">
-    <div class="BodyArea">
-      <transition name="fade" :key="$route.meta.key">
+    <!-- <div class="BodyArea"> -->
+      <!-- <transition name="fade" :key="$route.meta.key"> -->
         <router-view v-slot="{ Component }">
           <keep-alive>
             <component
@@ -16,8 +16,8 @@
             :is="Component"
           />
         </router-view>
-      </transition>
-    </div>
+      <!-- </transition> -->
+    <!-- </div> -->
   </div>
 </template>
 <script setup>
@@ -44,7 +44,7 @@ const collapseMenu = computed(() => {
 </script>
 <style lang="scss" scoped>
 .AFrameBody {
-  padding: 16px;
+  // padding: 16px;
   height: 100%;
   width: 100%;
   overflow: hidden;

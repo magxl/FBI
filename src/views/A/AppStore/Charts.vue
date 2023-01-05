@@ -1,11 +1,11 @@
 <template>
-  <Page class='RecommendedWord'>
-    RecommendedWord
+  <Page class='AppStoreCharts'>
+    AppStoreCharts
   </Page>
 </template>
 <script setup>
   defineOptions({
-    name: 'RecommendedWord'
+    name: 'AppStoreCharts'
   });
   // 数据
   const state = reactive({});

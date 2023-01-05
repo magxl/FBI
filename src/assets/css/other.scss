@@ -43,6 +43,9 @@ $radius: 0,
 .backdrop {
   @include backdrop();
 }
+.blur8 {
+  filter: blur(8px);
+}
 
 .hover-type1 {
   transition: $trans1;

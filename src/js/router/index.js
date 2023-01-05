@@ -74,12 +74,17 @@ router.beforeEach((to, from, next) => {
   // 404
   const module = to.fullPath.split('/')[1];
   const name404 = module + '404';
-  if (
-    to.matched.length === 0 ||
-    (to.matched.length === 1 && !to.matched.children)
-  ) {
-    next({ name: name404 });
-  } else {
+  const pageIgnore = ['Login'];
+  if (pageIgnore.indexOf(to.name) === -1) {
+    if (
+      to.matched.length === 0 ||
+      (to.matched.length === 1 && !to.matched.children)
+    ) {
+      next({ name: name404 });
+    } else {
+      next(nextPage);
+    }
+  }else {
     next(nextPage);
   }
 });
@@ -90,8 +95,8 @@ router.afterEach((to, from) => {
     `TIME %c┆${now - time}ms┆`,
     'background-color:#f1f7ff; color:#0085FF;',
   );
-  const unpage = ['Login']; // 不存储的页面
-  if (unpage.indexOf(to.name) === -1) {
+  const unsavePage = ['Login']; // 不存储的页面
+  if (unsavePage.indexOf(to.name) === -1) {
     to.key = `page${now}${parseInt(Math.random() * 10000)}`;
     launch.saveData('currentPage', to);
     launch.savePage(to);

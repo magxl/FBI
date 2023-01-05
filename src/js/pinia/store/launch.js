@@ -13,6 +13,7 @@ const state = () => {
       visible: false,
     },
     collapseMenu: false, // 折叠菜单栏
+    pageWidth: 0
   };
 };
 const actions = {
@@ -23,6 +24,15 @@ const actions = {
       this[aim] = [].concat(dt);
     } else {
       this[aim] = dt;
+    }
+  },
+  saveCollapse(v){
+    this.collapseMenu = v;
+    const width = document.body.clientWidth;
+    if(this.collapseMenu){
+      this.pageWidth = width - 64;
+    }else{
+      this.pageWidth = width - 200;
     }
   },
   saveLang(v) {

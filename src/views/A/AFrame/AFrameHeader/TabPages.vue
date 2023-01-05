@@ -14,7 +14,8 @@
           <Icon
             v-if="tabPages.length > 1"
             name="close"
-            class="icon ml5 fs16 txt-shadow-white drop-shadow-red"
+            class="icon ml5 fs16 "
+            :class="currentPage.key === it.key?'txt-shadow-white drop-shadow-red':'txt-shadow-white drop-shadow-white'"
             @click.stop="toClose(i)"
           />
         </div>
@@ -95,32 +96,34 @@ const scrollToTab = (v) => {
 }
 .tabArea {
   height: 32px;
+  padding-left: 10px;
   .tab {
     padding: 4px 12px;
     margin-left: 4px;
     border: 1px solid transparent;
     border-bottom: none;
     border-radius: 6px 6px 0 0;
-    color: $dark9;
-    transition: $trans3;
+    color: $white9;
+    border: 1px sloid transparent;
+    transition: $trans1;
     .icon {
-      opacity: .3;
-      transition: $trans3;
-      &:hover{
-        opacity: .6;
+      opacity: 0.3;
+      transition: $trans1;
+      &:hover {
+        opacity: 0.6;
       }
     }
     &.current {
-      color: $white;
-      border-color: $primary3 !important;
-      background-color: $primary;
+      color: $dark9;
+      background-color: $white9 !important;
       .icon {
         opacity: 1;
       }
     }
     &:hover {
-      border-color: $primary3;
-      box-shadow: 0 -2px 4px $littleBlue;
+      border-color: $white3;
+      background-color: $white1;
+      // box-shadow: 0 -2px 4px $littleBlue;
     }
   }
 }

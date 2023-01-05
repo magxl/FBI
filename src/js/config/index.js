@@ -1,9 +1,10 @@
 // 项目配置
 import map from '@js/map/index.js'; // 字典
 const config = {
-  title: 'iADBrain', // 网站抬头
+  title: '应用雷达智投平台', // 网站抬头
   // 开发模式开关，开启后使用假登录信息
   dev: true,
+  defaultPage: 'A_Overview',
   // 假登录信息
   login: {
     username: 'Magxl',

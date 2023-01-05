@@ -4,13 +4,13 @@
       <!-- fixed left -->
       <div class="relative dragArea wp33 mr5 border-dark3-dashed radius8">
         <div class="flexMode hb vc p10 bg-f5 radius-t8 border-b">
-          <span>{{$l('左固定')}}</span>
+          <span>{{ $l('左固定') }}</span>
           <span class="fs12"
             >{{ leftVisible }} / {{ state.columns.left.length }}</span
           >
         </div>
         <div v-if="state.columns.left.length === 0" class="absCenter fs12">
-          {{$l('没有左固定')}}
+          {{ $l('没有左固定') }}
         </div>
         <Draggable
           :list="state.columns.left"
@@ -44,13 +44,13 @@
       <!-- fixed center -->
       <div class="relative dragArea wp33 m0-5 border-dark3-dashed radius8">
         <div class="flexMode hb vc p10 bg-f5 border-b radius-t8">
-          <span>{{$l('中间部分')}}</span>
+          <span>{{ $l('中间部分') }}</span>
           <span class="fs12"
             >{{ centerVisible }} / {{ state.columns.center.length }}</span
           >
         </div>
         <div v-if="state.columns.center.length === 0" class="absCenter fs12">
-          {{$l('没有中间部分')}}
+          {{ $l('没有中间部分') }}
         </div>
         <Draggable
           :list="state.columns.center"
@@ -84,13 +84,13 @@
       <!-- fixed right -->
       <div class="relative dragArea wp33 ml5 border-dark3-dashed radius8">
         <div class="flexMode hb vc p10 bg-f5 border-b radius-t8">
-          <span>{{$l('右固定')}}</span>
+          <span>{{ $l('右固定') }}</span>
           <span class="fs12"
             >{{ rightVisible }} / {{ state.columns.right.length }}</span
           >
         </div>
         <div v-if="state.columns.right.length === 0" class="absCenter fs12">
-          {{$l('没有右固定')}}
+          {{ $l('没有右固定') }}
         </div>
         <Draggable
           :list="state.columns.right"
@@ -125,8 +125,12 @@
   </div>
   <!-- ↑ body ↑ -->
   <div class="drawerFooter">
-    <el-button @click="toReset" :loading="loading" round>{{$l('重置')}}</el-button>
-    <el-button @click="toSubmit" round type="primary">{{$l('提交')}}</el-button>
+    <el-button @click="toReset" :loading="reseting" round>{{
+      $l('重置')
+    }}</el-button>
+    <el-button @click="toSubmit" :loading="submiting" round type="primary">{{
+      $l('提交')
+    }}</el-button>
   </div>
 </template>
 <script setup>
@@ -145,7 +149,8 @@ const prop = defineProps({
 import { reactive } from 'vue';
 // 数据
 const state = reactive({
-  loading: false,
+  submiting: false,
+  reseting: false,
   columns: {
     left: [],
     center: [],
@@ -217,16 +222,25 @@ const createColumn = ({ left, center, right }) => {
     filterColumn,
   };
 };
-const toReset = () => {};
+const toReset = () => {
+  this.reseting = true;
+  localStorage.removeItem(columnName.value);
+  this.$emit('filterSubmit');
+  this.getLocalColumn();
+  this.reseting = false;
+  this.$emit('closeDrawer');
+};
 const toSubmit = () => {
+  this.submiting = true;
   const { column } = createColumn(state.columns);
-  localStorage.setItem(columnName, JSON.stringify(column));
+  localStorage.setItem(columnName.value, JSON.stringify(column));
   emit('filterSubmit');
+  this.submiting = false;
   emit('closeDrawer');
 };
 const getLocalColumn = () => {
   proxy.$setTimeout(() => {
-    if (!localStorage.getItem(prop.columnName)) {
+    if (!localStorage.getItem(columnName.value)) {
       getLocalColumn();
     } else {
       init();

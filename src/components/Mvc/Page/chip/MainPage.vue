@@ -1,11 +1,13 @@
 <template>
-  <div class="MvcMainPage PageAfter bg-white">
-    <template v-if="prop.noscroll">
-      <slot />
-    </template>
-    <el-scrollbar v-else class="hp100">
-      <slot />
-    </el-scrollbar>
+  <div class="p16">
+    <div class="MvcMainPage PageAfter bg-white">
+      <template v-if="prop.noscroll">
+        <slot />
+      </template>
+      <el-scrollbar v-else class="hp100">
+        <slot />
+      </el-scrollbar>
+    </div>
   </div>
 </template>
 <script setup>

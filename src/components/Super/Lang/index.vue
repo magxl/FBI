@@ -4,6 +4,7 @@
       <Hover>
         <div class="flexMode hc vc">
           <span class="relative areaicon point" :class="`area-${lang}`" />
+          <!-- <span class="point" :class="txtColor">{{lang.toUpperCase()}}</span> -->
         </div>
       </Hover>
       <template #dropdown>
@@ -21,7 +22,7 @@
           >
             <Hover>
               <div class="flexMode vc">
-                <span class="areaicon" :class="`area-${it}`" />
+                <span class="relative areaicon" :class="`area-${it}`" />
                 <span class="pl10">{{ it }}</span>
               </div>
             </Hover>
@@ -35,11 +36,17 @@
 defineOptions({
   name: 'SuperLang',
 });
+// 传参
+const prop = defineProps({
+  txtColor:{
+    type: String,
+    default: '',
+  },
+});
 // 数据
 const state = reactive({});
 const store = inject('store');
 const launch = store.launch();
-
 // 计算属性
 const langOptions = computed(() => {
   return window.$langs;

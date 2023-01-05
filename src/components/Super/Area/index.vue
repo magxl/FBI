@@ -32,17 +32,19 @@ const area = computed(() => {
   return window.$map.area;
 });
 const dt = computed(() => {
-  const {list,views} = prop.options;
-  // 自定义list时，使用自定义数据
-  if(list) {
-    return {list};
-  }
-  // 自定义内置views时
-  if(views){
-    return window.$map.area.filter(it=>views.includes(it.name));
+  if (prop.options) {
+    const { list, views } = prop.options;
+    // 自定义list时，使用自定义数据
+    if (list) {
+      return { list };
+    }
+    // 自定义内置views时
+    if (views) {
+      return window.$map.area.filter((it) => views.includes(it.name));
+    }
   }
   return window.$map.area;
- });
+});
 // 监听
 
 // 挂载

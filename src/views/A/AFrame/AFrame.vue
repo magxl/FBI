@@ -1,5 +1,9 @@
 <template>
-  <div class="Frame AFrame" :class="{ collapseMenu }" :key="lang">
+  <div
+    class="Frame AFrame"
+    :class="{ collapseMenu }"
+    :key="lang"
+  >
     <AFrameHeader />
     <div class="AFrameRight flexMode">
       <AFrameMenu :menu="state.menu" />
@@ -20,6 +24,8 @@ const state = reactive({
   // 别名，即模块根路由
   alias: '/A/',
   menu: [],
+  loading: true,
+  mounted: false,
 });
 // 取得模块路由
 state.menu = window.routes.filter((it) => it.name === 'A')[0].children;
@@ -31,6 +37,9 @@ const currentPage = computed(() => {
 });
 const collapseMenu = computed(() => {
   return launch.collapseMenu;
+});
+onMounted(() => {
+  state.loading = false;
 });
 </script>
 <style lang="scss" scoped>
@@ -50,5 +59,8 @@ const collapseMenu = computed(() => {
       }
     }
   }
+}
+[v-cloak] {
+  display: none;
 }
 </style>

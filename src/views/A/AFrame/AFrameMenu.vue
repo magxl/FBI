@@ -14,7 +14,7 @@
               :index="it.name"
             >
               <template #title>
-                <em class="w24 noShrink">
+                <em class="w24 txt-dark5 noShrink">
                   <i class="adicon" :class="it.meta.icon" />
                 </em>
                 <span class="txt-nowrap" :title="it.meta.langLabel">
@@ -29,6 +29,9 @@
                   @click="goto(ct.name)"
                   :title="ct.meta.langLabel"
                 >
+                  <em class="w24 txt-dark5 noShrink">
+                    <i class="adicon" :class="ct.meta.icon" />
+                  </em>
                   <span class="pl4 txt-nowrap">{{ ct.meta.langLabel }}</span>
                 </el-menu-item>
               </el-menu-item-group>
@@ -74,10 +77,10 @@ const state = reactive({
   openeds: '',
 });
 
-const miniMenu = localStorage.getItem('miniMenu');
-if (miniMenu) {
-  toCollaspeMenu(miniMenu);
-}
+onMounted(() => {
+  const collapseMenu = Boolean(Number(localStorage.getItem('collapseMenu')));
+  launch.saveCollapse(collapseMenu);
+});
 
 // 计算
 const currentPage = computed(() => {
@@ -111,18 +114,12 @@ const goto = (name) => {
   }
   router.push({ name });
 };
-const toCollaspeMenu = (miniMenu) => {
-  if (miniMenu) {
-  }
+const toCollaspeMenu = () => {
   const v = !collapseMenu.value;
-  if (v) {
-    miniMenu = false;
-  } else {
-    v = true;
-  }
+  const localCollapseMenu = v ? 1 : 0;
+  localStorage.setItem('collapseMenu', localCollapseMenu);
 
-  launch.saveData('collapseMenu', v);
-  localStorage.setItem('miniMenu', miniMenu);
+  launch.saveCollapse(v);
 };
 </script>
 <style lang="scss" scoped>
@@ -149,10 +146,11 @@ const toCollaspeMenu = (miniMenu) => {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2;
+    z-index: 10;
     transition: $trans3;
     background-color: $littleBlue;
     border-radius: 3px 0 0 3px;
+    box-shadow: -5px 0 10px $gray1, 0px 5px 10px $gray1, 0 -5px 10px $gray1;
     cursor: pointer;
     .collaspe {
       width: 6px;
@@ -160,6 +158,7 @@ const toCollaspeMenu = (miniMenu) => {
       border-top: 1px solid $dark5;
       border-left: 1px solid $dark5;
       transform: translateX(2px) rotate(-45deg);
+      border-color: $primary;
       transition: $trans3;
       &.collapseMenu {
         transform: translateX(-1px) rotate(135deg);
@@ -177,6 +176,19 @@ const toCollaspeMenu = (miniMenu) => {
     .collaspeArea {
       right: 0;
     }
+  }
+}
+:deep(.el-sub-menu__title) {
+  padding-left: 16px !important;
+}
+:deep(.el-sub-menu.is-active) {
+  .el-sub-menu__title .adicon {
+    color: $primary;
+  }
+}
+:deep(.el-menu-item.is-active) {
+  .adicon {
+    color: $primary;
   }
 }
 </style>

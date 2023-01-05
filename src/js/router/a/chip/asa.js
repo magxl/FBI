@@ -1,6 +1,6 @@
 export default {
   path: '/A/Asa',
-  name: 'AAsa',
+  name: 'A_Asa',
   meta: {
     hide: true,
     sort: 101,
@@ -11,7 +11,7 @@ export default {
   children: [
     {
       path: 'Account',
-      name: 'AAsaAccount',
+      name: 'A_AsaAccount',
       meta: {
         sort: 10,
         label: '账户量化分析',
@@ -23,7 +23,7 @@ export default {
     },
     {
       path: 'Area',
-      name: 'AAsaArea',
+      name: 'A_AsaArea',
       meta: {
         sort: 20,
         label: '地区量化分析',

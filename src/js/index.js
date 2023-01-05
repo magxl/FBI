@@ -4,6 +4,7 @@ import cpt from '@js/cpt/index.js';
 import ElementPlus from 'element-plus';
 import plugin from './plugin/index.js';
 import config from './config/index.js';
+import api from './api/index.js';
 
 // element多语言
 const keys = import.meta.glob('/node_modules/element-plus/dist/locale/*.min.mjs', {eager: true});
@@ -24,5 +25,6 @@ export default async (app) => {
     })
     .use(router)
     .use(plugin)
-    .use(cpt);
+    .use(cpt)
+    .use(api);
 };

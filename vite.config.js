@@ -5,13 +5,19 @@ import defineOptions from 'unplugin-vue-define-options/vite';
 // import eslintPlugin from 'vite-plugin-eslint';
 import compressPlugin from 'vite-plugin-compression';
 import autoImport from 'unplugin-auto-import/vite';
-
 export default defineConfig({
   lintOnSave: true,
   server: {
     port: 8100,
     open: true,
     host: '0.0.0.0',
+    // proxy: {
+    //   '/': {
+    //     target: 'http://localhost:9099/',
+    //     changeOrigin: true,
+    //     // rewrite: (path) => path.replace(/^\/api/, '')
+    //   }
+    // }
   },
   build: {
     minify: 'terser',
@@ -71,7 +77,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: '@import "src/assets/css/main.scss";',
+        additionalData: '@import "src/assets/css/var.scss";',
       },
     },
   },

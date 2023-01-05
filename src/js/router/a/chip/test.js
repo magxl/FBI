@@ -1,6 +1,6 @@
 export default {
   path: '/A/Test',
-  name: 'ATest',
+  name: 'A_Test',
   meta: {
     sort: 1000,
     label: '测试',
@@ -16,18 +16,19 @@ export default {
   children: [
     {
       path: '/A/Test/FormatterArea',
-      name: 'ATestFormatterArea',
+      name: 'A_Test_FormatterArea',
       meta: {
         sort: 1000,
         label: '格式化地区',
         icon: 'ad-board1',
         position: ['menu'],
+        keepalive: true
       },
       component: () => import('@views/A/Test/Formatter.vue'),
     },
     {
       path: '/A/Test/FakeData',
-      name: 'ATestFakeData',
+      name: 'A_Test_FakeData',
       meta: {
         sort: 1000,
         label: '假数据',
@@ -38,7 +39,7 @@ export default {
     },
     {
       path: '/A/Test/NumberRange',
-      name: 'ATestNumberRange',
+      name: 'A_Test_NumberRange',
       meta: {
         sort: 1000,
         label: '序列数据',
@@ -49,7 +50,7 @@ export default {
     },
     {
       path: '/A/Test/SnippetsFormatter',
-      name: 'ATestSnippetsFormatter',
+      name: 'A_Test_SnippetsFormatter',
       meta: {
         sort: 1000,
         label: '片段格式器',

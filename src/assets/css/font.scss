@@ -1,3 +1,4 @@
+
 @for $var from 5 to 48 {
   .fs#{$var * 2} {
     font-size: #{$var * 2}px;
@@ -18,6 +19,7 @@
   word-break: keep-all;
   overflow: hidden;
 }
+
 .txt-wrap {
   word-break: break-all;
   white-space: wrap;

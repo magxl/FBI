@@ -4,9 +4,22 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>iADBrain</title>
+    <title>应用雷达智投平台</title>
   </head>
+  <style>
+    .loadingMask {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 99;
+      background-color: rgba(255,255,255,.7);
+      backdrop-filter: blur(8px);
+    }
+  </style>
   <body>
+    <div class="loadingMask"></div>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
   </body>

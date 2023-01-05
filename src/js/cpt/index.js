@@ -22,7 +22,8 @@ Object.keys(MvcCpts).forEach((it) => {
 });
 // import TableColumn from '/src/components/Mvc/Table/TableColumn.js';
 export default (app) => {
-  [...Super, ...Mvc].forEach((it) => {
+  const all = [...Super, ...Mvc];
+  all.forEach((it) => {
     it.cpt().then((r) => {
       app.component(it.name, r.default);
     });

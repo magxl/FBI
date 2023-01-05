@@ -1,6 +1,6 @@
 export default {
   path: '/A/Aso',
-  name: 'AAso',
+  name: 'A_Aso',
   meta: {
     sort: 20,
     label: 'ASO',
@@ -9,51 +9,51 @@ export default {
   children: [
     {
       path: 'Tag',
-      name: 'ATag',
+      name: 'A_Tag',
       meta: {
         sort: 0,
         label: '标签',
-        icon: '',
+        icon: 'ad-tags',
       },
       component: () => import('@views/A/Aso/Tag.vue'),
     },
     {
       path: 'Category',
-      name: 'ACategory',
+      name: 'A_Category',
       meta: {
         sort: 0,
         label: '类别',
-        icon: '',
+        icon: 'ad-category',
       },
       component: () => import('@views/A/Aso/Category.vue'),
     },
     {
       path: 'Ranking',
-      name: 'ARanking',
+      name: 'A_Ranking',
       meta: {
         sort: 0,
         label: '排行',
-        icon: '',
+        icon: 'ad-ranking',
       },
       component: () => import('@views/A/Aso/Ranking.vue'),
     },
     {
       path: 'Trending',
-      name: 'ATrending',
+      name: 'A_Trending',
       meta: {
         sort: 0,
         label: '趋势',
-        icon: '',
+        icon: 'ad-trending',
       },
       component: () => import('@views/A/Aso/Trending.vue'),
     },
     {
       path: 'Volume',
-      name: 'AVolume',
+      name: 'A_Volume',
       meta: {
         sort: 0,
         label: '体量',
-        icon: '',
+        icon: 'ad-volume',
       },
       component: () => import('@views/A/Aso/Volume.vue'),
     },

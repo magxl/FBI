@@ -1,15 +1,18 @@
 <template>
-  <component :is="cpt" v-bind="$attrs">
-    <template v-for="(it, k, i) in $slots" :key="i" v-slot:[k]>
-      <slot :name="k" />
-    </template>
-  </component>
+  <!-- <div class="Page"> -->
+    <component :is="cpt" v-bind="$attrs">
+      <template v-for="(it, k, i) in $slots" :key="i" v-slot:[k]>
+        <slot :name="k" />
+      </template>
+    </component>
+  <!-- </div> -->
 </template>
 <script setup>
 import MainPage from './chip/MainPage.vue';
+import NonePage from './chip/NonePage.vue';
 defineOptions({
   name: 'PAGE',
-  components: { MainPage },
+  components: { MainPage, NonePage },
 });
 const prop = defineProps({
   type: {
@@ -33,4 +36,5 @@ const cpt = computed(() => {
 
 // 卸载
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>

@@ -58,7 +58,11 @@
   .el-menu-item-group__title {
     padding: 0;
   }
-
+  .el-icon.el-sub-menu__icon-arrow {
+    width: 20px;
+    height: 16px;
+    font-size: 16px;
+  }
   .el-menu-item {
     min-width: 0;
     transition: $trans3;

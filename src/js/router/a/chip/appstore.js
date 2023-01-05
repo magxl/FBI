@@ -8,74 +8,54 @@ export default {
   },
   children: [
     {
-      path: 'RealtimeRanking',
-      name: 'ARealtimeRanking',
+      path: 'Charts',
+      name: 'A_Charts',
       meta: {
         sort: 0,
         label: '实时排行',
-        icon: '',
+        icon: 'ad-realtime-ranking',
       },
-      component: () => import('@views/A/AppStore/RealtimeRanking.vue'),
+      component: () => import('@views/A/AppStore/Charts.vue'),
     },
     {
       path: 'SearchRanking',
-      name: 'ASearchRanking',
+      name: 'A_SearchRanking',
       meta: {
         sort: 0,
         label: '搜索排行',
-        icon: '',
+        icon: 'ad-search-ranking',
       },
       component: () => import('@views/A/AppStore/SearchRanking.vue'),
     },
     {
-      path: 'RecommendedWrod',
-      name: 'ARecommendedWrod',
+      path: 'Recommend Keywords',
+      name: 'A_RecommendKeywrod',
       meta: {
         sort: 0,
         label: '推荐词',
-        icon: '',
+        icon: 'ad-recommend',
       },
-      component: () => import('@views/A/AppStore/RecommendedWrod.vue'),
+      component: () => import('@views/A/AppStore/RecommendKeywords.vue'),
     },
     {
       path: 'Popularity',
-      name: 'APopularity',
+      name: 'A_Popularity',
       meta: {
         sort: 0,
         label: '热度',
-        icon: '',
+        icon: 'ad-fire',
       },
       component: () => import('@views/A/AppStore/Popularity.vue'),
     },
     {
       path: 'CoveringWord',
-      name: 'ACoveringWord',
+      name: 'A_CoveringWord',
       meta: {
         sort: 0,
         label: '覆盖词',
         icon: '',
       },
       component: () => import('@views/A/AppStore/CoveringWord.vue'),
-    },
-    {
-      path: 'AddKeyword',
-      name: 'AAddKeyword',
-      meta: {
-        sort: 0,
-        label: '添加关键词',
-        icon: '',
-      },
-      component: () => import('@views/A/AppStore/AddKeyword.vue'),
-    },
-    {
-      path: 'UpdateKeyword',
-      name: 'AUpdateKeyword',
-      meta: {
-        sort: 0,
-        label: '更新关键词',
-        icon: '',
-      },
-      component: () => import('@views/A/AppStore/UpdateKeyword.vue'),
     },
   ],
 };

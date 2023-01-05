@@ -1,6 +1,8 @@
 <template>
   <Page class='CampaignGroup'>
-    CampaignGroup
+    <Table ref='table' :load-data='loadData'>
+      <el-table-column type='select' width='56' />
+    </Table>
   </Page>
 </template>
 <script setup>

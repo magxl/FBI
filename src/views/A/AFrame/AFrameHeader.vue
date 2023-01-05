@@ -1,11 +1,12 @@
 <template>
   <div class="AFrameHeader">
     <div
-      class="logoArea wp100 flexMode hc vc h56 noShrink noselect point"
+      class="logoArea flexMode vc wp100 h56 pl20 noShrink noselect point"
       @click="gotoBoard"
     >
-      <img :src="getImg('favicon.ico', '/public/')" class="w24 h24" />
-      <span class="logoTxt pl10 txt-dark9">iADBrain</span>
+      <!-- <img :src="getImg('favicon.ico', '/public/')" class="w24 h24" /> -->
+      <el-image :src="getImg('d/logo_mini.png')" fit="cover" class="h36" />
+      <!-- <span class="logoTxt pl10 txt-dark9">iADBrain</span> -->
     </div>
     <!-- Logo ↑ -->
     <div class="leftArea">
@@ -18,15 +19,12 @@
       <TabPages />
     </div>
     <!-- tab nav ↑ -->
-    <div class="rightArea flexMode hr vc w160 h56 pr10 bg-white9 backdrop">
-      <el-dropdown
-        trigger="click"
-        placement="bottom-end"
-        @command="avatarCommand"
-      >
+    <div class="rightArea flexMode hr vc w160 h56 pr10">
+      <el-dropdown placement="bottom-end" @command="avatarCommand">
         <div class="flexMode vc p0-10">
-          <div class="mgbtn circle30 bg-dark1">
-            <Icon name="user" class="fs20" />
+          <div class="mgbtn circle30">
+            <!-- <Icon name="user" class="fs20" /> -->
+            <i class="adicon ad-user-circle txt-white fs24"></i>
           </div>
         </div>
         <template #dropdown>
@@ -52,10 +50,10 @@
       <!-- ↑ avatar ↑ -->
       <!-- ↓ setting ↓ -->
       <div class="mgbtn circle30 mr10" @click="toSetting">
-        <i class="adicon ad-nav-system-set fs24" />
+        <i class="adicon ad-nav-system-set fs24 txt-white" />
       </div>
       <div class="pr10">
-        <Lang class="flexMode vs hp100" />
+        <Lang class="flexMode vs hp100" txt-color="txt-white9" />
       </div>
     </div>
     <Drawer v-model:current="state.currentDrawer" :drawer="state.drawer" />
@@ -144,7 +142,7 @@ const gotoBoard = () => {
   display: flex;
   align-items: stretch;
   height: 56px;
-  background-color: $white;
+  background-color: $primary;
   box-shadow: 0 5px 20px $dark1;
   z-index: 2;
   .logoArea {
@@ -157,18 +155,32 @@ const gotoBoard = () => {
     height: 28px;
   }
   .leftArea {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    width: 100%;
+    width: calc(100% - 360px);
     .adArea {
       width: 100%;
     }
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 12px;
+      z-index: 2;
+      background-image: linear-gradient(
+        to right,
+        rgba(95, 99, 242, 0.9),
+        rgba(95, 99, 242, 0.5) 70%,
+        rgba(95, 99, 242, 0)
+      );
+    }
   }
   .rightArea {
-    position: absolute;
-    top: 0;
-    right: 0;
+    position: relative;
     &::before {
       content: '';
       position: absolute;
@@ -178,9 +190,9 @@ const gotoBoard = () => {
       width: 12px;
       background-image: linear-gradient(
         to right,
-        rgba(255, 255, 255, 0),
-        $white5 70%,
-        $white9
+        rgba(95, 99, 242, 0),
+        rgba(95, 99, 242, 0.5) 70%,
+        rgba(95, 99, 242, 0.9)
       );
     }
   }

@@ -1,6 +1,6 @@
 export default {
   path: '/A/Automation',
-  name: 'AAutomation',
+  name: 'A_Automation',
   meta: {
     sort: 10,
     label: '自动化服务',
@@ -9,23 +9,23 @@ export default {
   children: [
     {
       path: 'ChartsMonitor',
-      name: 'AChartsMonitor',
+      name: 'A_ChartsMonitor',
       meta: {
         sort: 0,
         label: '图表监控',
-        icon: '',
+        icon: 'ad-nav-system-set',
       },
       component: () => import('@views/A/Automation/ChartsMonitor.vue'),
     },
     {
       path: 'Monitor',
-      name: 'AMonitor',
+      name: 'A_Monitor',
       meta: {
         sort: 0,
         label: '监控组',
-        icon: '',
+        icon: 'ad-mac',
       },
-      component: () => import('@views/A/Automation/Monitor.vue'),
+      component: () => import('@views/A/Automation/Monitors.vue'),
     },
   ],
 };

@@ -1,7 +1,12 @@
 import axios from 'axios';
 import { store } from '@js/pinia/index.js';
 import { ElMessage } from 'element-plus';
-const baseURL = import.meta.env.BASEURL;
+
+axios.defaults.withCredentials = true;
+const baseURL = import.meta.env.VITE_APP_BASE_URL;
+const auth = '90104c7c372cb622415c7c247c116933';
+const session = '154006e4b1bff4a8eba2446445b5651a';
+document.cookie = 'auth=1|' + auth + ';beegosessionID=' + session;
 const service = axios.create({
   baseURL,
   timeout: 10 * 1000,
@@ -227,10 +232,10 @@ const update = function (config) {
   return service(config);
 };
 export default {
-  install(app){
+  install(app) {
     window.$get = get;
     window.$post = post;
     window.$form = form;
-  }
+  },
 };
 // export default { get, post, put, del, bdrq, update, form };
