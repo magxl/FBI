@@ -1,5 +1,8 @@
+import * as echarts from 'echarts';
+
 export default {
   install(app) {
+    window.$echarts = echarts;
     // echarts 渐变颜色
     window.$linearColor = (
       top = 'RGBA(86, 162, 253, 1)',

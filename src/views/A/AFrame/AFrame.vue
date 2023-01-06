@@ -60,7 +60,4 @@ onMounted(() => {
     }
   }
 }
-[v-cloak] {
-  display: none;
-}
 </style>

@@ -9,21 +9,21 @@
             :key="i"
             class="p0-5 fs12 point"
             :class="state.active === it.value && 'txt-primary'"
-            @click="toChange"
+            @click="toChange(it.value)"
           >
             {{ it.label }}
           </div>
         </div>
       </template>
-      <div class="h300">
-        <Chart :options="state.options[state.active]" />
+      <div v-loading="state.loading" class="h300">
+        <EChart :options="state.options[state.active]" />
       </div>
     </Card>
   </div>
 </template>
 <script setup>
 defineOptions({
-  name: 'Recent',
+  name: 'OverviewRecent',
 });
 import { reactive } from 'vue';
 // 传参
@@ -35,6 +35,7 @@ const prop = defineProps({
 });
 // 数据
 const state = reactive({
+  loading: false,
   active: 'day',
   options: {
     day: {},
@@ -67,6 +68,7 @@ onMounted(() => {
 });
 // 事件
 const initChart = () => {
+  state.loading = true;
   let grid, series;
   switch (state.active) {
     case 'day':
@@ -90,6 +92,21 @@ const initChart = () => {
       });
       break;
     case 'month':
+      grid = {
+        top: 30,
+        left: 80,
+        right: 20,
+        bottom: 30,
+      };
+      series = window.$fakeData(prop.currency.length, (i) => {
+        return {
+          name: prop.currency[i].label,
+          type: 'bar',
+          data: window.$fakeData(7, (j) =>
+            (window.$randomNumber(9999999) / 100).toFixed(2),
+          ),
+        };
+      });
       break;
   }
   state.options[state.active] = {
@@ -101,6 +118,14 @@ const initChart = () => {
     },
     series,
   };
+  state.loading = false;
+};
+const toChange = (v) => {
+  state.active = v;
+  if(state.options[v].series){
+    return;
+  }
+  initChart();
 };
 // 卸载
 </script>

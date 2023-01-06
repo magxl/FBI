@@ -1,7 +1,9 @@
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
+import moment from 'moment';
 export default {
   install(app) {
-    window.$dayjs = dayjs;
+    // window.$dayjs = dayjs;
+    window.$moment = moment;
     window.$getFullTime = function (v) {
       // v 传入日期实例
       const date = v || new Date();

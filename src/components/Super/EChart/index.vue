@@ -1,10 +1,9 @@
 <template>
-  <div ref="chart" :id="chartID" class="SuperChart"></div>
+  <div ref="chart" :id="chartID" class="EChart"></div>
 </template>
 <script setup>
-import * as echarts from 'echarts';
 defineOptions({
-  name: 'SuperChart',
+  name: 'EChart',
 });
 const prop = defineProps({
   options: {
@@ -16,10 +15,16 @@ const prop = defineProps({
     default: '',
   },
 });
-import { reactive, getCurrentInstance, onMounted, watch } from 'vue';
+import {
+  reactive,
+  getCurrentInstance,
+  onMounted,
+  watch,
+  nextTick,
+  onBeforeMount,
+} from 'vue';
 const { proxy } = getCurrentInstance();
 const state = reactive({
-  chart: null,
   chartID: '',
   defaultOptions: {
     grid: {
@@ -72,23 +77,25 @@ const state = reactive({
     mounted: false,
   },
 });
-state.chartID = `chart${+new Date()}${parseInt(Math.random() * 10000)}`;
+
+// 计算属性
 
 let chart = null;
-
+onBeforeMount(() => {
+  state.chartID = `chart${+new Date()}${parseInt(Math.random() * 10000)}`;
+});
 onMounted(() => {
   state.mounted = true;
+  chart = window.$echarts.init(proxy.$refs.chart);
   initEcharts();
 });
 const canInit = computed(() => {
-  console.info(state.mounted,prop.options);
-  return state.mounted && Object.keys(prop.options).length;
- });
+  return state.mounted && prop.options && Object.keys(prop.options).length;
+});
 watch(
   () => canInit.value,
   (n) => {
     if (n) {
-      console.info('can');
       setOptions();
     }
   },
@@ -98,17 +105,18 @@ watch(
 );
 
 const initEcharts = async () => {
-  chart = await echarts.init(proxy.$refs.chart);
-  setOptions();
+  // setOptions();
 };
 const setOptions = () => {
-  let options = window.$deepClone(prop.options);
-  if (prop.type === 'pie') {
-    options = { ...options, color: state.defaultOptions.color };
-  } else {
-    options = combineObject(state.defaultOptions, options);
-  }
-  chart.setOption(options);
+  nextTick(() => {
+    let options = window.$deepClone(prop.options);
+    if (prop.type === 'pie') {
+      options = { ...options, color: state.defaultOptions.color };
+    } else {
+      options = combineObject(state.defaultOptions, options);
+    }
+    chart.setOption(options);
+  });
 };
 
 const combineObject = (aim, source) => {
@@ -147,14 +155,14 @@ const combineArray = (aim, source) => {
 // 调用chart实例
 
 const getChart = () => {
-  return chart;
+  return state.chart;
 };
 defineExpose({
   getChart,
 });
 </script>
 <style lang="scss" scoped>
-.SuperChart {
+.EChart {
   width: 100%;
   height: 100%;
   color: $blue;

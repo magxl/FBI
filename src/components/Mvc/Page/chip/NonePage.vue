@@ -1,5 +1,5 @@
 <template>
-  <div class="NonePage">
+  <div class="NonePage hp100">
     <template v-if="prop.noscroll">
       <slot />
     </template>

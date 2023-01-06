@@ -6,14 +6,14 @@
         <span class="fs12 txt-dark7">{{ time }} (UTC)</span>
       </template>
       <div class="h300">
-        <Chart :options="state.options" />
+        <EChart :options="state.options" />
       </div>
     </Card>
   </div>
 </template>
 <script setup>
 defineOptions({
-  name: 'Hourly',
+  name: 'OverviewHourly',
 });
 // 传参
 const prop = defineProps({
@@ -28,11 +28,12 @@ const state = reactive({
   options: {},
   options1: {},
   stamp: 0,
+  chartKey: 0
 });
 
 // 计算属性
 const time = computed(() => {
-  return window.$dayjs(new Date(state.stamp)).format('YYYY-MM-DD HH:mm:ss');
+  return window.$moment(state.stamp).format('YYYY-MM-DD HH:mm:ss');
 });
 // 监听
 
@@ -73,6 +74,8 @@ const initChart = () => {
       };
     }),
   };
+  state.chartKey = + new Date();
+  console.info(state.options);
 };
 // timer
 state.stamp = +new Date();
