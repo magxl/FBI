@@ -1,9 +1,11 @@
 <template>
   <div class="p16">
-    <div class="MvcMainPage PageAfter bg-white">
-      <template v-if="prop.noscroll">
-        <slot />
-      </template>
+    <div class="MvcMainPage PageAfter bg-white radius radius8 box-shadow-dark1">
+      <div v-if="useHeader" class="flexMode vc hb h56 p0-16 border-b-dark1">
+        <bold v-if="prop.title">{{$l(prop.title)}}</bold>
+        <slot v-else name="header" />
+      </div>
+      <slot v-if="prop.noscroll" />
       <el-scrollbar v-else class="hp100">
         <slot />
       </el-scrollbar>
@@ -19,6 +21,10 @@ const prop = defineProps({
     type: Object,
     default: () => {},
   },
+  title: {
+    type: String,
+    default: '',
+  },
   noscroll: {
     type: Boolean,
     default: false,
@@ -26,6 +32,7 @@ const prop = defineProps({
 });
 import { reactive } from 'vue';
 // 数据
+const { proxy } = getCurrentInstance();
 const state = reactive({
   defaultOptions: {
     scroll: false,
@@ -33,7 +40,9 @@ const state = reactive({
 });
 
 // 计算属性
-
+const useHeader = computed(() => {
+  return prop.title || proxy.$slots.header;
+});
 // 监听
 
 // 挂载
@@ -44,6 +53,6 @@ const state = reactive({
 </script>
 <style lang="scss" scoped>
 .MvcMainPage {
-  min-height: 100%;
+  height: calc(100vh - 56px - 32px);
 }
 </style>

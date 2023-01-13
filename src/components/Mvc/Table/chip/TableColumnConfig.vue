@@ -1,6 +1,6 @@
 <template>
   <div class="drawerBody">
-    <div class="flexMode vs p10 hp100">
+    <div class="relative flexMode vs p10 hp100">
       <!-- fixed left -->
       <div class="relative dragArea wp33 mr5 border-dark3-dashed radius8">
         <div class="flexMode hb vc p10 bg-f5 radius-t8 border-b">
@@ -16,7 +16,8 @@
           :list="state.columns.left"
           group="columnFilter"
           class="dragBody p5-0"
-          item-key="prop"
+          @start="onStart"
+          @end="onEnd"
         >
           <template #item="{ element: it }">
             <div
@@ -27,9 +28,6 @@
                 <el-switch
                   v-model="it.visible"
                   size="small"
-                  class="mgswitch"
-                  active-text="on"
-                  inactive-text="off"
                   :disabled="it.ding"
                   @change="switchChange"
                 ></el-switch>
@@ -56,7 +54,8 @@
           :list="state.columns.center"
           group="columnFilter"
           class="dragBody p5-0"
-          item-key="id"
+          @start="onStart"
+          @end="onEnd"
         >
           <template #item="{ element: it }">
             <div
@@ -67,9 +66,6 @@
                 <el-switch
                   v-model="it.visible"
                   size="small"
-                  class="mgswitch"
-                  active-text="on"
-                  inactive-text="off"
                   :disabled="it.ding"
                   @change="switchChange"
                 ></el-switch>
@@ -96,7 +92,8 @@
           :list="state.columns.right"
           group="columnFilter"
           class="dragBody p5-0"
-          item-key="id"
+          @start="onStart"
+          @end="onEnd"
         >
           <template #item="{ element: it }">
             <div
@@ -107,9 +104,6 @@
                 <el-switch
                   v-model="it.visible"
                   size="small"
-                  class="mgswitch"
-                  active-text="on"
-                  inactive-text="off"
                   :disabled="it.ding"
                   @change="switchChange"
                 ></el-switch>
@@ -146,6 +140,7 @@ const prop = defineProps({
     default: () => {},
   },
 });
+const { proxy } = getCurrentInstance();
 import { reactive } from 'vue';
 // 数据
 const state = reactive({
@@ -192,7 +187,13 @@ const init = () => {
 };
 init();
 // 挂载
-
+onMounted(() => {
+  document.body.ondrop = function (event) {
+    console.info('拖拽锁定');
+    event.preventDefault();
+    event.stopPropagation();
+  };
+});
 // 事件
 const emit = defineEmits();
 const createColumn = ({ left, center, right }) => {
@@ -223,19 +224,19 @@ const createColumn = ({ left, center, right }) => {
   };
 };
 const toReset = () => {
-  this.reseting = true;
+  state.reseting = true;
   localStorage.removeItem(columnName.value);
-  this.$emit('filterSubmit');
-  this.getLocalColumn();
-  this.reseting = false;
-  this.$emit('closeDrawer');
+  emit('filterSubmit');
+  getLocalColumn();
+  state.reseting = false;
+  emit('closeDrawer');
 };
 const toSubmit = () => {
-  this.submiting = true;
+  state.submiting = true;
   const { column } = createColumn(state.columns);
   localStorage.setItem(columnName.value, JSON.stringify(column));
   emit('filterSubmit');
-  this.submiting = false;
+  state.submiting = false;
   emit('closeDrawer');
 };
 const getLocalColumn = () => {
@@ -247,6 +248,17 @@ const getLocalColumn = () => {
       state.loading = false;
     }
   }, 500);
+};
+
+const onStart = (e) => {
+  // e.preventDefault();
+  // e.stopPropagation();
+  // e.dataTransfer = e.originalEvent.dataTransfer;
+};
+const onEnd = (e) => {
+  // e.preventDefault();
+  // e.stopPropagation();
+  // e.dataTransfer = e.originalEvent.dataTransfer;
 };
 // 卸载
 </script>

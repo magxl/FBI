@@ -22,22 +22,24 @@
                 </span>
               </template>
               <el-menu-item-group>
-                <el-menu-item
-                  v-for="ct in it.children"
-                  :key="ct.name"
-                  :index="ct.name"
-                  @click="goto(ct.name)"
-                  :title="ct.meta.langLabel"
-                >
-                  <em class="w24 txt-dark5 noShrink">
-                    <i class="adicon" :class="ct.meta.icon" />
-                  </em>
-                  <span class="pl4 txt-nowrap">{{ ct.meta.langLabel }}</span>
-                </el-menu-item>
+                <template v-for="ct in it.children">
+                  <el-menu-item
+                    v-if="!ct.meta.hide"
+                    :key="ct.name"
+                    :index="ct.name"
+                    @click="goto(ct.name)"
+                    :title="ct.meta.langLabel"
+                  >
+                    <em class="w24 txt-dark5 noShrink">
+                      <i class="adicon" :class="ct.meta.icon" />
+                    </em>
+                    <span class="pl4 txt-nowrap">{{ ct.meta.langLabel }}</span>
+                  </el-menu-item>
+                </template>
               </el-menu-item-group>
             </el-sub-menu>
             <el-menu-item
-              v-else
+              v-else-if="!it.meta.hide"
               :key="it.name"
               :index="it.name"
               @click="goto(it.name)"

@@ -14,6 +14,7 @@ export default {
         sort: 0,
         label: '概览',
         icon: 'ad-chart1',
+        keepalive: true,
         tips: [
           {
             title: '测试提示',

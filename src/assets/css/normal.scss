@@ -74,3 +74,17 @@ html,
   height: calc(100vh - 30px);
   overflow-y: auto;
 }
+
+.DrawerBody {
+  height: calc(100vh - 56px - 56px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.DrawerFooter{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 56px;
+  padding: 0 16px;
+  border-top: 1px $dark1 solid;
+}

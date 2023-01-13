@@ -1,6 +1,5 @@
 <template>
   <Page class="Overview" type="None">
-
     <Statistics :currency="state.currency" />
     <div class="flexMode">
       <Hourly :currency="state.currency" style="width: calc(100% - 400px)" />
@@ -9,6 +8,7 @@
     <CampaignGroups :currency="state.currency" />
     <div class="flexMode">
       <Countrys :currency="state.currency" class="wp50" />
+      <Apps :currency="state.currency" class="wp50" />
     </div>
   </Page>
 </template>
@@ -18,9 +18,10 @@ import Hourly from './Overview/Hourly.vue';
 import Recent from './Overview/Recent.vue';
 import CampaignGroups from './Overview/CampaignGroups.vue';
 import Countrys from './Overview/Countrys.vue';
+import Apps from './Overview/Apps.vue';
 defineOptions({
   name: 'Overview',
-  components: { Statistics, Hourly, Recent, CampaignGroups,Countrys },
+  components: { Statistics, Hourly, Recent, CampaignGroups, Countrys, Apps },
 });
 // 数据
 const state = reactive({
@@ -32,8 +33,7 @@ const state = reactive({
 // 监听
 
 // 挂载
-onMounted(() => {
-});
+onMounted(() => {});
 // 事件
 const initCurrency = () => {
   state.currency = [
@@ -50,5 +50,4 @@ const initCurrency = () => {
 initCurrency();
 // 卸载
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -1,21 +1,12 @@
 <template>
-  <div class="MvcTableNormal" v-loading="state.loading">
-    <div v-if="topShow" class="h64 flexMode vc hb">
-      <div class="flexGrow"><slot name="actions"></slot></div>
-      <div v-if="prop.tool !== false" class="flexMode vc noShrink pr20">
-        <template v-for="it in toolBtn">
-          <div
-            v-if="!it.hide"
-            :key="it.action"
-            class="mgbtn circle30"
-            @click="toolEvent(it)"
-          >
-            <i :class="it.icon" class="fs20"></i>
-          </div>
-        </template>
-      </div>
-    </div>
+  <div class="MvcTable" v-loading="state.loading">
+    <TableTool
+      :table-name="prop.tableName"
+      :tool="prop.tool"
+      :top-show="topShow"
+    />
     <el-table
+      v-if="state.mounted"
       ref="table"
       :class="[
         prop.borderTop ? 'border-t' : '',
@@ -23,8 +14,7 @@
       ]"
       :key="state.tableKey"
       :data="state.dt.list"
-      :min-height="minHeight"
-      :max-height="state.tableHeight"
+      :height="state.tableHeight"
       v-bind="$attrs"
       @selection-change="selectionChange"
       @row-click="rowClick"
@@ -32,9 +22,9 @@
       <TableColumnFilter
         ref="tableColumnFilter"
         :table-name="prop.tableName"
-        :deep="deep"
+        :deep="prop.deep"
       >
-        <slot name="default" />
+        <slot />
       </TableColumnFilter>
     </el-table>
     <div
@@ -63,11 +53,12 @@
   </div>
 </template>
 <script setup>
-import TableColumnFilter from './TableColumnFilter.js';
-import TableColumnConfig from './TableColumnConfig.vue';
+import TableTool from './chip/TableTool.vue';
+import TableColumnFilter from './chip/TableColumnFilter.js';
+import TableColumnConfig from './chip/TableColumnConfig.vue';
 defineOptions({
-  name: 'MvcTableNormal',
-  components: { TableColumnFilter },
+  name: 'MvcTable',
+  components: { TableTool, TableColumnFilter },
 });
 // 传参
 const prop = defineProps({
@@ -76,7 +67,7 @@ const prop = defineProps({
     default: '',
   },
   deep: {
-    // column是循环出来时，deep: true
+    // column是循环出来时，prop.: true
     dtype: Boolean,
     default: false,
   },
@@ -88,10 +79,6 @@ const prop = defineProps({
   height: {
     type: [Number, String],
     default: 0,
-  },
-  minHeight: {
-    type: [Number, String],
-    default: 300,
   },
   minusHeight: {
     // 额外要减去的高度，为了表头额外布局设置
@@ -142,15 +129,16 @@ const prop = defineProps({
   pageSizes: {
     type: Array,
     default: () => {
-      return [20, 50, 100, 200, 500, 1000, 2000, 5000];
+      return [20, 50, 100, 200, 300, 500, 1000];
     },
   },
 });
 // 数据
 const state = reactive({
+  mounted: false,
   table: null,
   pageNum: 1,
-  pageSize: 20,
+  pageSize: 100,
   loading: false,
   tableKey: 0,
   dt: { pageNum: 1, list: [], total: null },
@@ -158,9 +146,9 @@ const state = reactive({
     list: [],
     total: null,
   },
+  search: {},
   tableHeight: 0,
   pagination: true,
-  search: {},
   drawer: [
     {
       title: '表格列自定义',
@@ -208,41 +196,6 @@ const getData = async (v = {}) => {
 // 计算属性
 const slots = computed(() => {
   return proxy.$slots;
-});
-const topShow = computed(() => {
-  return prop.tool !== false || proxy.$slots.actions || false;
-});
-const defaultTool = computed(() => {
-  return {
-    filter: true,
-    download: true,
-    print: true,
-    refresh: true,
-    ...prop.tool,
-  };
-});
-const toolBtn = computed(() => {
-  const { filter, download, print, refresh } = defaultTool.value;
-  return [
-    {
-      label: 'Filter',
-      icon: 'adicon ad-config1',
-      action: 'filter',
-      hide: !prop.tableName || !filter,
-    },
-    {
-      label: 'Download',
-      icon: 'adicon ad-download1',
-      action: 'download',
-      hide: !download,
-    },
-    {
-      label: 'Refresh',
-      icon: 'adicon ad-refresh',
-      action: 'refresh',
-      hide: prop.list || !refresh,
-    },
-  ];
 });
 const total = computed(() => {
   let t = 0;
@@ -299,15 +252,11 @@ watch(
 );
 // 初始化
 
-// 表格高度一页适配
-let height = parseInt(prop.height) || document.body.clientHeight - 56 - 32 - 56;
-height = height - parseInt(prop.minusHeight);
-height = topShow && (height -= 64);
-state.tableHeight = height;
-
 // 挂载
 onMounted(() => {
+  initHeight();
   state.table = proxy.$refs.table;
+  state.mounted = true;
   // 非立即请求的类型，在挂载时进行请求数据
   if (!prop.immediate) {
     getData();
@@ -315,6 +264,17 @@ onMounted(() => {
 });
 // 事件
 const emit = defineEmits();
+
+const initHeight = () => {
+  // 表格高度一页适配
+  let height =
+    parseInt(prop.height) || document.body.clientHeight - 56 - 32 - 56;
+  height = height - parseInt(prop.minusHeight);
+  height = topShow && (height -= 56);
+  height = state.pagination && (height -= 56);
+  state.tableHeight = height;
+  console.info(height);
+};
 const initList = (n) => {
   state.pagination = false;
   state.dt = {

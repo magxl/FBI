@@ -3,7 +3,7 @@
     <Loading />
     <!-- <Navbar v-if="showNavbar" /> -->
     <!-- <ContextMenu /> -->
-    <div class="MAIN">
+    <div v-if="state.mounted" class="MAIN">
       <router-view />
     </div>
   </div>
@@ -14,6 +14,11 @@ import Navbar from './views/Launch/Navbar.vue';
 import ContextMenu from '@cpt/Onload/ContextMenu/index.vue';
 
 //
+import { nextTick, reactive } from 'vue';
+
+const state = reactive({
+  mounted: false,
+});
 const store = inject('store');
 const launch = store.launch();
 const route = useRoute();
@@ -30,10 +35,13 @@ const langModuleLoaded = computed(() => {
 // 监听
 
 // 挂载
+launch.getLocalTimezone();
 onMounted(() => {
+  state.mounted = true;
   initColorIcon();
   initTabPages();
   initLang();
+  initOptions();
 });
 
 // 事件
@@ -65,6 +73,12 @@ const initTabPages = () => {
 const initLang = () => {
   launch.saveLang();
   // window.routes = initRoutes(window.routes);
+};
+
+// 初始化配置项
+const initOptions = () => {
+  const { clientWidth, clientHeight } = document.body;
+  launch.saveData('options', { clientWidth, clientHeight });
 };
 </script>
 <style lang="scss" scoped>

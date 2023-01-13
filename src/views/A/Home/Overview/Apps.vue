@@ -1,8 +1,8 @@
 <template>
-  <div class="CampaignGroups p0-16 pb16">
+  <div class="Apps pl8 pr16 pb16">
     <Card>
       <template #header>
-        <span>Campaign Groups</span>
+        <span>Apps</span>
         <div class="flexMode vc">
           <div
             v-for="(it, i) in currency"
@@ -23,7 +23,7 @@
 </template>
 <script setup>
 defineOptions({
-  name: 'OverviewCampaignGroups',
+  name: 'OverviewApps',
 });
 import { reactive } from 'vue';
 // 传参
@@ -41,20 +41,6 @@ const state = reactive({
     RMB: {},
     JPY: {},
   },
-  tool: [
-    {
-      label: 'Day',
-      value: 'day',
-    },
-    {
-      label: 'Week',
-      value: 'week',
-    },
-    {
-      label: 'Month',
-      value: 'month',
-    },
-  ],
 });
 
 // 计算属性
@@ -68,44 +54,46 @@ onMounted(() => {
 });
 // 事件
 const initChart = () => {
-  const len = window.$randomNumber(20);
-  const names = window.$fakeData(len, (i) => `name${i}`);
+  const len = window.$randomNumber(10);
+  const names = window.$fakeData(len, (i) => `App${i}`);
   state.options[state.active] = {
     legend: {
-      data: names,
-      top: 8,
-      left: 16,
-      itemWidth: 18,
-      itemHeight: 12,
-      padding: [2, 4],
+      show: false,
     },
-    grid: {
-      left: 80,
-      top: 60,
-      right: 20,
-      bottom: 30,
+    tooltip: {
+      trigger: 'item',
     },
-    yAxis: {},
-    xAxis: {
-      type: 'category',
-      data: window.$fakeData(30, (i) => `date${i}`),
-    },
-    series: window.$fakeData(len, (i) => {
-      return {
-        name: names[i],
-        type: 'bar',
-        barMaxWidth: 24,
-        stack: 'amount',
-        data: window.$fakeData(30, (j) =>
-          (window.$randomNumber(9999999) / 100).toFixed(2),
-        ),
-      };
-    }),
+    series: [
+      {
+        type: 'pie',
+        top: 0,
+        radius: ['30%','60%'],
+        itemStyle: {
+          borderRadius: 4,
+        },
+        data: window.$fakeData(len, (j) => {
+          return {
+            name: names[j],
+            value: (window.$randomNumber(10000) / 100).toFixed(2),
+          };
+        }),
+        tooltip: {
+          valueFormatter: (v) => v + '%',
+        },
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.2)',
+          },
+        },
+      },
+    ],
   };
 };
 const toChange = (v) => {
   state.active = v;
-  if(state.options[v].series){
+  if (state.options[v].series) {
     return;
   }
   initChart();

@@ -1,24 +1,17 @@
 // element 覆写
-@forward 'element-plus/theme-chalk/src/common/var.scss' with (
-  $colors: (
-    'primary': (
-      'base': #5F63F2,
+@forward 'element-plus/theme-chalk/src/common/var.scss'with ($colors: ('primary': ('base': #5F63F2,
     ),
-    'success': (
-      'base': #20c997,
+    'success': ('base': #20c997,
     ),
-    'warning': (
-      'base': #fa8b0c,
+    'warning': ('base': #fa8b0c,
     ),
-    'danger': (
-      'base': #ff4d4f,
+    'danger': ('base': #ff4d4f,
     ),
-    'info': (
-      'base': #2c99ff,
-    )
-  ),
+    'info': ('base': #2c99ff,
+    )),
 );
 @import 'element-plus/theme-chalk/src/index.scss';
+
 :root {
   --el-color-primary-light-7: rgba(95, 99, 242, .3);
   --el-color-primary-light-8: rgba(95, 99, 242, .2);
@@ -35,6 +28,7 @@
   --el-box-shadow-dark: 0 5px 20px rgba(39, 43, 65, .1);
 
 }
+
 .el-date-range-picker {
   --el-datepicker-inrange-bg-color: rgba(95, 99, 242, .1);
   --el-datepicker-inrange-hover-bg-color: rgba(95, 99, 242, .2);
@@ -42,6 +36,11 @@
 
 .el-input {
   --el-input-bg-color: rgba(255, 255, 255, .9);
+  .el-input__inner {
+    &::placeholder {
+      font-size: 12px;
+    }
+  }
 }
 
 // $--font-path: "~element-ui/lib/theme-chalk/fonts";
@@ -55,17 +54,21 @@
 .el-menu {
   border-right: none;
   transition: $trans3;
+
   .el-menu-item-group__title {
     padding: 0;
   }
+
   .el-icon.el-sub-menu__icon-arrow {
     width: 20px;
     height: 16px;
     font-size: 16px;
   }
+
   .el-menu-item {
     min-width: 0;
     transition: $trans3;
+
     &:hover {
       padding-left: 24px !important;
       background-color: transparent;
@@ -76,18 +79,24 @@
   .el-sub-menu__title {
     transition: $trans3;
     background-color: transparent;
-    &:hover{
+
+    &:hover {
       padding-left: 24px !important;
     }
   }
+
   .el-menu-item-group {
-    .el-menu-item:hover{
+    .el-menu-item:hover {
       padding-left: 46px !important;
     }
   }
 }
 
 .el-table {
+  font-size: 12px;
+  font-weight: normal;
+  --el-table-header-bg-color: rgba(248, 248, 248, .7);
+  --el-table-header-text-color: #222;
 
   .el-table__header-wrapper,
   .el-table__fixed-header-wrapper {
@@ -97,8 +106,31 @@
       background-color: rgba(248, 248, 248, 1);
     }
   }
+
   &.border-b {
-    border-bottom: 1px solid rgba(153,153,153,.1);
+    border-bottom: 1px solid rgba(153, 153, 153, .1);
+  }
+
+  &.el-table--layout-fixed {
+    th {
+      @include backdrop()
+    }
+  }
+
+  .el-table__row {
+    &.hover-row {
+      td {
+        transition: background .3s ease-in-out;
+      }
+    }
+  }
+
+  .el-table__cell {
+    padding: 0;
+
+    .cell {
+      padding: 8px;
+    }
   }
 }
 
@@ -272,20 +304,20 @@
 
 .el-cascader-node:hover {
   .el-radio__inner {
-    border-color: $blue;
+    border-color: $primary;
   }
 }
 
 .el-radio__input {
   .el-radio__inner {
-    background-color: #fff !important;
+    // background-color: #fff !important;
     border-width: 2px;
     transition: $trans1;
 
     &::after {
-      width: 5px;
-      height: 5px;
-      background-color: $blue;
+      width: 6px;
+      height: 6px;
+      background-color: $white;
     }
   }
 }
@@ -338,6 +370,14 @@
     .el-form-item__label {
       text-align: left;
     }
+  }
+}
+
+.el-form-item {
+  display: flex;
+
+  .el-form-item__label {
+    justify-content: flex-start;
   }
 }
 
@@ -493,6 +533,7 @@
   @include backdrop();
 
   .el-drawer__header {
+    height: 56px;
     padding: 20px;
     margin-bottom: 0;
     border-bottom: 1px solid $dark1;
@@ -500,17 +541,19 @@
 
   .el-drawer__body {
     padding: 0px;
+
     .drawerBody {
       height: calc(100% - 56px);
       overflow: hidden;
     }
+
     .drawerFooter {
       display: flex;
       align-items: center;
       justify-content: flex-end;
       height: 56px;
       padding: 0 20px;
-      border-top: 1px solid rgba(153,153,153,.1);
+      border-top: 1px solid rgba(153, 153, 153, .1);
     }
   }
 }
@@ -567,5 +610,22 @@
   &.is-light {
     background-color: $white9;
     @include backdrop();
+  }
+}
+
+.el-loading-parent--relative {
+  pointer-events: none;
+
+  .el-loading-mask {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .el-loading-spinner {
+
+    .circular {
+      width: 100%;
+    }
   }
 }

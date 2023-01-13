@@ -7,4 +7,5 @@ export default {
   密码: 'Password',
   语言: 'Language',
   退出: 'Logout',
+  移动端访问: 'View In Mobile'
 };

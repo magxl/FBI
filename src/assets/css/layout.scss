@@ -69,40 +69,39 @@
 }
 
 .hl {
-  justify-content: flex-start;
+  justify-content: flex-start !important;
 }
 
 .hb {
-  justify-content: space-between;
+  justify-content: space-between !important;
 }
 
 .ha {
-  justify-content: space-around;
+  justify-content: space-around !important;
 }
 
 .hc {
-  justify-content: center;
+  justify-content: center !important;
 }
 
 .hr {
-  justify-content: flex-end;
+  justify-content: flex-end !important;
 }
 
 .vl {
-  align-items: flex-start;
+  align-items: flex-start !important;
 }
 
 .vr {
-  align-items: flex-end;
+  align-items: flex-end !important;
 }
 
 .vc {
-  align-items: center;
-  align-content: center;
+  align-items: center !important;
 }
 
 .vs {
-  align-items: stretch;
+  align-items: stretch !important;
 }
 
 .clear {

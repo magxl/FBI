@@ -59,7 +59,7 @@ const pageWidth = computed(() => {
 
 // 挂载
 onMounted(() => {
-  let minWidth = (pageWidth.value - (prop.currency.length  * 16) ) / 2;
+  let minWidth = (pageWidth.value - (prop.currency.length  * 16) - 16 ) / 2;
   minWidth = minWidth < 512 ? 512 : minWidth;
   state.minWidth = `min-width:${minWidth}px;`;
 });

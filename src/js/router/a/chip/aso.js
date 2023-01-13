@@ -11,21 +11,12 @@ export default {
       path: 'Tag',
       name: 'A_Tag',
       meta: {
+        hide: true,
         sort: 0,
         label: '标签',
         icon: 'ad-tags',
       },
       component: () => import('@views/A/Aso/Tag.vue'),
-    },
-    {
-      path: 'Category',
-      name: 'A_Category',
-      meta: {
-        sort: 0,
-        label: '类别',
-        icon: 'ad-category',
-      },
-      component: () => import('@views/A/Aso/Category.vue'),
     },
     {
       path: 'Ranking',
@@ -36,6 +27,16 @@ export default {
         icon: 'ad-ranking',
       },
       component: () => import('@views/A/Aso/Ranking.vue'),
+    },
+    {
+      path: 'Category',
+      name: 'A_Category',
+      meta: {
+        sort: 0,
+        label: '类别',
+        icon: 'ad-category',
+      },
+      component: () => import('@views/A/Aso/Category.vue'),
     },
     {
       path: 'Trending',

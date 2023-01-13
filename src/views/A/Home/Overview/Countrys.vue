@@ -1,5 +1,5 @@
 <template>
-  <div class="Countrys p0-16 pb16">
+  <div class="Countrys pl16 pr8 pb16">
     <Card>
       <template #header>
         <span>Countrys</span>
@@ -41,20 +41,6 @@ const state = reactive({
     RMB: {},
     JPY: {},
   },
-  tool: [
-    {
-      label: 'Day',
-      value: 'day',
-    },
-    {
-      label: 'Week',
-      value: 'week',
-    },
-    {
-      label: 'Month',
-      value: 'month',
-    },
-  ],
 });
 
 // 计算属性
@@ -69,20 +55,13 @@ onMounted(() => {
 // 事件
 const initChart = () => {
   const len = window.$randomNumber(10);
-  const names = window.$fakeData(len, (i) => `name${i}`);
+  const names = window.$fakeData(len, (i) => `Country${i}`);
   state.options[state.active] = {
     legend: {
-      show: true,
+      show: false,
     },
     tooltip: {
-      show: true,
-      backgroundColor: 'rgba(50,50,50,.9)',
-      padding: [8, 16],
-      borderWidth: 0,
-      textStyle: {
-        color: 'rgba(255,255,255,.9)',
-        fontSize: 12,
-      },
+      trigger: 'item',
     },
     series: [
       {

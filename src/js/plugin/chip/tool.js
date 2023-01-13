@@ -54,5 +54,17 @@ export default {
       }
       return dt;
     };
+
+    app.config.globalProperties.$setTimeout = function (cb = () => {}, time) {
+      //自动卸载Timeout
+      if (this.timer) {
+        clearTimeout(this.timer);
+        this.timer = null;
+      }
+      this.timer = setTimeout(() => {
+        cb();
+        clearTimeout(this.timer);
+      }, time);
+    };
   },
 };

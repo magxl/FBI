@@ -21,6 +21,9 @@ Object.keys(MvcCpts).forEach((it) => {
   });
 });
 // import TableColumn from '/src/components/Mvc/Table/TableColumn.js';
+// 第三方
+
+import Draggable from 'vuedraggable';
 export default (app) => {
   const all = [...Super, ...Mvc];
   all.forEach((it) => {
@@ -29,4 +32,5 @@ export default (app) => {
     });
     // app.component('TableColumn',TableColumn);
   });
+  app.component('Draggable', Draggable);
 };

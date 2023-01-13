@@ -2,10 +2,24 @@
   <div class="AFrameHeader">
     <div
       class="logoArea flexMode vc wp100 h56 pl20 noShrink noselect point"
-      @click="gotoBoard"
     >
       <!-- <img :src="getImg('favicon.ico', '/public/')" class="w24 h24" /> -->
-      <el-image :src="getImg('d/logo_mini.png')" fit="cover" class="h36" />
+      <el-image
+        :src="getImg('d/logo_mini.png')"
+        fit="cover"
+        style="height: 30px"
+        @click="gotoBoard"
+      />
+      <el-popover placement="bottom" width="120">
+        <div>
+        <el-image :src="getImg('d/qrcode.png')" fit="cover" class="w120" />
+        <div class="pt4 fs12 txt-c">{{$l('移动端访问')}}</div>
+        </div>
+        <template #reference>
+          <i class="adicon ad-qrcode txt-white fs24 ml8" />
+        </template>
+      </el-popover>
+
       <!-- <span class="logoTxt pl10 txt-dark9">iADBrain</span> -->
     </div>
     <!-- Logo ↑ -->
@@ -131,7 +145,7 @@ const toSetting = () => {
 
 const gotoBoard = () => {
   router.push({
-    name: 'ABoardMain',
+    name: 'ABoard_Main',
   });
 };
 // 卸载

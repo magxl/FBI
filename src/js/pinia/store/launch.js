@@ -13,7 +13,9 @@ const state = () => {
       visible: false,
     },
     collapseMenu: false, // 折叠菜单栏
-    pageWidth: 0
+    pageWidth: 0,
+    options: {}, // 配置项
+    localTimezone: {}, // 本地时区
   };
 };
 const actions = {
@@ -138,6 +140,12 @@ const actions = {
   },
   registRouter(){
 
+  },
+  getLocalTimezone(){
+    this.localTimezone = {
+      timezone: new Date().getTimezoneOffset()/-60,
+      timezone_name: Intl.DateTimeFormat().resolvedOptions().timeZone
+    }
   }
 };
 const getters = {};
