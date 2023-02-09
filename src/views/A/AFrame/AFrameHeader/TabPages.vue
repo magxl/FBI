@@ -105,7 +105,7 @@ const scrollToTab = (v) => {
     border-radius: 6px 6px 0 0;
     color: $white9;
     border: 1px sloid transparent;
-    transition: $trans1;
+    // transition: $trans3;
     .icon {
       opacity: 0.3;
       transition: $trans1;
@@ -121,8 +121,9 @@ const scrollToTab = (v) => {
       }
     }
     &:hover {
-      border-color: $white3;
-      background-color: $white1;
+      color: $dark7;
+      border-color: $dark1;
+      background-color: $white7;
       // box-shadow: 0 -2px 4px $littleBlue;
     }
   }

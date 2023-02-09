@@ -11,6 +11,7 @@ Object.keys(SuperCpts).forEach((it) => {
     cpt: SuperCpts[it],
   });
 });
+
 const MvcCpts = import.meta.glob('/src/components/Mvc/*/index.vue');
 const Mvc = [];
 Object.keys(MvcCpts).forEach((it) => {
@@ -20,12 +21,22 @@ Object.keys(MvcCpts).forEach((it) => {
     cpt: MvcCpts[it],
   });
 });
+
+const WidgetCpt = import.meta.glob('/src/components/Widget/*/index.vue');
+const Widget = [];
+Object.keys(WidgetCpt).forEach((it) => {
+  const name = it.match(/\/Widget\/(\S*)\/index.vue/)[1];
+  Widget.push({
+    name,
+    cpt: WidgetCpt[it],
+  });
+});
 // import TableColumn from '/src/components/Mvc/Table/TableColumn.js';
 // 第三方
 
 import Draggable from 'vuedraggable';
 export default (app) => {
-  const all = [...Super, ...Mvc];
+  const all = [...Super, ...Mvc, ...Widget];
   all.forEach((it) => {
     it.cpt().then((r) => {
       app.component(it.name, r.default);

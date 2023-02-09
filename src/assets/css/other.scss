@@ -1,14 +1,4 @@
-$radius: 0,
-2,
-4,
-6,
-8,
-10,
-12,
-14,
-16,
-18,
-20;
+$radius: 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20;
 
 @each $var in $radius {
   .radius#{$var} {
@@ -51,27 +41,10 @@ $radius: 0,
   transition: $trans1;
 
   &:hover {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1),
-      0 0px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 0px 4px rgba(0, 0, 0, 0.1);
     transform: translateY(-30px);
     z-index: 1;
   }
-}
-
-.transition1 {
-  transition: $trans1;
-}
-
-.transition2 {
-  transition: $trans2;
-}
-
-.transition3 {
-  transition: $trans3;
-}
-
-.transition5 {
-  transition: $trans5;
 }
 
 .dot4 {
@@ -90,18 +63,20 @@ $radius: 0,
   border-radius: 50%;
 }
 
-
 // cursor
 
 .point {
   cursor: pointer;
 }
 
-.cursor-default{
+.cursor-default {
   cursor: default !important;
 }
-.cursor-move{
-  cursor: move;
+.cursor-move {
+  cursor: move !important;
+}
+.cursor-grab {
+  cursor: grab !important;
 }
 
 .noselect {
@@ -122,4 +97,9 @@ $radius: 0,
 
 .yscroll {
   overflow-y: auto;
+}
+
+.alink {
+  cursor: pointer;
+  text-decoration: underline;
 }

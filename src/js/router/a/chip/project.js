@@ -3,7 +3,7 @@ export default {
   name: 'A_Project',
   meta: {
     sort: 40,
-    label: '计划',
+    label: 'Project',
     icon: 'ad-item-folder',
   },
   children: [
@@ -12,7 +12,7 @@ export default {
       name: 'A_CampaignGroup',
       meta: {
         sort: 0,
-        label: '活动组',
+        label: 'Campaign Group List',
         icon: 'ad-group',
       },
       component: () => import('@views/A/Project/CampaignGroup.vue'),
@@ -22,27 +22,27 @@ export default {
       name: 'A_CustomReport',
       meta: {
         sort: 0,
-        label: '报表',
+        label: 'Custom Report',
         icon: 'ad-report',
       },
       component: () => import('@views/A/Project/CustomReport.vue'),
     },
     {
-      path: 'AddKeyword',
-      name: 'A_AddKeyword',
+      path: 'CreateKeyword',
+      name: 'A_CreateKeyword',
       meta: {
         sort: 0,
-        label: '添加关键词',
+        label: 'Create Keyword',
         icon: 'ad-add-keyword',
       },
-      component: () => import('@views/A/Project/AddKeyword.vue'),
+      component: () => import('@views/A/Project/CreateKeyword.vue'),
     },
     {
       path: 'UpdateKeyword',
       name: 'A_UpdateKeyword',
       meta: {
         sort: 0,
-        label: '更新关键词',
+        label: 'Update Keyword',
         icon: 'ad-update-keyword',
       },
       component: () => import('@views/A/Project/UpdateKeyword.vue'),

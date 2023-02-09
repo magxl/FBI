@@ -3,7 +3,7 @@
     <Loading />
     <!-- <Navbar v-if="showNavbar" /> -->
     <!-- <ContextMenu /> -->
-    <div v-if="state.mounted" class="MAIN">
+    <div class="MAIN">
       <router-view />
     </div>
   </div>
@@ -16,9 +16,7 @@ import ContextMenu from '@cpt/Onload/ContextMenu/index.vue';
 //
 import { nextTick, reactive } from 'vue';
 
-const state = reactive({
-  mounted: false,
-});
+const state = reactive({ timer: null });
 const store = inject('store');
 const launch = store.launch();
 const route = useRoute();
@@ -36,12 +34,13 @@ const langModuleLoaded = computed(() => {
 
 // 挂载
 launch.getLocalTimezone();
-onMounted(() => {
-  state.mounted = true;
-  initColorIcon();
-  initTabPages();
-  initLang();
-  initOptions();
+onMounted(async () => {
+  await initColorIcon(); // 初始化多色图标
+  await initTabPages(); // 初始化缓存Tab
+  await initLang(); // 初始化语言
+  await initOptions(); // 初始化配置项
+
+  await initLoaded(); // 初始化载入完成
 });
 
 // 事件
@@ -77,8 +76,19 @@ const initLang = () => {
 
 // 初始化配置项
 const initOptions = () => {
-  const { clientWidth, clientHeight } = document.body;
-  launch.saveData('options', { clientWidth, clientHeight });
+  // 页面宽高
+  nextTick(() => {
+    const { clientWidth, clientHeight } = document.body;
+    const tableHeight = clientHeight - 56 - 56 - 32;
+    console.info('tableHeight', tableHeight);
+    launch.saveData('options', { clientWidth, clientHeight, tableHeight });
+  });
+};
+const initLoaded = () => {
+  const loadingMsk = document.getElementsByClassName('loadingMask')[0];
+  state.timer = setTimeout(() => {
+    loadingMsk.style.display = 'none';
+  }, 500);
 };
 </script>
 <style lang="scss" scoped>

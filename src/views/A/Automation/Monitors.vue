@@ -1,5 +1,5 @@
 <template>
-  <Page title="监控" class="Monitors">
+  <Page title="Monitors" class="Monitors">
     <Table ref="table" :load-data="loadData" table-name="Monitors">
       <template #actions>
         <div class="flexMode vc p0-16">
@@ -10,9 +10,9 @@
           </el-button>
         </div>
       </template>
-      <el-table-column type="selection" width="56" align="center" />
-      <el-table-column label="ID" prop="id" width="100" />
-      <el-table-column :label="$l('类型')" prop="type" width="120" sortable>
+      <el-table-column type="selection" width="56" align="center" fixed="left" />
+      <el-table-column label="ID" prop="id" width="100" fixed="left" />
+      <el-table-column :label="$l('Type')" prop="type" width="120" sortable>
         <template #default="{ row }">
           <span
             class="radius4 p4-8 fs12"
@@ -23,32 +23,32 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$l('名称')"
+        :label="$l('Name')"
         prop="name"
         width="200"
         show-overflow-tooltip
       />
-      <el-table-column :label="$l('广告系列组 ID')" prop="org_id" width="100" />
+      <el-table-column :label="$l('Campaign Group ID')" prop="org_id" width="160" />
       <el-table-column
-        :label="$l('广告系列组')"
+        :label="$l('Campaign Group')"
         prop="org_name"
         width="200"
         show-overflow-tooltip
       />
-      <el-table-column :label="$l('状态')" prop="status" width="100">
+      <el-table-column :label="$l('Status')" prop="status" width="100">
         <template #default="{ row }">
           <div class="flexMode vc">
             <div class="dot8" :class="statusMap[row.status].bg"></div>
-            <div class="pl8">{{ statusMap[row.status].label }}</div>
+            <div class="pl8">{{ $l(statusMap[row.status].label) }}</div>
           </div>
         </template>
       </el-table-column>
-      <el-table-column :label="$l('开始执行')" prop="start_run" width="140" />
-      <el-table-column :label="$l('最后执行')" prop="last_run" width="140" />
-      <el-table-column :label="$l('结束执行')" prop="end_run" width="140" />
+      <el-table-column :label="$l('Start Run')" prop="start_run" width="140" />
+      <el-table-column :label="$l('Last Run')" prop="last_run" width="140" />
+      <el-table-column :label="$l('End Run')" prop="end_run" width="140" />
       <el-table-column label="-" />
 
-      <el-table-column :label="$l('操作')" fixed="right" width="160">
+      <el-table-column :label="$l('Operation')" fixed="right" width="160">
         <template #default="{ row, $index }">
           <div class="flexMode vc">
             <div class="mgbtn mr8 circle24" @click="toLogs(row, $index)">
@@ -96,9 +96,9 @@
 </template>
 <script setup>
 import Create from './Monitors/Create.vue';
+import Logs from './Monitors/Logs.vue';
 defineOptions({
   name: 'Monitors',
-  components: { Create },
 });
 // 数据
 const state = reactive({
@@ -111,6 +111,11 @@ const state = reactive({
       title: '',
       size: 800,
       cpt: Create,
+    },
+    {
+      title: '',
+      size: 800,
+      cpt: Logs,
     },
   ],
 });
@@ -143,12 +148,12 @@ const typeMap = computed(() => {
 const statusMap = computed(() => {
   return {
     0: {
-      label: 'Paused',
+      label: '暂停',
       value: 0,
       bg: 'bg-orange',
     },
     1: {
-      label: 'Running',
+      label: '运行',
       value: 1,
       bg: 'bg-green',
     },
@@ -161,16 +166,20 @@ const statusMap = computed(() => {
 // 事件
 
 const toCreate = () => {
-  state.drawer[0].title = window.$l('创建排行监控');
+  state.drawer[0].title = window.$l('Create Monitor');
   state.drawer[0].params = {};
   state.currentDrawer = 0;
 };
 const toEdit = (row, i) => {
-  state.drawer[0].title = window.$l('编辑排行监控');
+  state.drawer[0].title = window.$l('Update Monitor');
   state.drawer[0].params = { row, i };
   state.currentDrawer = 0;
 };
-const toLogs = () => {};
+const toLogs = (row) => {
+  state.drawer[1].title = window.$l('Monitor Logs');
+  state.drawer[1].params = { row };
+  state.currentDrawer = 1;
+};
 const toToggleStatus = (row, i) => {
   proxy.$refs.table.editRow({ row: { loading: true }, i });
 

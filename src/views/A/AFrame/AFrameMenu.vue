@@ -136,6 +136,7 @@ const toCollaspeMenu = () => {
   background: $white9;
   user-select: none;
   transition: $trans3;
+  flex-shrink: 0;
   .scrollbarArea {
     height: calc(100% - 56px);
   }

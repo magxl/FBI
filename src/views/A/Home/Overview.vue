@@ -1,15 +1,29 @@
 <template>
-  <Page class="Overview" type="None">
-    <Statistics :currency="state.currency" />
-    <div class="flexMode">
-      <Hourly :currency="state.currency" style="width: calc(100% - 400px)" />
-      <Recent :currency="state.currency" class="pr16" style="width: 400px" />
+  <Page class="Overview" type="Static">
+    <!-- <template v-if="state.mounted"> -->
+    <div class="wp100">
+      <Statistics :currency="state.currency" />
     </div>
-    <CampaignGroups :currency="state.currency" />
-    <div class="flexMode">
-      <Countrys :currency="state.currency" class="wp50" />
-      <Apps :currency="state.currency" class="wp50" />
+    <div class="flexMode wp100">
+      <div style="width: calc(100% - 400px)">
+        <Hourly :currency="state.currency" />
+      </div>
+      <div class="w400">
+        <Recent :currency="state.currency" class="pr16" />
+      </div>
     </div>
+    <div class="wp100">
+      <CampaignGroups :currency="state.currency" />
+    </div>
+    <div class="flexMode">
+      <div class="wp50">
+        <Countrys :currency="state.currency" />
+      </div>
+      <div class="wp50">
+        <Apps :currency="state.currency" />
+      </div>
+    </div>
+    <!-- </template> -->
   </Page>
 </template>
 <script setup>
@@ -24,8 +38,10 @@ defineOptions({
   components: { Statistics, Hourly, Recent, CampaignGroups, Countrys, Apps },
 });
 // 数据
+import { reactive, nextTick } from 'vue';
 const state = reactive({
   currency: [],
+  mounted: false,
 });
 
 // 计算属性
@@ -33,7 +49,11 @@ const state = reactive({
 // 监听
 
 // 挂载
-onMounted(() => {});
+onMounted(() => {
+  nextTick(() => {
+    state.mounted = true;
+  });
+});
 // 事件
 const initCurrency = () => {
   state.currency = [

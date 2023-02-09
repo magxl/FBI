@@ -45,8 +45,11 @@ const prop = defineProps({
     type: String,
     default: ' ',
   },
+  permission: {
+    type: [String, Number],
+    default: -1,
+  },
 });
-import { reactive } from 'vue';
 const store = inject('store');
 const common = store.common();
 // 数据
@@ -56,7 +59,12 @@ const state = reactive({
 
 // 计算属性
 const campaignGroup = computed(() => {
-  return common.campaignGroup;
+  const permission = parseInt(prop.permission);
+  if (permission > -1) {
+    return common.campaignGroup.filter((it) => it.permission > permission);
+  } else {
+    return common.campaignGroup;
+  }
 });
 // 监听
 
@@ -70,11 +78,12 @@ onMounted(async () => {
 const emit = defineEmits();
 const change = (v) => {
   emit('update:modelValue', v);
-  emit('update:currency', campaignGroup.value.filter(it=>it.id===v)[0].currency);
-  emit('change', v)
+  const has = campaignGroup.value.filter((it) => it.id === v)[0];
+  emit('update:currency', has ? has.currency : '');
+  emit('change', v);
 };
 const clear = () => {
-  emit('update:modelValue', prop.multiple ? [] : '');
+  // emit('update:modelValue', prop.multiple ? [] : '');
   emit('clear');
 };
 // 卸载

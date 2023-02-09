@@ -12,7 +12,7 @@
       @change="change"
       @clear="clear"
       class="wp100"
-      :loading="state.loading"
+      :loading="loading"
     >
       <el-option
         v-for="(it, i) in state.adGroupOptions"
@@ -54,17 +54,19 @@ const prop = defineProps({
     default: ' ',
   },
 });
-import { reactive } from 'vue';
 const store = inject('store');
 const common = store.common();
 // 数据
 const state = reactive({
   loading: true,
   v: null,
+  adGroupOptions: [],
 });
 
 // 计算属性
-
+const loading = computed(() => {
+  return state.adGroupOptions.length && state.loading;
+ });
 // 监听
 watch(
   () => prop.orgId,
@@ -81,10 +83,10 @@ watch(
   async (n) => {
     state.v = prop.multiple ? [] : '';
     if (n) {
-      state.adGroupOptions = await common.getAdGroup({
-        org_id: prop.orgId,
-        campaign_id: prop.campaignId,
-      });
+      state.adGroupOptions = await common.getAdgroup(
+        prop.orgId,
+        prop.campaignId,
+      );
       state.loading = false;
     } else {
       state.loading = true;

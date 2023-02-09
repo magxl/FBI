@@ -20,7 +20,7 @@ export default async (app) => {
     .use(pinia)
     .provide('store', store)
     .use(ElementPlus,{
-      size: 'default',
+      size: 'small',
       locale
     })
     .use(router)

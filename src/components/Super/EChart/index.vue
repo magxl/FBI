@@ -1,5 +1,7 @@
 <template>
-  <div ref="chart" :id="chartID" class="EChart"></div>
+  <div class="EChart">
+    <div ref="chart" :style="style" :id="chartID"></div>
+  </div>
 </template>
 <script setup>
 defineOptions({
@@ -14,6 +16,18 @@ const prop = defineProps({
     type: String,
     default: '',
   },
+  height: {
+    type: String,
+    default: '300',
+  },
+  width: {
+    type: String,
+    default: '100%',
+  },
+  minusWidth: {
+    type: String,
+    default: '',
+  },
 });
 import {
   reactive,
@@ -24,6 +38,8 @@ import {
   onBeforeMount,
 } from 'vue';
 const { proxy } = getCurrentInstance();
+const store = inject('store');
+const launch = store.launch();
 const state = reactive({
   chartID: '',
   defaultOptions: {
@@ -33,21 +49,7 @@ const state = reactive({
       right: 20,
       bottom: 40,
     },
-    color: [
-      '#5F63F2',
-      '#409EFF',
-      '#20C997',
-      '#6CEC8E',
-      '#35D5EB',
-      '#39EBCB',
-      '#619AEF',
-      '#908EFE',
-      '#7869D2',
-      '#854CFF',
-      '#AF73EC',
-      '#CF47FF',
-      '#6A717D',
-    ],
+    color: window.global.config.color,
     tooltip: {
       show: true,
       trigger: 'axis',
@@ -79,7 +81,23 @@ const state = reactive({
 });
 
 // 计算属性
+const pageWidth = computed(() => {
+  return launch.pageWidth;
+});
+const style = computed(() => {
+  let width = prop.width;
+  let minusWidth = parseInt(prop.minusWidth) || 0;
+  if (width.indexOf('%') > -1) {
+    width = parseInt((pageWidth.value * parseInt(width)) / 100) - minusWidth;
+  } else {
+    width = parseInt(width) - minusWidth;
+  }
 
+  return {
+    height: parseInt(prop.height) + 'px',
+    width: width + 'px',
+  };
+});
 let chart = null;
 onBeforeMount(() => {
   state.chartID = `chart${+new Date()}${parseInt(Math.random() * 10000)}`;
@@ -100,6 +118,7 @@ watch(
     }
   },
   {
+    immediate: true,
     deep: true,
   },
 );
@@ -118,7 +137,6 @@ const setOptions = () => {
     chart.setOption(options);
   });
 };
-
 const combineObject = (aim, source) => {
   // 一级属性合并
   const all = { ...source, ...aim };
@@ -164,7 +182,5 @@ defineExpose({
 <style lang="scss" scoped>
 .EChart {
   width: 100%;
-  height: 100%;
-  color: $blue;
 }
 </style>

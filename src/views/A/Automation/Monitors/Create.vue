@@ -7,9 +7,9 @@
       label-width="160px"
     >
       <div class="border-b hover-box-shadow-dark1">
-        <div class="p16">{{ $l('设置') }}</div>
+        <div class="p16">{{ $l('Setting') }}</div>
         <div class="p0-16">
-          <el-form-item :label="$l('名称')" prop="name">
+          <el-form-item :label="$l('Name')" prop="name">
             <el-input
               v-model="state.form.name"
               clearable
@@ -20,10 +20,10 @@
           </el-form-item>
         </div>
         <div class="p0-16">
-          <el-form-item :label="$l('类型')" prop="type">
+          <el-form-item :label="$l('Type')" prop="type">
             <el-select v-model="state.form.type" placeholder=" ">
               <el-option
-                v-for="(it, i) in typeOptions"
+                v-for="(it, i) in typeMap"
                 :key="i"
                 :label="it.label"
                 :value="it.value"
@@ -32,38 +32,38 @@
           </el-form-item>
         </div>
         <div class="p0-16">
-          <el-form-item :label="$l('广告系列组')" prop="org_id">
+          <el-form-item :label="$l('Campaign Group')" prop="orgId">
             <div class="wp100">
               <Org
-                v-model="state.form.org_id"
+                v-model="state.form.orgId"
                 v-model:currency="state.currency"
               />
             </div>
           </el-form-item>
         </div>
         <div class="p0-16">
-          <el-form-item :label="$l('广告系列')" prop="campaign_id">
+          <el-form-item :label="$l('Campaign')" prop="campaignId">
             <div class="wp100">
               <Campaign
-                v-model="state.form.campaign_id"
-                :org-id="state.form.org_id"
+                v-model="state.form.campaignId"
+                :org-id="state.form.orgId"
               />
             </div>
           </el-form-item>
         </div>
         <div class="p0-16">
-          <el-form-item :label="$l('广告组')" prop="adgroup_id">
+          <el-form-item :label="$l('Ad Group')" prop="adgroupId">
             <div class="wp100">
               <AdGroup
-                v-model="state.form.adgroup_id"
-                :org-id="state.form.org_id"
-                :campaign-id="state.form.campaign_id"
+                v-model="state.form.adgroupId"
+                :org-id="state.form.orgId"
+                :campaign-id="state.form.campaignId"
               />
             </div>
           </el-form-item>
         </div>
         <div class="p0-16">
-          <el-form-item :label="$l('逻辑')" prop="logic">
+          <el-form-item :label="$l('Logic')" prop="logic">
             <el-radio-group v-model="state.form.logic">
               <el-radio v-for="(it, i) in logicMap" :key="i" :label="it.value">
                 <span>{{ it.label }}</span>
@@ -72,25 +72,18 @@
           </el-form-item>
         </div>
         <div class="p0-16">
-          <el-form-item :label="$l('时区')" prop="timezone_name">
-            <el-select
-              v-model="state.form.timezone_name"
-              filterable
-              placeholder=" "
-            >
-              <el-option
-                v-for="(it, i) in timezoneOptions"
-                :key="i"
-                :label="it.label_en"
-                :value="it.value"
-              />
-            </el-select>
+          <el-form-item :label="$l('Timezone')" prop="timezone_name">
+            <Timezone
+              v-model="state.form.timezone"
+              v-model:timezone_name="state.form.timezone_name"
+              default-local
+            />
           </el-form-item>
         </div>
       </div>
       <!--  -->
       <div class="border-b hover-box-shadow-dark1">
-        <div class="p16">{{ $l('条件') }}</div>
+        <div class="p16">{{ $l('Conditions') }}</div>
         <div class="p0-16">
           <div
             v-for="(it, i) in state.form.condition"
@@ -98,7 +91,7 @@
             class="relative p16 pl40 mb16 border-dark3-dashed radius12 hover-box-shadow-dark1"
           >
             <div class="indexArea">{{ i + 1 }}</div>
-            <el-form-item :label="$l('维度')" prop="">
+            <el-form-item :label="$l('Metric')" prop="">
               <el-select
                 v-model="it.type"
                 placeholder=" "
@@ -269,7 +262,7 @@
       <!-- ↑ condition -->
 
       <div class="border-b hover-box-shadow-dark1">
-        <div class="p16">{{ $l('操作') }}</div>
+        <div class="p16">{{ $l('Operations') }}</div>
         <div class="p0-16">
           <div
             v-for="(it, i) in state.form.operation"
@@ -277,7 +270,7 @@
             class="relative p16 pl40 mb16 border-dark3-dashed radius12 hover-box-shadow-dark1"
           >
             <div class="indexArea">{{ i + 1 }}</div>
-            <el-form-item :label="$l('类型')" prop="">
+            <el-form-item :label="$l('Type')" prop="">
               <el-select v-model="it.type" placeholder=" ">
                 <el-option
                   v-for="(it, i) in operationMap"
@@ -336,6 +329,7 @@ defineOptions({
   name: 'MonitorsCreate',
 });
 import { reactive } from 'vue';
+const { proxy } = getCurrentInstance();
 // 数据
 const state = reactive({
   form: {
@@ -343,7 +337,11 @@ const state = reactive({
     condition: [{}],
     operation: [{}],
   },
-  rules: {},
+  rules: {
+    name: [{ required: true }],
+    type: [{ required: true }],
+    orgId: [{ required: true }],
+  },
   currency: '',
 });
 
@@ -366,7 +364,11 @@ const metricChange = (it, i) => {
   console.info(state.currency);
 };
 const toConditionAdd = (it, i) => {
-  state.form.condition.unshift({});
+  if (it.type) {
+    state.form.condition.unshift({});
+  } else {
+    proxy.$message.warning(window.$l('Please select the Metric type of the current item before adding'));
+  }
 };
 const toConditionDel = (it, i) => {
   state.form.condition.splice(i, 1);
@@ -377,8 +379,16 @@ const toOperationAdd = (it, i) => {
 const toOperationDel = (it, i) => {
   state.form.operation.splice(i, 1);
 };
-const toValidate = () => {};
-const toSubmit = () => {};
+const toValidate = () => {
+  proxy.$refs.form.validate((r) => {
+    if (r) {
+      toSubmit();
+    }
+  });
+};
+const toSubmit = () => {
+  console.info('toSubmit', state.form);
+};
 
 // 字典
 const typeMap = computed(() => {
@@ -439,7 +449,7 @@ const compareMaxMap = computed(() => {
   ];
 });
 const conditionMetricMap = computed(() => {
-  return [
+  const dt = [
     {
       label: 'Spends',
       value: 'spend',
@@ -473,6 +483,16 @@ const conditionMetricMap = computed(() => {
       value: 'cpa',
     },
   ];
+  const { condition } = state.form;
+  return dt.map((it) => {
+    const has = condition.filter((ft) => ft.value === it.value)[0];
+    if (has) {
+      it.disabled = true;
+    } else {
+      it.disabled = false;
+    }
+    return it;
+  });
 });
 const operationMap = computed(() => {
   return [

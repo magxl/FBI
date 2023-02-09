@@ -10,7 +10,7 @@ export default {
       return Object.prototype.toString.call(v).slice(8, -1);
     };
     //拷贝到剪切板
-    window.$copy = (v, showV) => {
+    const copy = (v, showV) => {
       let url = v;
       let oInput = document.createElement('input');
       oInput.value = url;
@@ -20,10 +20,13 @@ export default {
       let message = showV ? '已复制 ' + v : '已复制';
       app.config.globalProperties.$message.success({
         message,
+        grouping: true,
         center: true,
       });
       oInput.remove();
     };
+    window.$copy = copy;
+    app.config.globalProperties.$copy = copy;
     window.$deepClone = function (dt) {
       //递归深拷贝
       const type = window.$getType(dt);
@@ -48,10 +51,6 @@ export default {
         }
       }
       return r;
-    };
-    // UpperCamelCase
-    window.$toUpperCamelCase = (v) => {
-      return v.substr(0, 1).toUpperCase() + v.substr(1, v.length).toLowerCase();
     };
   },
 };

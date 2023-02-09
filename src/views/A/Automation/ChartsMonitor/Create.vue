@@ -7,7 +7,7 @@
       label-width="160px"
     >
       <div class="border-b hover-box-shadow-dark1">
-        <div class="p16 pb0">{{ $l('国家或地区') }}</div>
+        <div class="p16 pb0">{{ $l('Country or Regions') }}</div>
         <div class="p16">
           <el-form-item label="" label-width="0" prop="regions">
             <el-checkbox-group v-model="state.form.regions">
@@ -27,7 +27,7 @@
       <!-- ↑ Regions -->
       <div class="border-b hover-box-shadow-dark1">
         <div class="flexMode vr p16 pb0">
-          <span>{{ $l('分类设置') }}</span>
+          <span>{{ $l('Category Setting') }}</span>
           <span class="pl16 fs12 txt-orange7"
             >Select up to {{ state.maxCategory }} at the same time</span
           >
@@ -58,31 +58,31 @@
       <!-- ↑ Category -->
       <div class="p16 pt0 border-b hover-box-shadow-dark1">
         <div class="p16-0">
-          {{ $l('广告组设置') }}
+          {{ $l('Ad Group Setting') }}
         </div>
-        <el-form-item :label="$l('广告系列组')" prop="org_id">
+        <el-form-item :label="$l('Campaign Group')" prop="orgId">
           <div class="wp100">
-            <Org v-model="state.form.org_id" />
+            <Org v-model="state.form.orgId" />
           </div>
         </el-form-item>
-        <el-form-item :label="$l('广告系列')" prop="campaign_id">
+        <el-form-item :label="$l('Campaign')" prop="campaignId">
           <div class="wp100">
             <Campaign
-              v-model="state.form.campaign_id"
-              :org-id="state.form.org_id"
+              v-model="state.form.campaignId"
+              :org-id="state.form.orgId"
             />
           </div>
         </el-form-item>
-        <el-form-item :label="$l('广告组')" prop="adgroup_id">
+        <el-form-item :label="$l('Ad Group')" prop="adgroupId">
           <div class="wp100">
             <AdGroup
-              v-model="state.form.adgroup_id"
-              :org-id="state.form.org_id"
-              :campaign-id="state.form.campaign_id"
+              v-model="state.form.adgroupId"
+              :org-id="state.form.orgId"
+              :campaign-id="state.form.campaignId"
             />
           </div>
         </el-form-item>
-        <el-form-item :label="$l('关键词出价')" prop="keyword_bid">
+        <el-form-item :label="$l('Keyword Bid')" prop="keyword_bid">
           <el-input-number
             v-model="state.form.keyword_bid"
             :min="0"
@@ -104,7 +104,7 @@
       type="primary"
       @click="toValidate"
     >
-      {{ $l('提交') }}
+      {{ $l('Submit') }}
     </el-button>
   </div>
 </template>
@@ -119,14 +119,14 @@ const state = reactive({
   form: {
     regions: [],
     category: [],
-    org_id: '',
-    campaign_id: '',
-    adgroup_id: '',
+    orgId: '',
+    campaignId: '',
+    adgroupId: '',
   },
   rules: {
-    org_id: [{ required: true }],
-    campaign_id: [{ required: true }],
-    adgroup_id: [{ required: true }],
+    orgId: [{ required: true }],
+    campaignId: [{ required: true }],
+    adgroupId: [{ required: true }],
     keyword_bid: [{ required: true }],
     regions: [{ required: true }],
     category: [{ required: true }],
@@ -134,6 +134,8 @@ const state = reactive({
   maxCategory: 3,
 });
 const { proxy } = getCurrentInstance();
+const store = inject('store');
+const launch = store.launch();
 // 计算属性
 const regionsOptions = computed(() => {
   return window.$map.automation.chartsMonitorRegions;
@@ -141,6 +143,9 @@ const regionsOptions = computed(() => {
 const categoryOptions = computed(() => {
   return window.$map.automation.chartsMonitorCategory;
 });
+const lang = computed(() => {
+  return launch.lang;
+ });
 // 监听
 
 // 挂载

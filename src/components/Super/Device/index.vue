@@ -1,7 +1,7 @@
 <template>
   <div class="SuperDevice">
     <el-select
-      v-model="v"
+      v-model="state.v"
       v-bind="$attrs"
       clearable
       :placeholder="prop.placeholder"
@@ -37,7 +37,9 @@ const prop = defineProps({
 });
 import { reactive } from 'vue';
 // 数据
-const state = reactive({});
+const state = reactive({
+  v:''
+});
 
 // 计算属性
 const options = computed(() => {

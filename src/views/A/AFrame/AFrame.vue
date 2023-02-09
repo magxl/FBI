@@ -5,7 +5,7 @@
     :key="lang"
   >
     <AFrameHeader />
-    <div class="AFrameRight flexMode">
+    <div class="AFrameMain flexMode">
       <AFrameMenu :menu="state.menu" />
       <AFrameBody />
     </div>
@@ -46,7 +46,8 @@ onMounted(() => {
 .AFrame {
   border-radius: 12px;
   box-shadow: $dark1 0 40px 20px, $blue1 0 20px 20px;
-  .AFrameRight {
+  .AFrameMain {
+    position: relative;
     height: calc(100% - 56px);
     width: 100%;
     overflow: hidden;

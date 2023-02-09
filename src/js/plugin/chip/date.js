@@ -38,14 +38,14 @@ export default {
         stamp: +date,
       };
     };
-    window.$formatTime = function (dt, usems = false) {
-      //转换豪秒数为 时:分:秒
+    window.$formatTime = function (v, usems = false) {
+      // 转换豪秒数为 时:分:秒
       // usems 回显毫秒
-      dt = parseInt(dt);
-      const sData = parseInt(dt / 1000); // 秒数
-      const ms = dt % 1000; // 毫秒数
+      v = parseInt(v);
+      const sData = parseInt(v / 1000); // 秒数
+      const ms = v % 1000; // 毫秒数
       let r = '00:00';
-      if (dt) {
+      if (v) {
         let h = parseInt(sData / 3600),
           m = parseInt(sData / 60) - h * 60,
           s = sData % 60;

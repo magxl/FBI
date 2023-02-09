@@ -73,7 +73,7 @@ router.beforeEach((to, from, next) => {
   }
   // 404
   const module = to.fullPath.split('/')[1];
-  const name404 = module + '404';
+  const name404 = module + '404Page';
   const pageIgnore = ['Login'];
   if (pageIgnore.indexOf(to.name) === -1) {
     if (

@@ -1,3 +1,3 @@
 export default {
-  设置: '设置'
+  Setting: '设置'
 };

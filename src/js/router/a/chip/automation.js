@@ -3,7 +3,7 @@ export default {
   name: 'A_Automation',
   meta: {
     sort: 10,
-    label: '自动化服务',
+    label: 'Automation',
     icon: 'ad-autoservice',
   },
   children: [
@@ -12,7 +12,7 @@ export default {
       name: 'A_ChartsMonitor',
       meta: {
         sort: 0,
-        label: '图表监控',
+        label: 'Charts Monitor',
         icon: 'ad-nav-system-set',
       },
       component: () => import('@views/A/Automation/ChartsMonitor.vue'),
@@ -22,7 +22,7 @@ export default {
       name: 'A_Monitor',
       meta: {
         sort: 0,
-        label: '监控组',
+        label: 'Monitors',
         icon: 'ad-mac',
       },
       component: () => import('@views/A/Automation/Monitors.vue'),

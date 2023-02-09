@@ -23,7 +23,7 @@ export default {
       name: 'A_Ranking',
       meta: {
         sort: 0,
-        label: '排行',
+        label: 'Ranking',
         icon: 'ad-ranking',
       },
       component: () => import('@views/A/Aso/Ranking.vue'),
@@ -33,7 +33,7 @@ export default {
       name: 'A_Category',
       meta: {
         sort: 0,
-        label: '类别',
+        label: 'Category',
         icon: 'ad-category',
       },
       component: () => import('@views/A/Aso/Category.vue'),
@@ -43,7 +43,7 @@ export default {
       name: 'A_Trending',
       meta: {
         sort: 0,
-        label: '趋势',
+        label: 'Trending',
         icon: 'ad-trending',
       },
       component: () => import('@views/A/Aso/Trending.vue'),
@@ -53,7 +53,7 @@ export default {
       name: 'A_Volume',
       meta: {
         sort: 0,
-        label: '体量',
+        label: 'Volume',
         icon: 'ad-volume',
       },
       component: () => import('@views/A/Aso/Volume.vue'),

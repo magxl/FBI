@@ -12,7 +12,7 @@
       @change="change"
       @clear="clear"
       class="wp100"
-      :loading="state.loading"
+      :loading="loading"
     >
       <el-option
         v-for="(it, i) in state.campaignOptions"
@@ -50,7 +50,6 @@ const prop = defineProps({
     default: ' ',
   },
 });
-import { reactive } from 'vue';
 const store = inject('store');
 const common = store.common();
 // 数据
@@ -61,6 +60,9 @@ const state = reactive({
 });
 
 // 计算属性
+const loading = computed(() => {
+  return state.campaignOptions.length && state.loading;
+ });
 // 监听
 watch(
   () => prop.orgId,

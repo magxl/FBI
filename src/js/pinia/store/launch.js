@@ -3,7 +3,7 @@ import router from '@js/router/index.js';
 const state = () => {
   return {
     login: {}, // 登录信息
-    lang: '',
+    lang: '', // 语言
     currentPage: {}, // 当前页面
     historyPages: [], // 历史访问记录
     tabPages: [], // 选项卡缓存

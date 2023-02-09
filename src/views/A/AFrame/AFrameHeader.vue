@@ -1,19 +1,17 @@
 <template>
   <div class="AFrameHeader">
-    <div
-      class="logoArea flexMode vc wp100 h56 pl20 noShrink noselect point"
-    >
+    <div class="logoArea flexMode vc h56 pl20 noShrink noselect point">
       <!-- <img :src="getImg('favicon.ico', '/public/')" class="w24 h24" /> -->
       <el-image
-        :src="getImg('d/logo_mini.png')"
+        :src="$getImg('d/logo_mini.png')"
         fit="cover"
         style="height: 30px"
         @click="gotoBoard"
       />
       <el-popover placement="bottom" width="120">
         <div>
-        <el-image :src="getImg('d/qrcode.png')" fit="cover" class="w120" />
-        <div class="pt4 fs12 txt-c">{{$l('移动端访问')}}</div>
+          <el-image :src="$getImg('d/qrcode.png')" fit="cover" class="w120" />
+          <div class="pt4 fs12 txt-c">{{ $l('Mobile View') }}</div>
         </div>
         <template #reference>
           <i class="adicon ad-qrcode txt-white fs24 ml8" />
@@ -35,11 +33,9 @@
     <!-- tab nav ↑ -->
     <div class="rightArea flexMode hr vc w160 h56 pr10">
       <el-dropdown placement="bottom-end" @command="avatarCommand">
-        <div class="flexMode vc p0-10">
-          <div class="mgbtn circle30">
-            <!-- <Icon name="user" class="fs20" /> -->
-            <i class="adicon ad-user-circle txt-white fs24"></i>
-          </div>
+        <div class="mgbtn circle30 white mr8">
+          <!-- <Icon name="user" class="fs20" /> -->
+          <i class="adicon ad-user-circle txt-white fs24"></i>
         </div>
         <template #dropdown>
           <el-dropdown-menu>
@@ -63,10 +59,10 @@
       </el-dropdown>
       <!-- ↑ avatar ↑ -->
       <!-- ↓ setting ↓ -->
-      <div class="mgbtn circle30 mr10" @click="toSetting">
+      <div class="mgbtn circle30 white mr8" @click="toSetting">
         <i class="adicon ad-nav-system-set fs24 txt-white" />
       </div>
-      <div class="pr10">
+      <div class="pr8">
         <Lang class="flexMode vs hp100" txt-color="txt-white9" />
       </div>
     </div>
@@ -84,7 +80,7 @@ defineOptions({
 const state = reactive({
   avatarOptions: [
     {
-      label: '用户中心',
+      label: 'User Center',
       key: 'account',
       command: 0,
       color: 'txt-dark5',
@@ -92,7 +88,7 @@ const state = reactive({
       icon: 'ad-userinfo',
     },
     {
-      label: '设置',
+      label: 'Setting',
       key: 'setting',
       command: 1,
       color: 'txt-dark5',
@@ -100,7 +96,7 @@ const state = reactive({
       icon: 'ad-nav-system-set',
     },
     {
-      label: '退出',
+      label: 'Logout',
       color: 'txt-dark5',
       hover: 'hover-txt-red',
       key: 'logout',
@@ -116,7 +112,7 @@ const state = reactive({
       cpt: AccountInfo,
     },
     {
-      title: '设置',
+      title: 'Setting',
       size: 500,
       cpt: Setting,
     },

@@ -10,7 +10,7 @@
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item disabled class="cursor-default">
-            <span class="txt-dark5">{{ $l('语言') }}</span>
+            <span class="txt-dark5">{{ $l('Language') }}</span>
           </el-dropdown-item>
           <el-dropdown-item
             v-for="(it, i) in langOptions"

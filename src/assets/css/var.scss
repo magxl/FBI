@@ -77,6 +77,8 @@ $littlePurple:#f1e7ff;
 $littleBlue:#f3f4ff;
 $littleGray:#f7f8f9;
 
+$border: rgba(153,153,153,.1);
+
 @mixin backdrop($saturate: 100%, $blur: 4px, $contrast: 100%) {
   backdrop-filter: saturate($saturate) blur($blur) contrast($saturate);
 }

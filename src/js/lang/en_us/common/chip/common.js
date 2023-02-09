@@ -21,5 +21,11 @@ export default {
   激活: 'Active',
   暂停: 'Paused',
 
-  时区: 'Timezone'
+  时区: 'Timezone',
+
+  暂停: 'Paused',
+  运行: 'Running',
+  删除: 'Removed',
+  挂起: 'Hold On',
+  
 };

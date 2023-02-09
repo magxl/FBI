@@ -22,10 +22,10 @@ export default {
   地区量化分析: 'Area Data',
   // 应用商店 AppStore
   应用商店: 'App Store',
-  实时排行: 'Realtime Ranking',
-  搜索排行: 'Search Ranking',
+  实时排行: 'Charts',
+  搜索排行: 'Search',
   热度: 'Popularity',
-  推荐词: 'Recommended Word',
+  推荐词: 'Recommend Keywords',
   覆盖词: 'Covring Wrod',
   添加关键词: 'Add Keyword',
   更新关键词: 'Update Keyword',

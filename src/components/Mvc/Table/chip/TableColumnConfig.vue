@@ -1,131 +1,170 @@
 <template>
-  <div class="drawerBody">
+  <DrawerArea noscroll>
     <div class="relative flexMode vs p10 hp100">
       <!-- fixed left -->
-      <div class="relative dragArea wp33 mr5 border-dark3-dashed radius8">
-        <div class="flexMode hb vc p10 bg-f5 radius-t8 border-b">
-          <span>{{ $l('左固定') }}</span>
-          <span class="fs12"
-            >{{ leftVisible }} / {{ state.columns.left.length }}</span
-          >
+      <div class="relative dragArea wp33 mr5 border-dark3-dashed radius8 hover-box-shadow-dark1">
+        <div class="flexMode hb vc h40 p10 bg-f5 radius-t8 border-b">
+          <span class="fs14">{{ $l('Fixed Left') }}</span>
+          <div v-if="leftVisible">
+            <span class="fs12 txt-primary">{{ leftVisible }}</span>
+            <span class="fs12 txt-dark5"> / {{ state.total }}</span>
+          </div>
         </div>
         <div v-if="state.columns.left.length === 0" class="absCenter fs12">
-          {{ $l('没有左固定') }}
+          {{ $l('No Fixed Left') }}
         </div>
-        <Draggable
-          :list="state.columns.left"
-          group="columnFilter"
-          class="dragBody p5-0"
-          @start="onStart"
-          @end="onEnd"
-        >
-          <template #item="{ element: it }">
-            <div
-              class="flexMode vc p5"
-              :class="it.ding ? 'ding' : 'cursor-grab hover-bg-primary1'"
-            >
-              <div class="flexMode vc">
-                <el-switch
-                  v-model="it.visible"
-                  size="small"
-                  :disabled="it.ding"
-                  @change="switchChange"
-                ></el-switch>
-                <span class="pl10 fs14">{{ it.label || it.type }}</span>
+        <el-scrollbar :style="scrollStyle">
+          <Draggable
+            :list="state.columns.left"
+            group="columnFilter"
+            class="dragBody p5-0"
+            @start="onStart"
+            @end="onEnd"
+          >
+            <template #item="{ element: it, index }">
+              <div
+                class="dragItem flexMode vc p5"
+                :class="it.ding ? 'ding' : 'cursor-grab hover-bg-primary1'"
+              >
+                <div class="flexMode vc flexGrow">
+                  <el-switch
+                    v-model="it.visible"
+                    size="small"
+                    :disabled="it.ding"
+                    @change="switchChange"
+                  ></el-switch>
+                  <span class="pl10 fs14">{{ it.label || it.type }}</span>
+                </div>
+                <span class="pb5 fs12 txt-primary3">{{ it.tips }}</span>
+                <div
+                  class="arrowRight mgbtn circle24"
+                  @click.stop="leftToCenter(it, index)"
+                >
+                  <i class="adicon ad-arrow-right"></i>
+                </div>
               </div>
-              <span class="pb5 fs12 txt-primary3">{{ it.tips }}</span>
-            </div>
-          </template>
-        </Draggable>
+            </template>
+          </Draggable>
+        </el-scrollbar>
       </div>
       <!-- ↑ fixed left ↑ -->
       <!-- fixed center -->
-      <div class="relative dragArea wp33 m0-5 border-dark3-dashed radius8">
-        <div class="flexMode hb vc p10 bg-f5 border-b radius-t8">
-          <span>{{ $l('中间部分') }}</span>
-          <span class="fs12"
-            >{{ centerVisible }} / {{ state.columns.center.length }}</span
-          >
+      <div class="relative dragArea wp33 m0-5 border-dark3-dashed radius8 hover-box-shadow-dark1">
+        <div class="flexMode hb vc h40 p10 bg-f5 border-b radius-t8">
+          <span class="fs14">{{ $l('Center') }}</span>
+          <div v-if="centerVisible">
+            <span class="fs12 txt-primary">{{ centerVisible }}</span>
+            <span class="fs12 txt-dark5"> / {{ state.total }}</span>
+          </div>
         </div>
         <div v-if="state.columns.center.length === 0" class="absCenter fs12">
-          {{ $l('没有中间部分') }}
+          {{ $l('No Center') }}
         </div>
-        <Draggable
-          :list="state.columns.center"
-          group="columnFilter"
-          class="dragBody p5-0"
-          @start="onStart"
-          @end="onEnd"
-        >
-          <template #item="{ element: it }">
-            <div
-              class="flexMode vc p5"
-              :class="it.ding ? 'ding' : 'cursor-grab hover-bg-primary1'"
-            >
-              <div class="flexMode vc">
-                <el-switch
-                  v-model="it.visible"
-                  size="small"
-                  :disabled="it.ding"
-                  @change="switchChange"
-                ></el-switch>
-                <span class="pl10 fs14">{{ it.label || it.type }}</span>
+        <el-scrollbar :style="scrollStyle">
+          <Draggable
+            :list="state.columns.center"
+            group="columnFilter"
+            class="dragBody p5-0"
+            @start="onStart"
+            @end="onEnd"
+          >
+            <template #item="{ element: it, index }">
+              <div
+                class="dragItem flexMode vc p5"
+                :class="it.ding ? 'ding' : 'cursor-grab hover-bg-primary1'"
+              >
+                <div
+                  class="arrowLeft mgbtn ml4 mr8 circle24 rotate180"
+                  @click.stop="toAddLeft(it, index)"
+                >
+                  <i class="adicon ad-arrow-right"></i>
+                </div>
+                <div class="dragCenter flexMode vc flexGrow">
+                  <el-switch
+                    v-model="it.visible"
+                    size="small"
+                    :disabled="it.ding"
+                    @change="switchChange"
+                  ></el-switch>
+                  <span class="pl10 fs14">{{ it.label || it.type }}</span>
+                </div>
+                <span class="pb5 fs12 txt-primary3">{{ it.tips }}</span>
+                <div
+                  class="arrowRight mgbtn circle24"
+                  @click.stop="toAddRight(it, index)"
+                >
+                  <i class="adicon ad-arrow-right"></i>
+                </div>
               </div>
-              <span class="pb5 fs12 txt-primary3">{{ it.tips }}</span>
-            </div>
-          </template>
-        </Draggable>
+            </template>
+          </Draggable>
+        </el-scrollbar>
       </div>
       <!-- ↑ fixed center ↑ -->
       <!-- fixed right -->
-      <div class="relative dragArea wp33 ml5 border-dark3-dashed radius8">
-        <div class="flexMode hb vc p10 bg-f5 border-b radius-t8">
-          <span>{{ $l('右固定') }}</span>
-          <span class="fs12"
-            >{{ rightVisible }} / {{ state.columns.right.length }}</span
-          >
+      <div class="relative dragArea wp33 ml5 border-dark3-dashed radius8 hover-box-shadow-dark1">
+        <div class="flexMode hb vc h40 p10 bg-f5 border-b radius-t8">
+          <span class="fs14">{{ $l('Fixed Right') }}</span>
+          <div v-if="rightVisible">
+            <span class="fs12 txt-primary">{{ rightVisible }}</span>
+            <span class="fs12 txt-dark5"> / {{ state.total }}</span>
+          </div>
         </div>
         <div v-if="state.columns.right.length === 0" class="absCenter fs12">
-          {{ $l('没有右固定') }}
+          {{ $l('No Fixed Right') }}
         </div>
-        <Draggable
-          :list="state.columns.right"
-          group="columnFilter"
-          class="dragBody p5-0"
-          @start="onStart"
-          @end="onEnd"
-        >
-          <template #item="{ element: it }">
-            <div
-              class="flexMode vc p5"
-              :class="it.ding ? 'ding' : 'cursor-grab hover-bg-primary1'"
-            >
-              <div class="flexMode vc">
-                <el-switch
-                  v-model="it.visible"
-                  size="small"
-                  :disabled="it.ding"
-                  @change="switchChange"
-                ></el-switch>
-                <span class="pl10 fs14">{{ it.label || it.type }}</span>
+        <el-scrollbar :style="scrollStyle">
+          <Draggable
+            :list="state.columns.right"
+            group="columnFilter"
+            class="dragBody p5-0"
+            @start="onStart"
+            @end="onEnd"
+          >
+            <template #item="{ element: it, index }">
+              <div
+                class="dragItem flexMode vc p5"
+                :class="it.ding ? 'ding' : 'cursor-grab hover-bg-primary1'"
+              >
+                <div
+                  class="arrowLeft mgbtn m0-4 circle24 rotate180"
+                  @click.stop="rightToCenter(it, index)"
+                >
+                  <i class="adicon ad-arrow-right"></i>
+                </div>
+                <div class="dragCenter flexMode vc flexGrow">
+                  <el-switch
+                    v-model="it.visible"
+                    size="small"
+                    :disabled="it.ding"
+                    @change="switchChange"
+                  ></el-switch>
+                  <span class="pl10 fs14">{{ it.label || it.type }}</span>
+                </div>
+                <span class="pb5 fs12 txt-primary3">{{ it.tips }}</span>
               </div>
-              <span class="pb5 fs12 txt-primary3">{{ it.tips }}</span>
-            </div>
-          </template>
-        </Draggable>
+            </template>
+          </Draggable>
+        </el-scrollbar>
       </div>
       <!-- ↑ fixed right ↑ -->
     </div>
-  </div>
+    <template #footer>
+      <el-button @click="toReset" size="small" :loading="reseting" round>
+        {{ $l('Reset') }}
+      </el-button>
+      <el-button
+        @click="toSubmit"
+        size="small"
+        :loading="submiting"
+        round
+        type="primary"
+      >
+        {{ $l('Submit') }}
+      </el-button>
+    </template>
+  </DrawerArea>
   <!-- ↑ body ↑ -->
-  <div class="drawerFooter">
-    <el-button @click="toReset" :loading="reseting" round>{{
-      $l('重置')
-    }}</el-button>
-    <el-button @click="toSubmit" :loading="submiting" round type="primary">{{
-      $l('提交')
-    }}</el-button>
-  </div>
 </template>
 <script setup>
 import Draggable from 'vuedraggable';
@@ -141,7 +180,6 @@ const prop = defineProps({
   },
 });
 const { proxy } = getCurrentInstance();
-import { reactive } from 'vue';
 // 数据
 const state = reactive({
   submiting: false,
@@ -151,7 +189,7 @@ const state = reactive({
     center: [],
     right: [],
   },
-  mounted: false,
+  total: 0,
 });
 // 计算属性
 const leftVisible = computed(() => {
@@ -165,6 +203,11 @@ const rightVisible = computed(() => {
 });
 const columnName = computed(() => {
   return prop.params.tableName + '_Column';
+});
+const scrollStyle = computed(() => {
+  return {
+    height: `calc(100% - 40px)`,
+  };
 });
 // 监听
 // 初始
@@ -183,13 +226,12 @@ const init = () => {
     }
   });
   state.columns = columns;
-  state.mounted = true;
+  state.total = localColumns.length;
 };
-init();
 // 挂载
 onMounted(() => {
+  init();
   document.body.ondrop = function (event) {
-    console.info('拖拽锁定');
     event.preventDefault();
     event.stopPropagation();
   };
@@ -249,7 +291,23 @@ const getLocalColumn = () => {
     }
   }, 500);
 };
-
+const toAddLeft = (it, i) => {
+  state.columns.left.push(it);
+  state.columns.center.splice(i, 1);
+};
+const toAddRight = (it, i) => {
+  state.columns.right.push(it);
+  state.columns.center.splice(i, 1);
+};
+const leftToCenter = (it, i) => {
+  console.info(it, i);
+  state.columns.center.push(it);
+  state.columns.left.splice(i, 1);
+};
+const rightToCenter = (it, i) => {
+  state.columns.center.push(it);
+  state.columns.right.splice(i, 1);
+};
 const onStart = (e) => {
   // e.preventDefault();
   // e.stopPropagation();
@@ -262,4 +320,27 @@ const onEnd = (e) => {
 };
 // 卸载
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.dragBody {
+  height: 100%;
+}
+.dragItem {
+  .arrowLeft,
+  .arrowRight {
+    opacity: 0;
+  }
+  .dragCenter {
+    transition: $trans1;
+    transform: translateX(-30px);
+  }
+  &:hover {
+    .arrowLeft,
+    .arrowRight {
+      opacity: 1;
+    }
+    .dragCenter {
+      transform: translateX(0px);
+    }
+  }
+}
+</style>

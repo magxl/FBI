@@ -1,8 +1,15 @@
 <template>
-  <div class="p16">
-    <div class="MvcMainPage PageAfter bg-white radius radius8 box-shadow-dark1">
-      <div v-if="useHeader" class="flexMode vc hb h56 p0-16 border-b-dark1">
-        <bold v-if="prop.title">{{$l(prop.title)}}</bold>
+  <div :style="mainStyle">
+    <div
+      class="MvcMainPage PageAfter bg-white radius radius8 box-shadow-dark1"
+      :style="pageStyle"
+    >
+      <div
+        v-if="useHeader"
+        class="flexMode vc hb p0-16 border-b-dark1"
+        :style="headerStyle"
+      >
+        <bold v-if="prop.title">{{ $l(prop.title) }}</bold>
         <slot v-else name="header" />
       </div>
       <slot v-if="prop.noscroll" />
@@ -30,7 +37,6 @@ const prop = defineProps({
     default: false,
   },
 });
-import { reactive } from 'vue';
 // 数据
 const { proxy } = getCurrentInstance();
 const state = reactive({
@@ -43,6 +49,28 @@ const state = reactive({
 const useHeader = computed(() => {
   return prop.title || proxy.$slots.header;
 });
+const pageConfig = computed(() => {
+  return window.global.config.page;
+});
+const mainStyle = computed(() => {
+  return {
+    padding: `${pageConfig.value.paddingTop}px ${pageConfig.value.paddingRight}px ${pageConfig.value.paddingBottom}px ${pageConfig.value.paddingLeft}px`,
+  };
+});
+const headerStyle = computed(() => {
+  return {
+    height: pageConfig.value.header + 'px',
+  };
+});
+
+const pageStyle = computed(() => {
+  return {
+    height: `calc(100vh - ${window.global.config.frame.header}px - ${
+      pageConfig.value.paddingTop + pageConfig.value.paddingBottom
+    }px)`,
+    borderRadius: pageConfig.value.paddingRight?'':'8px 0 0 8px',
+  };
+});
 // 监听
 
 // 挂载
@@ -53,6 +81,6 @@ const useHeader = computed(() => {
 </script>
 <style lang="scss" scoped>
 .MvcMainPage {
-  height: calc(100vh - 56px - 32px);
+  width: 100%;
 }
 </style>

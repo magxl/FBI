@@ -1,41 +1,51 @@
 // element 覆写
-@forward 'element-plus/theme-chalk/src/common/var.scss'with ($colors: ('primary': ('base': #5F63F2,
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'primary': (
+      'base': #5f63f2,
     ),
-    'success': ('base': #20c997,
+    'success': (
+      'base': #20c997,
     ),
-    'warning': ('base': #fa8b0c,
+    'warning': (
+      'base': #fa8b0c,
     ),
-    'danger': ('base': #ff4d4f,
+    'danger': (
+      'base': #ff4d4f,
     ),
-    'info': ('base': #2c99ff,
-    )),
+    'info': (
+      'base': #2c99ff,
+    ),
+  )
 );
 @import 'element-plus/theme-chalk/src/index.scss';
 
 :root {
-  --el-color-primary-light-7: rgba(95, 99, 242, .3);
-  --el-color-primary-light-8: rgba(95, 99, 242, .2);
-  --el-color-primary-light-9: rgba(95, 99, 242, .1);
+  --el-color-primary-light-7: rgba(95, 99, 242, 0.3);
+  --el-color-primary-light-8: rgba(95, 99, 242, 0.2);
+  --el-color-primary-light-9: rgba(95, 99, 242, 0.1);
   --el-color-primary-dark-2: #4e53f2;
   --el-color-black: #272b41;
 
-  --el-border-color: rgba(153, 153, 153, .2);
-  --el-border-color-hover: rgba(153, 153, 153, .3);
-  --el-switch-border-color: rgba(153, 153, 153, .2);
-  --el-switch-off-color: rgba(153, 153, 153, .2);
+  --el-border-color: rgba(153, 153, 153, 0.2);
+  --el-border-color-hover: rgba(153, 153, 153, 0.3);
+  --el-switch-border-color: rgba(153, 153, 153, 0.2);
+  --el-switch-off-color: rgba(153, 153, 153, 0.2);
 
-  --el-overlay-color-lighter: rgba(255, 255, 255, .5);
-  --el-box-shadow-dark: 0 5px 20px rgba(39, 43, 65, .1);
-
+  --el-overlay-color-lighter: rgba(255, 255, 255, 0.5);
+  --el-box-shadow-dark: 0 5px 20px rgba(39, 43, 65, 0.1);
 }
 
 .el-date-range-picker {
-  --el-datepicker-inrange-bg-color: rgba(95, 99, 242, .1);
-  --el-datepicker-inrange-hover-bg-color: rgba(95, 99, 242, .2);
+  --el-datepicker-inrange-bg-color: rgba(95, 99, 242, 0.1);
+  --el-datepicker-inrange-hover-bg-color: rgba(95, 99, 242, 0.2);
+}
+.today .el-date-table-cell__text {
+  color: $green !important;
 }
 
 .el-input {
-  --el-input-bg-color: rgba(255, 255, 255, .9);
+  --el-input-bg-color: rgba(255, 255, 255, 0.9);
   .el-input__inner {
     &::placeholder {
       font-size: 12px;
@@ -95,12 +105,11 @@
 .el-table {
   font-size: 12px;
   font-weight: normal;
-  --el-table-header-bg-color: rgba(248, 248, 248, .7);
+  --el-table-header-bg-color: rgba(248, 248, 248, 0.7);
   --el-table-header-text-color: #222;
 
   .el-table__header-wrapper,
   .el-table__fixed-header-wrapper {
-
     tr,
     th {
       background-color: rgba(248, 248, 248, 1);
@@ -108,19 +117,19 @@
   }
 
   &.border-b {
-    border-bottom: 1px solid rgba(153, 153, 153, .1);
+    border-bottom: 1px solid rgba(153, 153, 153, 0.1);
   }
 
   &.el-table--layout-fixed {
     th {
-      @include backdrop()
+      @include backdrop();
     }
   }
 
   .el-table__row {
     &.hover-row {
       td {
-        transition: background .3s ease-in-out;
+        transition: background 0.3s ease-in-out;
       }
     }
   }
@@ -132,13 +141,28 @@
       padding: 8px;
     }
   }
+  .caret-wrapper {
+    width: 18px;
+  }
 }
 
 .el-input--mini {
-
   .el-input-group__append,
   .el-input-group__prepend {
     padding: 0 0.5rem;
+  }
+}
+.el-input-group__append {
+  background-color: var(--el-color-primary-light-9);
+  color: $primary;
+  transition: $trans3;
+
+  &:hover {
+    background-color: $primary;
+    color: $white;
+  }
+  &:active {
+    background-color: var(--el-color-primary-dark-2);
   }
 }
 
@@ -150,22 +174,22 @@
 
 .el-tooltip__popper {
   max-width: 400px;
-  background-color: rgba(0, 0, 0, .7) !important;
+  background-color: rgba(0, 0, 0, 0.7) !important;
   backdrop-filter: saturate(100%) blur(4px);
 
-  &[x-placement^="left"] .popper__arrow {
+  &[x-placement^='left'] .popper__arrow {
     border-left-color: rgba(0, 0, 0, 0.5) !important;
   }
 
-  &[x-placement^="top"] .popper__arrow {
+  &[x-placement^='top'] .popper__arrow {
     border-top-color: rgba(0, 0, 0, 0.5) !important;
   }
 
-  &[x-placement^="right"] .popper__arrow {
+  &[x-placement^='right'] .popper__arrow {
     border-right-color: rgba(0, 0, 0, 0.5) !important;
   }
 
-  &[x-placement^="bottom"] .popper__arrow {
+  &[x-placement^='bottom'] .popper__arrow {
     border-bottom-color: rgba(0, 0, 0, 0.5) !important;
   }
 }
@@ -189,7 +213,7 @@
 }
 
 .el-card {
-  transition: .1s !important;
+  transition: 0.1s !important;
 }
 
 .collapseSelect {
@@ -293,18 +317,21 @@
   }
 }
 
-
 .el-cascader__dropdown {
-
   .in-active-path,
   .is-selectable {
     font-weight: 500 !important;
   }
 }
-
-.el-cascader-node:hover {
-  .el-radio__inner {
-    border-color: $primary;
+.el-cascader-node {
+  padding: 0 8px;
+  &:hover {
+    .el-radio__inner {
+      border-color: $primary;
+    }
+  }
+  .el-cascader-node__prefix {
+    left: 2px;
   }
 }
 
@@ -328,7 +355,6 @@
       height: 28px !important;
 
       &::placeholder {
-
         font-size: 12px !important;
       }
     }
@@ -356,7 +382,6 @@
     z-index: 0;
 
     &::placeholder {
-
       font-size: 12px !important;
     }
   }
@@ -400,13 +425,13 @@
 }
 
 // 自定义popover 多触发时合并成手写的同一个，减少消耗
-.CPT_Popper[x-placement^="right"] {
+.CPT_Popper[x-placement^='right'] {
   .popper__arrow {
     transform: translateY(-50%);
   }
 }
 
-.CPT_Popper[x-placement^="left"] {
+.CPT_Popper[x-placement^='left'] {
   .popper__arrow {
     transform: translateY(-50%);
   }
@@ -443,7 +468,7 @@
 
   &.el-message--warning {
     .el-message__icon {
-      color: $green !important;
+      color: $orange !important;
     }
   }
 
@@ -462,7 +487,7 @@
 
 .el-picker-panel,
 .el-notification {
-  background-color: rgba(255, 255, 255, .7) !important;
+  background-color: rgba(255, 255, 255, 0.7) !important;
   backdrop-filter: saturate(100%) blur(4px);
 
   .el-icon-info {
@@ -479,7 +504,7 @@
 }
 
 .el-picker-panel__footer {
-  background-color: rgba(255, 255, 255, .5) !important;
+  background-color: rgba(255, 255, 255, 0.5) !important;
   backdrop-filter: saturate(100%) blur(4px);
 }
 
@@ -488,7 +513,7 @@
   transition: $trans1;
 
   &:hover {
-    opacity: .7;
+    opacity: 0.7;
   }
 }
 
@@ -507,7 +532,7 @@
 }
 
 .mgbackdrop {
-  background-color: rgba(255, 255, 255, .5) !important;
+  background-color: rgba(255, 255, 255, 0.5) !important;
   backdrop-filter: saturate(100%) blur(4px);
 
   .el-dropdown-menu__item {
@@ -553,7 +578,7 @@
       justify-content: flex-end;
       height: 56px;
       padding: 0 20px;
-      border-top: 1px solid rgba(153, 153, 153, .1);
+      border-top: 1px solid rgba(153, 153, 153, 0.1);
     }
   }
 }
@@ -623,9 +648,31 @@
   }
 
   .el-loading-spinner {
-
     .circular {
       width: 100%;
     }
+  }
+}
+
+.noborderSelect {
+  .el-select {
+    .el-input__wrapper {
+      border: none;
+      box-shadow: none !important;
+    }
+  }
+}
+
+.el-input-number {
+  &.el-input-number--small {
+    // .el-input-number__decrease,
+    // .el-input-number__increase {
+    //   height: 22px;
+    //   top: 2px;
+    // }
+    // &.is-controls-right{
+    //   height:10px;
+    //   top:1px;
+    // }
   }
 }

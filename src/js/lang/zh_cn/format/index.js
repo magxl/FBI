@@ -1,3 +1,3 @@
 export default {
-  源数据: '源数据',
+  Origin: '源数据',
 };

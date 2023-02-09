@@ -1,5 +1,5 @@
 <template>
-  <div class="AFrameBody" :class="{collapseMenu}">
+  <div class="AFrameBody" :class="{collapseMenu}" :style="style">
     <!-- <div class="BodyArea"> -->
       <!-- <transition name="fade" :key="$route.meta.key"> -->
         <router-view v-slot="{ Component }">
@@ -34,6 +34,11 @@ const launch = store.launch();
 const collapseMenu = computed(() => {
   return launch.collapseMenu;
 });
+const style = computed(() => {
+  return {
+    width: launch.pageWidth +'px'
+  }
+ });
 // 监听
 
 // 挂载
@@ -45,8 +50,10 @@ const collapseMenu = computed(() => {
 <style lang="scss" scoped>
 .AFrameBody {
   // padding: 16px;
+  position: relative;
   height: 100%;
-  width: 100%;
+  // width: 100%;
+  flex-grow: 1;
   overflow: hidden;
   // &.collapseMenu {
   //   width: 

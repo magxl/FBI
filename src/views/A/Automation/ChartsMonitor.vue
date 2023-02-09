@@ -1,5 +1,5 @@
 <template>
-  <Page title="排行监控" class="ChartsMonitor">
+  <Page title="Charts Monitor" class="ChartsMonitor">
     <Table ref="table" :load-data="loadData" table-name="ChartsMonitor">
       <template #actions>
         <div class="flexMode p0-16">
@@ -19,20 +19,20 @@
         align="center"
       />
       <el-table-column
-        :label="$l('国家或地区')"
+        :label="$l('Country or Regions')"
         prop="country_or_regions"
         width="200"
       />
-      <el-table-column :label="$l('分类')" prop="category" width="200" />
+      <el-table-column :label="$l('Category')" prop="category" width="200" />
       <el-table-column
-        :label="$l('找到新应用')"
+        :label="$l('New App Found')"
         prop="new_app_found"
         width="140"
       />
-      <el-table-column :label="$l('开始执行')" prop="start_run" width="160" />
-      <el-table-column :label="$l('最后执行')" prop="last_run" width="160" />
-      <el-table-column :label="$l('结束执行')" prop="end_run" width="160" />
-      <el-table-column :label="$l('状态')" prop="status" width="80">
+      <el-table-column :label="$l('Start Run')" prop="start_run" width="160" />
+      <el-table-column :label="$l('Last Run')" prop="last_run" width="160" />
+      <el-table-column :label="$l('End Run')" prop="end_run" width="160" />
+      <el-table-column :label="$l('Status')" prop="status" width="80">
         <template #default="{ row }">
           <div class="flexMode vc">
             <div class="dot8" :class="statusOptions[row.status].bg"></div>
@@ -148,12 +148,12 @@ const toToggleStatus = (row, i) => {
 };
 
 const toCreate = () => {
-  state.drawer[0].title = window.$l('创建排行监控');
+  state.drawer[0].title = window.$l('Create Charts Monitor');
   state.drawer[0].params = {};
   state.currentDrawer = 0;
 };
 const toEdit = (row, i) => {
-  state.drawer[0].title = window.$l('编辑排行监控');
+  state.drawer[0].title = window.$l('Update Charts Monitor');
   state.drawer[0].params = { row, i };
   state.currentDrawer = 0;
 };

@@ -9,10 +9,10 @@
 </template>
 <script setup>
 import MainPage from './chip/MainPage.vue';
-import NonePage from './chip/NonePage.vue';
+import StaticPage from './chip/StaticPage.vue';
 defineOptions({
   name: 'PAGE',
-  components: { MainPage, NonePage },
+  components: { MainPage, StaticPage },
 });
 const prop = defineProps({
   type: {

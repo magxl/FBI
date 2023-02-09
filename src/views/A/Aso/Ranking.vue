@@ -1,5 +1,5 @@
 <template>
-  <Page title="排行榜" class="Ranking">
+  <Page title="Ranking Keywords" class="Ranking">
     <Table ref="table" :load-data="loadData" table-name="Ranking">
       <template #actions>
         <div class="flexMode vc p0-16">
@@ -8,7 +8,7 @@
               v-model="state.search.app_id"
               size="small"
               clearable
-              :placeholder="$l('APP ID: 最多输入5个')"
+              :placeholder="$l('APP ID: up to 5')"
               @input="appidInput"
               @clear="appidClear"
             >
@@ -24,7 +24,7 @@
             <Device
               v-model="state.search.device"
               size="small"
-              :placeholder="$l('设备')"
+              :placeholder="$l('Device')"
             />
           </div>
           <div class="pr10">
@@ -33,7 +33,7 @@
               size="small"
               clearable
               filterable
-              :placeholder="$l('国家或地区')"
+              :placeholder="$l('Country or Regions')"
             >
               <el-option
                 v-for="(it, i) in countryLangMap"
@@ -50,7 +50,7 @@
               size="small"
               @click="toReset"
             >
-              <span>Reset</span>
+              <span>{{$l('Reset')}}</span>
             </el-button>
           </div>
           <div class="pr10">
@@ -64,7 +64,7 @@
               <template #icon>
                 <i class="adicon ad-search1"></i>
               </template>
-              <span>Search</span>
+              <span>{{$l('Search')}}</span>
             </el-button>
           </div>
         </div>
@@ -72,12 +72,12 @@
       <el-table-column label="ID" prop="id" width="80" align="center" />
       <el-table-column label="APP ID" prop="app_id" width="120" sortable />
       <el-table-column
-        :label="$l('排行榜')"
+        :label="$l('Ranking')"
         prop="ranking"
         width="120"
         sortable
       />
-      <el-table-column :label="$l('关键词')" prop="keywords" sortable />
+      <el-table-column :label="$l('Keyword')" prop="keywords" sortable />
     </Table>
   </Page>
 </template>
@@ -89,8 +89,6 @@ defineOptions({
 });
 // 数据
 const {proxy} = getCurrentInstance();
-const ci = getCurrentInstance()
-console.info(ci);
 const state = reactive({
   table: {
     total: 1000,

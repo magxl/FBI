@@ -26,98 +26,91 @@ const actions = {
       },
       {
         label: 'CNY',
-        value: '￥',
+        value: '¥',
       },
     ];
-    this.campaignGroup = window.$fakeData(window.$randomNumber(100), (i) => {
-      const { label, value } = currencyOptions[window.$randomNumber(2)];
-      const timezone = window.$randomNumber(24, -12);
-      const id = i + 1;
-      return {
-        id,
-        name: value + ' Org ' + id,
-        permission: window.$randomNumber(3), // 权限 0 只读，1 编辑 2 可删，权限向下覆盖
-        currency: value,
-        currency_name: label,
-        timezone,
-        timezone_name: `timezone (${timezone})`,
-      };
-    });
+    const permissionMap = [
+      { icon: 'adicon ad-noedit txt-dark5', tips: 'No Access Write' },
+      { icon: 'adicon ad-canedit txt-green', tips: 'You Can Edit' },
+      { icon: 'adicon ad-cohort txt-pink', tips: 'From OAuth' },
+    ];
+    const campaignGroup = window
+      .$fakeData(window.$randomNumber(100), (i) => {
+        const { label, value } = currencyOptions[window.$randomNumber(2)];
+        const timezone = window.$randomNumber(24, -12);
+        const id = i + 1;
+        // 权限 0 只读，1 编辑 2 OAuth，权限向下覆盖
+        const permission = window.$randomNumber(3);
+        const icon = permissionMap[permission];
+        return {
+          id,
+          name: value + ' Org ' + id,
+          permission,
+          currency: value,
+          currency_name: label,
+          timezone,
+          timezone_name: `timezone (${timezone})`,
+          icon: icon.icon,
+          tips: icon.tips,
+        };
+      })
+      .sort((a, b) => b.permission - a.permission);
+    this.campaignGroup = campaignGroup;
+    return campaignGroup;
   },
-  async getCampaign(org_id = '') {
-    if (!org_id) {
+  async getCampaign(orgId = '') {
+    if (!orgId) {
       return [];
     }
-    const statusOptions = [
-      {
-        label: 'Running',
-        value: 'RUNNING',
-      },
-      {
-        label: 'Paused',
-        value: 'PAUSED',
-      },
-      {
-        label: 'Removed',
-        value: 'REMOVED',
-      },
-      {
-        label: 'Hold ON',
-        value: 'HOLD_ON',
-      },
-    ];
+    const { statusMap } = window.$map;
+    const statusMapArr = Object.keys(statusMap).map((it) => statusMap[it]);
     const adplacementOptions = [
       'APPSTORE_PRODUCT_PAGES_BROWSE',
       'APPSTORE_SEARCH_RESULTS',
       'APPSTORE_SEARCH_TAB',
       'APPSTORE_TODAY_TAB',
     ];
-    return window.$fakeData(window.$randomNumber(100), (i) => {
-      const { value } = statusOptions[window.$randomNumber(4)];
-      const supplySources = adplacementOptions[window.$randomNumber(4)];
-      const id = i + 1;
-      return {
-        id,
-        org_id,
-        name: 'Campaign ' + org_id + ' - ' + id,
-        supplySources,
-        status: value,
-      };
-    });
+    return window
+      .$fakeData(window.$randomNumber(100), (i) => {
+        const status = statusMapArr[window.$randomNumber(statusMapArr.length)];
+        const icon = ['adicon', status.icon, status.txt].join(' ');
+        const supplySources = adplacementOptions[window.$randomNumber(4)];
+        const id = i + 1;
+        return {
+          id,
+          orgId,
+          name: 'Campaign ' + orgId + ' - ' + id,
+          supplySources,
+          status: status.label,
+          sort: status.sort,
+          icon,
+        };
+      })
+      .sort((a, b) => a.sort - b.sort);
   },
-  async getAdGroup({ org_id = '', campaign_id = '' }) {
-    if (!org_id || !campaign_id) {
+  async getAdgroup(orgId = '', campaignId = '') {
+    if (!orgId || !campaignId) {
       return [];
     }
-    const statusOptions = [
-      {
-        label: 'Running',
-        value: 'RUNNING',
-      },
-      {
-        label: 'Paused',
-        value: 'PAUSED',
-      },
-      {
-        label: 'Removed',
-        value: 'REMOVED',
-      },
-      {
-        label: 'Hold ON',
-        value: 'HOLD_ON',
-      },
-    ];
-    return window.$fakeData(window.$randomNumber(100), (i) => {
-      const { value } = statusOptions[window.$randomNumber(4)];
-      const id = i + 1;
-      return {
-        id,
-        org_id,
-        campaign_id,
-        name: 'Ad Group ' + org_id + ' - ' + campaign_id + ' - ' + id,
-        status: value,
-      };
-    });
+    const { statusMap } = window.$map;
+    const statusMapArr = Object.keys(statusMap).map((it) => statusMap[it]);
+
+    return window
+      .$fakeData(window.$randomNumber(100), (i) => {
+        const status = statusMapArr[window.$randomNumber(statusMapArr.length)];
+        const icon = ['adicon', status.icon, status.txt].join(' ');
+        const id = i + 1;
+        return {
+          id,
+          orgId,
+          campaignId,
+          name: 'Ad Group ' + orgId + ' - ' + campaignId + ' - ' + id,
+          status: status.label,
+          sort: status.sort,
+          icon,
+        };
+      })
+      .sort((a, b) => a.sort - b.sort);
   },
 };
 const getters = {};

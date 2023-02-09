@@ -24,10 +24,12 @@ $colors: (
   orange3: $orange3,
   orange5: $orange5,
   orange7: $orange7,
+  pink: $pink,
   pink1: $pink1,
   pink3: $pink3,
   pink5: $pink5,
   pink7: $pink7,
+  purple: $purple,
   purple1: $purple1,
   purple3: $purple3,
   purple5: $purple5,
@@ -134,10 +136,6 @@ $var in $colors {
   }
 }
 
-.border-t {
-  border-top: 1px $dark1 solid;
-}
-
 .drop-shadow-blue {
   cursor: pointer;
 
@@ -161,10 +159,16 @@ $var in $colors {
 }
 
 .border-t {
-  border-top: 1px solid rgba(153,153,153,.1);
+  border-top: 1px solid $border;
 }
 .border-b {
-  border-bottom: 1px solid rgba(153,153,153,.1);
+  border-bottom: 1px solid $border;
+}
+.border-r {
+  border-right: 1px solid $border;
+}
+.border-l {
+  border-left: 1px solid $border;
 }
 .bg-f9 {
   background-color: #f9f9f9;

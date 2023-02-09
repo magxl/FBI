@@ -8,10 +8,11 @@ export default {
     icon: 'ad-chart1',
     position: ['menu'],
   },
+  component: () => import('@views/A/Launch/404.vue'),
   children: [
     {
       path: '404',
-      name: 'A404',
+      name: 'A404Page',
       meta: {
         sort: 10,
         label: '404',

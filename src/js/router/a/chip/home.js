@@ -12,7 +12,7 @@ export default {
       name: 'A_Overview',
       meta: {
         sort: 0,
-        label: '概览',
+        label: 'Overview',
         icon: 'ad-chart1',
         keepalive: true,
         tips: [

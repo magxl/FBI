@@ -2,7 +2,7 @@
   <div class="Apps pl8 pr16 pb16">
     <Card>
       <template #header>
-        <span>Apps</span>
+        <span>{{$l('Apps')}}</span>
         <div class="flexMode vc">
           <div
             v-for="(it, i) in currency"
@@ -15,8 +15,8 @@
           </div>
         </div>
       </template>
-      <div class="h300">
-        <EChart :options="state.options[state.active]" />
+      <div v-loading="state.loading">
+        <EChart v-if="!state.loading" :options="state.options[state.active]" type="pie" width="50%" />
       </div>
     </Card>
   </div>
@@ -35,6 +35,7 @@ const prop = defineProps({
 });
 // 数据
 const state = reactive({
+  loading: true,
   active: 'USD',
   options: {
     USD: {},
@@ -54,6 +55,8 @@ onMounted(() => {
 });
 // 事件
 const initChart = () => {
+  state.loading = true;
+
   const len = window.$randomNumber(10);
   const names = window.$fakeData(len, (i) => `App${i}`);
   state.options[state.active] = {
@@ -67,7 +70,7 @@ const initChart = () => {
       {
         type: 'pie',
         top: 0,
-        radius: ['30%','60%'],
+        radius: ['30%', '60%'],
         itemStyle: {
           borderRadius: 4,
         },
@@ -90,6 +93,7 @@ const initChart = () => {
       },
     ],
   };
+  state.loading = false;
 };
 const toChange = (v) => {
   state.active = v;

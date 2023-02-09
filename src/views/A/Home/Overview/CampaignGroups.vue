@@ -2,7 +2,7 @@
   <div class="CampaignGroups p0-16 pb16">
     <Card>
       <template #header>
-        <span>Campaign Groups</span>
+        <span>{{$l('Campaign Groups')}}</span>
         <div class="flexMode vc">
           <div
             v-for="(it, i) in currency"
@@ -15,8 +15,8 @@
           </div>
         </div>
       </template>
-      <div class="h300">
-        <EChart :options="state.options[state.active]" />
+      <div v-loading="state.loading">
+        <EChart v-if="!state.loading" :options="state.options[state.active]" />
       </div>
     </Card>
   </div>
@@ -35,6 +35,7 @@ const prop = defineProps({
 });
 // 数据
 const state = reactive({
+  loading: true,
   active: 'USD',
   options: {
     USD: {},
@@ -68,6 +69,7 @@ onMounted(() => {
 });
 // 事件
 const initChart = () => {
+  state.loading = true;
   const len = window.$randomNumber(20);
   const names = window.$fakeData(len, (i) => `name${i}`);
   state.options[state.active] = {
@@ -102,10 +104,11 @@ const initChart = () => {
       };
     }),
   };
+  state.loading = false;
 };
 const toChange = (v) => {
   state.active = v;
-  if(state.options[v].series){
+  if (state.options[v].series) {
     return;
   }
   initChart();

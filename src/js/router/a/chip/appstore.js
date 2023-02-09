@@ -3,7 +3,7 @@ export default {
   name: 'AAppStore',
   meta: {
     sort: 30,
-    label: '应用商店',
+    label: 'App Store',
     icon: 'ad-appstore',
   },
   children: [
@@ -12,7 +12,7 @@ export default {
       name: 'A_Charts',
       meta: {
         sort: 0,
-        label: '实时排行',
+        label: 'Charts',
         icon: 'ad-realtime-ranking',
       },
       component: () => import('@views/A/AppStore/Charts.vue'),
@@ -22,17 +22,17 @@ export default {
       name: 'A_SearchRanking',
       meta: {
         sort: 0,
-        label: '搜索排行',
+        label: 'Search Ranking',
         icon: 'ad-search-ranking',
       },
       component: () => import('@views/A/AppStore/SearchRanking.vue'),
     },
     {
-      path: 'Recommend Keywords',
+      path: 'RecommendKeywords',
       name: 'A_RecommendKeywrod',
       meta: {
         sort: 0,
-        label: '推荐词',
+        label: 'Recommend Keywords',
         icon: 'ad-recommend',
       },
       component: () => import('@views/A/AppStore/RecommendKeywords.vue'),
@@ -42,7 +42,7 @@ export default {
       name: 'A_Popularity',
       meta: {
         sort: 0,
-        label: '热度',
+        label: 'Popularity',
         icon: 'ad-fire',
       },
       component: () => import('@views/A/AppStore/Popularity.vue'),
@@ -54,6 +54,7 @@ export default {
         sort: 0,
         label: '覆盖词',
         icon: '',
+        hide: true,
       },
       component: () => import('@views/A/AppStore/CoveringWord.vue'),
     },

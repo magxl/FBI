@@ -2,7 +2,7 @@
   <div class="Recent">
     <Card>
       <template #header>
-        <span>Recent</span>
+        <span>{{$l('Recent')}}</span>
         <div class="flexMode vc">
           <div
             v-for="(it, i) in state.tool"
@@ -15,8 +15,8 @@
           </div>
         </div>
       </template>
-      <div v-loading="state.loading" class="h300">
-        <EChart :options="state.options[state.active]" />
+      <div v-loading="state.loading">
+        <EChart v-if="!state.loading" :options="state.options[state.active]" height="300" width="384" />
       </div>
     </Card>
   </div>
@@ -85,6 +85,9 @@ const initChart = () => {
           type: 'line',
           smooth: true,
           symbol: 'none',
+          areaStyle: {
+            color: window.$linearColor(i),
+          },
           data: window.$fakeData(7, (j) =>
             (window.$randomNumber(9999999) / 100).toFixed(2),
           ),
@@ -102,6 +105,7 @@ const initChart = () => {
         return {
           name: prop.currency[i].label,
           type: 'bar',
+          stack: 'month',
           data: window.$fakeData(7, (j) =>
             (window.$randomNumber(9999999) / 100).toFixed(2),
           ),
@@ -122,7 +126,7 @@ const initChart = () => {
 };
 const toChange = (v) => {
   state.active = v;
-  if(state.options[v].series){
+  if (state.options[v].series) {
     return;
   }
   initChart();

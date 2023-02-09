@@ -1,9 +1,9 @@
 export default {
-  表格列自定义: '表格列自定义',
-  左固定: '左固定',
-  没有左固定: '没有左固定',
-  中间部分: '中间部分',
-  没有中间部分: '没有中间部分',
-  右固定: '右固定',
-  没有右固定: '没有右固定',
+  'Tabel Column Customization': '表格列自定义',
+  'Fixed Left': '左固定',
+  'No Fixed Left': '没有左固定',
+  Center: '中间部分',
+  'No Center': '没有中间部分',
+  'Fixed Right': '右固定',
+  'No Fixed Right': '没有右固定',
 };

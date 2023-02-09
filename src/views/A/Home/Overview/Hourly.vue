@@ -2,11 +2,11 @@
   <div class="Hourly p16 pt0">
     <Card>
       <template #header>
-        <span>Hourly</span>
+        <span>{{$l('Hourly')}}</span>
         <span class="fs12 txt-dark7">{{ time }} (UTC)</span>
       </template>
-      <div class="h300">
-        <EChart :options="state.options" />
+      <div v-loading="state.loading">
+        <EChart v-if="!state.loading" :options="state.options" width="100%" minus-width="400" />
       </div>
     </Card>
   </div>
@@ -25,10 +25,11 @@ const prop = defineProps({
 import { reactive } from 'vue';
 // 数据
 const state = reactive({
+  loading: true,
   options: {},
   options1: {},
   stamp: 0,
-  chartKey: 0
+  chartKey: 0,
 });
 
 // 计算属性
@@ -45,6 +46,7 @@ onMounted(() => {
 });
 // 事件
 const initChart = () => {
+  state.loading = true;
   state.options = {
     grid: {
       top: 30,
@@ -74,8 +76,8 @@ const initChart = () => {
       };
     }),
   };
-  state.chartKey = + new Date();
-  console.info(state.options);
+  state.chartKey = +new Date();
+  state.loading = false;
 };
 // timer
 state.stamp = +new Date();

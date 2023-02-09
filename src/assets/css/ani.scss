@@ -100,4 +100,55 @@
       }
     }
   }
+  &.white {
+    &:hover{
+      &::after{
+        background-color: $white1;
+      }
+      &::before{
+        border-color: $white1;
+      }
+    }
+  }
+}
+
+
+.transition1 {
+  transition: $trans1;
+}
+
+.transition2 {
+  transition: $trans2;
+}
+
+.transition3 {
+  transition: $trans3;
+}
+
+.transition5 {
+  transition: $trans5;
+}
+
+.rotate180 {
+  transform: rotateZ(180deg);
+}
+
+.hover-a {
+  color: $dark7;
+  transition: $trans3;
+  cursor: pointer;
+  &:hover{
+    color: $primary;
+  }
+}
+
+.hover-y-8{
+  &:hover{
+    transform: translateY(-8px);
+  }
+}
+.hover-underline {
+  &:hover{
+    text-decoration: underline;
+  }
 }
