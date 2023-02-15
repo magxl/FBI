@@ -3,7 +3,8 @@
     <div class="flexMode hb p8-16 border-b">
       <!-- ↓ form -->
       <div class="flexMode vs">
-        <div class="w240 pr8">
+        <div class="relative w240 pr8">
+          <span class="abs l t txt-red fs12 lh24 z2">*</span>
           <div class="pb8">
             <OCA
               ref="oca"
@@ -21,7 +22,9 @@
             <el-select
               v-model="state.form.matchType"
               size="small"
-              :placeholder="$l('Match Type')"
+              :placeholder="`${$l('Match Type')}: ${
+                defaultFormPlaceholder.matchType
+              }`"
               class="wp100"
             >
               <el-option
@@ -36,7 +39,9 @@
             <el-select
               v-model="state.form.keywordStatus"
               size="small"
-              :placeholder="$l('Keyword Status')"
+              :placeholder="`${$l('Keyword Status')}: ${
+                defaultFormPlaceholder.keywordStatus
+              }`"
               class="wp100"
             >
               <el-option
@@ -51,7 +56,9 @@
             <el-select
               v-model="state.form.removeDuplicate"
               size="small"
-              :placeholder="$l('Remove Duplicate')"
+              :placeholder="`${$l('Remove Duplicate')}: ${
+                defaultFormPlaceholder.removeDuplicate
+              }`"
               class="wp100"
             >
               <el-option
@@ -63,8 +70,8 @@
             </el-select>
           </div>
         </div>
-        <div class="w240 pr8">
-          <div class="pb8">
+        <div class="flexMode flexV hb w240 pr8">
+          <div class="wp100">
             <el-input-number
               v-model="state.form.cptBid"
               :min="0"
@@ -74,7 +81,7 @@
               class="wp100"
             />
           </div>
-          <div>
+          <div class="wp100">
             <el-input
               v-model="state.form.keyword"
               clearable
@@ -89,15 +96,15 @@
         </div>
         <!-- ↑ form -->
         <!-- ↓ dashed box -->
-        <div class="flexMode flexV hr pb4">
+        <div class="flexMode flexV hr">
           <div class="w160 p8 border-dark3-dashed radius4">
             <div class="pb8 fs12 txt-c">
-              <span class="txt-dark5">{{
-                $l('The Number You Can Create')
-              }}</span>
-              <span v-if="state.keywordCount !== null" class="pl4 txt-blue">{{
-                state.keywordCount
-              }}</span>
+              <span class="txt-dark5">
+                {{ $l('The Number You Can Create') }}
+              </span>
+              <span v-if="state.keywordCount !== null" class="pl4 txt-blue">
+                {{ state.keywordCount }}
+              </span>
             </div>
             <el-button
               size="small"
@@ -127,7 +134,7 @@
             v-for="(it, i) in state.hotMode"
             :key="i"
             class="flexMode vc hb p4-16 fs12 hover-bg-dark1"
-            :class="i!==state.hotMode.length-1 && 'border-b'"
+            :class="i !== state.hotMode.length - 1 && 'border-b'"
             @click="toUseHotMode(it, i)"
           >
             <span class="pr8">{{ it.name }}</span>
@@ -138,30 +145,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="w240 pr8">
-        <Org
-          v-model="state.form.orgId"
-          size="small"
-          :placeholder="$l('Campaign Group')"
-        />
-      </div>
-      <div class="w240 pr8">
-        <Campaign
-          v-model="state.form.campaignId"
-          v-model:orgId="state.form.orgId"
-          size="small"
-          :placeholder="$l('Campaign')"
-        />
-      </div>
-      <div class="w240 pr8">
-        <AdGroup
-          v-model="state.form.adgroupId"
-          v-model:orgId="state.form.orgId"
-          v-model:campaignId="state.form.campaignId"
-          size="small"
-          :placeholder="$l('Ad Group')"
-        />
-      </div> -->
     </div>
     <!-- top -->
     <!-- table ↓ -->
@@ -193,20 +176,27 @@
             round
             plain
             type="primary"
-            @click="toSubmit"
+            @click="toEditBid"
           >
             {{ $l('Update Bid') }}
           </el-button>
-          <el-button
-            size="small"
-            :disabled="disabled"
-            round
-            plain
-            type="primary"
-            @click="toSubmit"
+          <el-popconfirm
+            placement="top"
+            :title="$l('Remove The Selection?')"
+            @confirm="toRemoveSelection"
           >
-            {{ $l('Remove Selection') }}
-          </el-button>
+            <template #reference>
+              <el-button
+                size="small"
+                :disabled="disabled"
+                round
+                plain
+                type="primary"
+              >
+                {{ $l('Remove Selection') }}
+              </el-button>
+            </template>
+          </el-popconfirm>
         </div>
       </template>
       <el-table-column
@@ -241,24 +231,48 @@
         width="200"
         show-overflow-tooltip
       />
-      <el-table-column :label="$l('Match Type')" prop="matchType" width="100" />
+      <el-table-column
+        :label="$l('Match Type')"
+        prop="matchType"
+        width="100"
+        :formatter="(row) => matchTypeObj[row.matchType]"
+      />
       <el-table-column
         :label="$l('Remove Duplicate')"
         prop="removeDuplicate"
-        width="120"
+        width="140"
+        :formatter="(row) => removeDuplicateObj[row.removeDuplicate]"
       />
+      <el-table-column :label="$l('Status')" prop="keywordStatus" width="100">
+        <template #default="{ row }">
+          <Status :status="row.keywordStatus" />
+        </template>
+      </el-table-column>
       <el-table-column label="-" />
+      <el-table-column :label="$l('Operation')" fixed="right" width="160">
+        <template #default="{ row }">
+          <span v-if="row.submitStatus">{{ row.submitStatus }}</span>
+        </template>
+      </el-table-column>
     </Table>
+    <Dialog
+      v-model:current="state.currentDialog"
+      :dialog="state.dialog"
+      @submit="dialogSubmit"
+    />
   </Page>
 </template>
 <script setup>
+import { batchMode } from '@com/batchMode.js';
+import EditBid from './CreateKeyword/EditBid.vue';
 defineOptions({
   name: 'CreateKeyword',
 });
 // 数据
 const state = reactive({
   loading: false,
-  form: {
+  form: {},
+  defaultForm: {
     matchType: 'EXACT',
     removeDuplicate: 'country',
     keywordStatus: 'RUNNING',
@@ -269,6 +283,14 @@ const state = reactive({
   hotMode: [], // 推荐的规则
   useHotMode: '', // 使用中的规则
   stamp: 0,
+  currentDialog: '',
+  dialog: [
+    {
+      title: 'Update Bid',
+      size: 500,
+      cpt: EditBid,
+    },
+  ],
 });
 const store = inject('store');
 const launch = store.launch();
@@ -280,6 +302,36 @@ const lang = computed(() => {
 const disabled = computed(() => {
   return !state.selection.length;
 });
+const matchTypeObj = computed(() => {
+  const obj = {};
+  matchTypeMap.forEach((it) => {
+    obj[it.value] = it[`label_${lang.value}`];
+  });
+  return obj;
+});
+const keywordStatusObj = computed(() => {
+  const obj = {};
+  keywordStatusMap.forEach((it) => {
+    obj[it.value] = it[`label_${lang.value}`];
+  });
+  return obj;
+});
+const removeDuplicateObj = computed(() => {
+  const obj = {};
+  removeDuplicateMap.forEach((it) => {
+    obj[it.value] = it[`label_${lang.value}`];
+  });
+  return obj;
+});
+const defaultFormPlaceholder = computed(() => {
+  return {
+    matchType: matchTypeObj.value[state.defaultForm.matchType],
+    keywordStatus: keywordStatusObj.value[state.defaultForm.keywordStatus],
+    removeDuplicate:
+      removeDuplicateObj.value[state.defaultForm.removeDuplicate],
+  };
+});
+
 // 监听
 
 // 挂载
@@ -288,8 +340,7 @@ onMounted(() => {
 });
 // 事件
 const toAddToTable = () => {
-  const { form, stamp } = state;
-  const names = proxy.$refs.oca.getName();
+  const { form, defaultForm, stamp } = state;
   if (
     form.orgId &&
     form.campaignId &&
@@ -297,6 +348,7 @@ const toAddToTable = () => {
     form.keyword &&
     form.cptBid
   ) {
+    const names = proxy.$refs.oca.getName();
     const arr = [...new Set(form.keyword.split('\n'))];
     const rows = [];
     arr.forEach((it, i) => {
@@ -305,6 +357,7 @@ const toAddToTable = () => {
         const key = stamp + i + 1;
         rows.push({
           key,
+          ...defaultForm,
           ...form,
           orgName: names[0],
           campaignName: names[1],
@@ -318,7 +371,61 @@ const toAddToTable = () => {
     proxy.$message.warning(window.$l('Please Fill The Form'));
   }
 };
-const toSubmit = () => {};
+const toSubmit = () => {
+  console.info('toSubmit');
+  batchMode({
+    run: true,
+    selection: state.selection,
+    list: state.list,
+    cb({ row, batch, i }) {
+      clearTimeout(state.timer);
+      return new Promise((resolve) => {
+        state.timer = setTimeout(() => {
+          const result = window.$rn(2) ? 'success' : 'fail';
+          console.info(result);
+          if (result === 'success') {
+            batch.success++;
+            batch.successList.push(row);
+            proxy.$refs.table.editRow({ i, row: { submitStatus: 'Success' } });
+          } else {
+            batch.fail++;
+            batch.failList.push(row);
+            proxy.$refs.table.editRow({ i, row: { submitStatus: 'Fail' } });
+          }
+          resolve();
+        }, window.$rn(3000, 200));
+      });
+    },
+  });
+};
+const toEditBid = () => {
+  state.dialog[0].title = proxy.$l(state.dialog[0].title);
+  state.currentDialog = 0;
+};
+const toRemoveSelection = () => {
+  const r = [];
+  state.list.forEach((it) => {
+    const has = state.selection.filter((ft) => ft.key === it.key)[0];
+    if (!has) {
+      r.push(it);
+    }
+  });
+  state.list = r;
+};
+const dialogSubmit = (a) => {
+  if (a) {
+    const { type, v } = a;
+    if (type === 'editBid') {
+      state.selection.forEach((it) => {
+        state.list.forEach((ft) => {
+          if (ft.key === it.key) {
+            ft.cptBid = v;
+          }
+        });
+      });
+    }
+  }
+};
 const ocaChange = (v) => {
   state.keywordCount = window.$rn(5000);
 };

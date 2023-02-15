@@ -4,7 +4,7 @@
       ref="cas"
       v-model="state.v"
       v-bind="$attrs"
-      :options="options"
+      :options="state.options"
       :props="props"
       :placeholder="prop.placeholder"
       filterable
@@ -56,10 +56,12 @@ const prop = defineProps({
     type: String,
     default: 'id',
   },
+  // 回显状态字典
   showStatus: {
     type: [String, Array],
     default: 'all',
   },
+  // 权限级别，越大越高
   permission: {
     type: [String, Number],
     default: 0,
@@ -115,20 +117,18 @@ const props = computed(() => {
 const permissionLevel = computed(() => {
   return parseInt(prop.permission);
 });
-const options = computed(() => {
-  return (
-    state.options.filter((it) => it.permission >= permissionLevel.value) || []
-  );
-});
 // 监听
 
 // 挂载
 onMounted(async () => {
-  state.options = await common.getCampaignGroup();
+  const options = await common.getCampaignGroup();
+  state.options =
+    options.filter((it) => it.permission >= permissionLevel.value) || [];
 });
 // 事件
 const emit = defineEmits();
 const change = (v) => {
+  // console.info(v);
   emit('change', v);
   emit('update:orgId', v[0]);
   emit('update:campaignId', v[1]);

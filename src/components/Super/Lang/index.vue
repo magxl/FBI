@@ -3,7 +3,11 @@
     <el-dropdown placement="bottom-end" @command="changeLang">
       <Hover>
         <div class="flexMode hc vc">
-          <span class="relative areaicon point" :class="`area-${lang}`" />
+          <el-image
+            :src="$getImg(`country/${lang}.png`)"
+            class="w24 h24 radiusP50 border-white3"
+            fit="cover"
+          />
           <!-- <span class="point" :class="txtColor">{{lang.toUpperCase()}}</span> -->
         </div>
       </Hover>
@@ -17,13 +21,16 @@
             :key="i"
             :command="it"
             class="fs12"
-            :class="lang === it && 'txt-blue'"
             :divided="i === 0"
           >
             <Hover>
-              <div class="flexMode vc">
-                <span class="relative areaicon" :class="`area-${it}`" />
-                <span class="pl10">{{ it }}</span>
+              <div class="flexMode vc" :class="lang === it && 'txt-primary'">
+                <el-image
+                  :src="$getImg(`country/${it}.png`)"
+                  class="w16 h16"
+                  fit="cover"
+                />
+                <span class="pl8">{{ it }}</span>
               </div>
             </Hover>
           </el-dropdown-item>
@@ -38,7 +45,7 @@ defineOptions({
 });
 // 传参
 const prop = defineProps({
-  txtColor:{
+  txtColor: {
     type: String,
     default: '',
   },
@@ -61,6 +68,9 @@ const lang = computed(() => {
 
 // 事件
 const changeLang = (v) => {
+  if (v === lang.value) {
+    return;
+  }
   launch.saveLang(v);
 };
 

@@ -2,7 +2,7 @@
   <div class="App">
     <Loading />
     <!-- <Navbar v-if="showNavbar" /> -->
-    <!-- <ContextMenu /> -->
+    <ContextMenu />
     <div class="MAIN">
       <router-view />
     </div>

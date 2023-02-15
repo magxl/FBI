@@ -4,6 +4,8 @@ let routes = {
   name: 'A',
   meta: {
     label: 'A',
+    label_en_us: 'A',
+    label_zh_cn: 'A',
     position: ['navbar', 'menu'],
     sort: 20,
   },

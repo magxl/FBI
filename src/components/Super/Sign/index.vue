@@ -46,7 +46,7 @@ const toSave = () => {
     .generate()
     .then((res) => {
       emit('update:sign', res);
-      emit('closeDrawer');
+      emit('close');
     })
     .catch((err) => {
       console.info('NO SIGNED');
@@ -57,7 +57,7 @@ const toClear = () => {
   emit('update:sign', '');
 };
 const toCancel = () => {
-  emit('closeDrawer');
+  emit('close');
 };
 </script>
 <style lang="scss" scoped>

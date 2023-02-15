@@ -28,12 +28,12 @@ const actions = {
       this[aim] = dt;
     }
   },
-  saveCollapse(v){
+  saveCollapse(v) {
     this.collapseMenu = v;
     const width = document.body.clientWidth;
-    if(this.collapseMenu){
+    if (this.collapseMenu) {
       this.pageWidth = width - 64;
-    }else{
+    } else {
       this.pageWidth = width - 200;
     }
   },
@@ -53,15 +53,19 @@ const actions = {
   },
   saveTitle() {
     // 存储页面标题
-    const langLabel = this.currentPage.meta
-      ? this.currentPage.meta.langLabel + '-'
-      : '';
-    document.title = `${langLabel}${window.global.config.title}`;
+    let label = '';
+    const { meta, params } = this.currentPage;
+    // if (meta.multiple) {
+    //   label += params.nameLabel + '-';
+    // }
+    label += meta[`label_${this.lang}`];
+    label += '-';
+    document.title = `${label}${window.global.config.title}`;
   },
   savePage(v) {
     // 存储页面信息
     this.historyPages.unshift(v);
-    if (v.meta.multi) {
+    if (v.meta.multiple) {
       // 页面可缓存多个
       this.currentPage = v;
       this.tabPages.push(v);
@@ -99,7 +103,15 @@ const actions = {
           最后一个页面设置为当前页面
         */
         let newCurrentPage = this.tabPages[index] || this.tabPages[index - 1];
-        router.push({ name: newCurrentPage.name });
+        if (newCurrentPage.meta.multiple) {
+          router.push({
+            name: newCurrentPage.name,
+            params: newCurrentPage.params,
+            query: newCurrentPage.query,
+          });
+        } else {
+          router.push({ name: newCurrentPage.name });
+        }
       }
     };
     // 关闭其它
@@ -138,15 +150,13 @@ const actions = {
   saveContextMenu(el) {
     console.info(el);
   },
-  registRouter(){
-
-  },
-  getLocalTimezone(){
+  registRouter() {},
+  getLocalTimezone() {
     this.localTimezone = {
-      timezone: new Date().getTimezoneOffset()/-60,
-      timezone_name: Intl.DateTimeFormat().resolvedOptions().timeZone
-    }
-  }
+      timezone: new Date().getTimezoneOffset() / -60,
+      timezone_name: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    };
+  },
 };
 const getters = {};
 export default {

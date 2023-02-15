@@ -3,7 +3,9 @@ export default {
   name: 'A_Home',
   meta: {
     sort: 0,
-    label: '首页',
+    label: 'Home',
+    label_en_us: 'Home',
+    label_zh_cn: '首页',
     icon: 'ad-home',
   },
   children: [
@@ -13,6 +15,8 @@ export default {
       meta: {
         sort: 0,
         label: 'Overview',
+        label_en_us: 'Overview',
+        label_zh_cn: '概览',
         icon: 'ad-chart1',
         keepalive: true,
         tips: [

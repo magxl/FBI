@@ -4,6 +4,8 @@ export default {
   meta: {
     sort: 30,
     label: 'App Store',
+    label_en_us: 'App Store',
+    label_zh_cn: '应用商店',
     icon: 'ad-appstore',
   },
   children: [
@@ -13,6 +15,8 @@ export default {
       meta: {
         sort: 0,
         label: 'Charts',
+        label_en_us: 'Charts',
+        label_zh_cn: '实时排行',
         icon: 'ad-realtime-ranking',
       },
       component: () => import('@views/A/AppStore/Charts.vue'),
@@ -23,6 +27,8 @@ export default {
       meta: {
         sort: 0,
         label: 'Search Ranking',
+        label_en_us: 'Search Ranking',
+        label_zh_cn: '搜索排行',
         icon: 'ad-search-ranking',
       },
       component: () => import('@views/A/AppStore/SearchRanking.vue'),
@@ -33,6 +39,8 @@ export default {
       meta: {
         sort: 0,
         label: 'Recommend Keywords',
+        label_en_us: 'Recommend Keywords',
+        label_zh_cn: '推荐词',
         icon: 'ad-recommend',
       },
       component: () => import('@views/A/AppStore/RecommendKeywords.vue'),
@@ -43,6 +51,8 @@ export default {
       meta: {
         sort: 0,
         label: 'Popularity',
+        label_en_us: 'Popularity',
+        label_zh_cn: '热度',
         icon: 'ad-fire',
       },
       component: () => import('@views/A/AppStore/Popularity.vue'),
@@ -52,7 +62,9 @@ export default {
       name: 'A_CoveringWord',
       meta: {
         sort: 0,
-        label: '覆盖词',
+        label: 'Covring Wrod',
+        label_en_us: 'Covring Wrod',
+        label_zh_cn: '覆盖词',
         icon: '',
         hide: true,
       },

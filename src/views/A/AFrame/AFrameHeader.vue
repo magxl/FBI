@@ -1,7 +1,6 @@
 <template>
   <div class="AFrameHeader">
     <div class="logoArea flexMode vc h56 pl20 noShrink noselect point">
-      <!-- <img :src="getImg('favicon.ico', '/public/')" class="w24 h24" /> -->
       <el-image
         :src="$getImg('d/logo_mini.png')"
         fit="cover"
@@ -14,19 +13,17 @@
           <div class="pt4 fs12 txt-c">{{ $l('Mobile View') }}</div>
         </div>
         <template #reference>
-          <i class="adicon ad-qrcode txt-white fs24 ml8" />
+          <i class="adicon ad-qrcode txt-white fs24 ml8"></i>
         </template>
       </el-popover>
-
-      <!-- <span class="logoTxt pl10 txt-dark9">iADBrain</span> -->
     </div>
     <!-- Logo ↑ -->
     <div class="leftArea">
-      <div class="adArea flexMode vc p0-10">
-        <!-- <div class="dot6 bg-blue" />
-        <el-link class="pl4 fs12 txt-dark7"
-          >notice here longlonglonglonglonglonglonglonglonglong</el-link
-        > -->
+      <div class="flexMode vc h24 p0-10">
+        <div class="dot6 bg-orange"></div>
+        <div class="pl4 fs12 lh11 txt-white7 hover-txt-orange">
+          notice here longlonglonglonglonglonglonglonglonglong
+        </div>
       </div>
       <TabPages />
     </div>
@@ -34,7 +31,6 @@
     <div class="rightArea flexMode hr vc w160 h56 pr10">
       <el-dropdown placement="bottom-end" @command="avatarCommand">
         <div class="mgbtn circle30 white mr8">
-          <!-- <Icon name="user" class="fs20" /> -->
           <i class="adicon ad-user-circle txt-white fs24"></i>
         </div>
         <template #dropdown>
@@ -48,7 +44,6 @@
             >
               <div class="w24">
                 <i class="adicon" :class="it.icon" />
-                <!-- <Icon :name="it.icon" class="fs16 opacity5" /> -->
               </div>
               <span>
                 {{ $l(it.label) }}
@@ -62,7 +57,7 @@
       <div class="mgbtn circle30 white mr8" @click="toSetting">
         <i class="adicon ad-nav-system-set fs24 txt-white" />
       </div>
-      <div class="pr8">
+      <div class="p0-8">
         <Lang class="flexMode vs hp100" txt-color="txt-white9" />
       </div>
     </div>
@@ -170,9 +165,6 @@ const gotoBoard = () => {
     flex-direction: column;
     justify-content: flex-end;
     width: calc(100% - 360px);
-    .adArea {
-      width: 100%;
-    }
     &::after {
       content: '';
       position: absolute;

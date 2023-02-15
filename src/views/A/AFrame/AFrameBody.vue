@@ -1,30 +1,27 @@
 <template>
-  <div class="AFrameBody" :class="{collapseMenu}" :style="style">
-    <!-- <div class="BodyArea"> -->
-      <!-- <transition name="fade" :key="$route.meta.key"> -->
-        <router-view v-slot="{ Component }">
-          <keep-alive>
-            <component
-              v-if="$route.meta.keepalive"
-              :is="Component"
-              :key="$route.meta.key"
-            />
-          </keep-alive>
-          <component
-            v-if="!$route.meta.keepalive"
-            :key="$route.meta.key"
-            :is="Component"
-          />
-        </router-view>
-      <!-- </transition> -->
-    <!-- </div> -->
+  <div class="AFrameBody" :class="{ collapseMenu }" :style="style">
+    <!-- <transition name="fade" :key="$route.meta.key"> -->
+    <router-view v-slot="{ Component }">
+      <keep-alive>
+        <component
+          v-if="$route.meta.keepalive"
+          :is="Component"
+          :key="$route.meta.key"
+        />
+      </keep-alive>
+      <component
+        v-if="!$route.meta.keepalive"
+        :key="$route.meta.key"
+        :is="Component"
+      />
+    </router-view>
+    <!-- </transition> -->
   </div>
 </template>
 <script setup>
 defineOptions({
   name: 'AFrameBody',
 });
-import { reactive } from 'vue';
 // 数据
 const state = reactive({});
 const store = inject('store');
@@ -36,9 +33,9 @@ const collapseMenu = computed(() => {
 });
 const style = computed(() => {
   return {
-    width: launch.pageWidth +'px'
-  }
- });
+    width: launch.pageWidth + 'px',
+  };
+});
 // 监听
 
 // 挂载
@@ -56,7 +53,7 @@ const style = computed(() => {
   flex-grow: 1;
   overflow: hidden;
   // &.collapseMenu {
-  //   width: 
+  //   width:
   // }
   .BodyArea {
     height: 100%;

@@ -5,9 +5,10 @@ import { $l } from '@js/lang';
 const login = {
   path: '/',
   name: 'Login',
-  langLabel: $l('登录'),
   meta: {
-    label: '登录',
+    label: 'Login',
+    label_en_us: 'Login',
+    label_zh_cn: '登录',
     position: '',
     normal: true,
     sort: 0,
@@ -24,7 +25,7 @@ routes.sort((a, b) => a.meta.sort - b.meta.sort);
 // 初始化语言模版
 const initRoutes = (v) => {
   return v.map((it) => {
-    it.meta.langLabel = $l(it.meta.label);
+    // it.meta.langLabel = $l(it.meta.label);
     if (it.children) {
       it.children = initRoutes(it.children);
     }
@@ -47,6 +48,7 @@ let time = 0;
 // console.info(store.launch);
 // console.info(launch);
 router.beforeEach((to, from, next) => {
+  // console.info('before', to);
   // clearTimeout(timer);
   const launch = store.launch();
   launch.saveData('loading', { ...launch.loading, visible: true });
@@ -84,23 +86,40 @@ router.beforeEach((to, from, next) => {
     } else {
       next(nextPage);
     }
-  }else {
+  } else {
     next(nextPage);
   }
 });
 router.afterEach((to, from) => {
+  // console.info('after',to);
   const launch = store.launch();
   const now = +new Date();
   console.info(
     `TIME %c┆${now - time}ms┆`,
     'background-color:#f1f7ff; color:#0085FF;',
   );
-  const unsavePage = ['Login']; // 不存储的页面
-  if (unsavePage.indexOf(to.name) === -1) {
-    to.key = `page${now}${parseInt(Math.random() * 10000)}`;
-    launch.saveData('currentPage', to);
-    launch.savePage(to);
+  const unsavePage = ['Login', 'A_404']; // 不存储的页面
+  const hasHistory = launch.tabPages.filter((ft) => ft.name === to.name);
+  // 存在历史且参数不相同
+  if (!hasHistory[0]) {
+    if (unsavePage.indexOf(to.name) === -1) {
+      to.key = `page${now}${parseInt(Math.random() * 10000)}`;
+      launch.saveData('currentPage', to);
+      launch.savePage(to);
+    }
+  } else {
+    const params = JSON.stringify(to.params);
+    const hasSameParams = hasHistory.filter(ft=>JSON.stringify(ft.params)===params)[0];
+    if(hasSameParams){
+      to.key = hasSameParams.key;
+      launch.saveData('currentPage', to);
+    }else{
+      to.key = `page${now}${parseInt(Math.random() * 10000)}`;
+      launch.saveData('currentPage', to);
+      launch.savePage(to);
+    }
   }
+
   launch.saveTitle();
   launch.saveData('loading', { ...launch.loading, visible: false });
 });

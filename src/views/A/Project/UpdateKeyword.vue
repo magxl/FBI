@@ -4,28 +4,32 @@
       <!-- ↓ form -->
       <div class="flexMode vs">
         <div class="w240 pr8">
-          <div class="pb8">
+          <div class="relative pb8">
+            <span class="abs l t txt-red fs12 lh24 z2">*</span>
             <Org
               v-model="state.search.orgId"
               v-model:currency="state.currency"
-              size="small"
+              v-model:orgName="state.names.orgName"
               :placeholder="$l('Campaign Group')"
             />
           </div>
-          <div class="pb8">
+          <div class="relative pb8">
+            <span class="abs l t txt-red fs12 lh24 z2">*</span>
             <Campaign
               v-model="state.search.campaignId"
               v-model:orgId="state.search.orgId"
-              size="small"
+              v-model:campaignName="state.names.campaignName"
               :placeholder="$l('Campaign')"
             />
           </div>
           <div class="pb8">
             <AdGroup
+              ref="adgroup"
+              multiple
               v-model="state.search.adgroupId"
               v-model:orgId="state.search.orgId"
               v-model:campaignId="state.search.campaignId"
-              size="small"
+              v-model:adgroupName="state.names.adgroupName"
               :placeholder="$l('Ad Group')"
             />
           </div>
@@ -97,7 +101,6 @@
           </div>
           <div class="w200 pb4">
             <el-button
-              size="small"
               plain
               round
               type="primary"
@@ -202,12 +205,72 @@
         align="center"
         fixed="left"
       />
+      <el-table-column
+        :label="$l('Currency')"
+        prop="currency"
+        width="72"
+        fixed="left"
+      />
+      <el-table-column
+        :label="$l('Keyword')"
+        prop="keyword"
+        width="200"
+        fixed="left"
+        show-overflow-tooltip
+      />
+      <el-table-column :label="$l('CPT Bid')" prop="cptBid" width="100" />
+      <el-table-column
+        :label="$l('Campaign Group')"
+        prop="orgName"
+        width="200"
+        show-overflow-tooltip
+      />
+      <el-table-column
+        :label="$l('Campaign')"
+        prop="campaignName"
+        width="200"
+        show-overflow-tooltip
+      />
+      <el-table-column
+        :label="$l('Ad Group')"
+        prop="adgroupName"
+        width="200"
+        show-overflow-tooltip
+      />
+      <el-table-column :label="$l('Match Type')" prop="matchType" width="100" />
+      <el-table-column :label="$l('Status')" prop="status" width="100" />
+      <el-table-column :label="$l('Spend')" prop="spend" width="100" />
+      <el-table-column :label="$l('CPA')" prop="cpa" width="100" />
+      <el-table-column :label="$l('CPT')" prop="cpt" width="100" />
+      <el-table-column
+        :label="$l('Impression')"
+        prop="impression"
+        width="100"
+      />
+      <el-table-column :label="$l('Tap')" prop="tap" width="100" />
+      <el-table-column :label="$l('Install')" prop="install" width="100" />
+      <el-table-column :label="$l('TTR')" prop="ttr" width="100" />
+      <el-table-column :label="$l('CR')" prop="cr" width="100" />
+      <el-table-column
+        :label="$l('Redownload')"
+        prop="redownload"
+        width="100"
+      />
+      <el-table-column
+        :label="$l('New Download')"
+        prop="newDownload"
+        width="120"
+      />
+      <el-table-column :label="$l('LAT On')" prop="latOn" width="100" />
+      <el-table-column :label="$l('LAT Off')" prop="latOff" width="100" />
       <el-table-column label="-"></el-table-column>
     </Table>
+    <Dialog v-model:current="state.currentDialog" :dialog="state.dialog" />
   </Page>
 </template>
 <script setup>
 import Filters from './UpdateKeyword/Filters.vue';
+import UpdateCptBid from './UpdateKeyword/UpdateCptBid.vue';
 // 定义
 defineOptions({
   name: 'UpdateKeyword',
@@ -217,6 +280,7 @@ defineOptions({
 const state = reactive({
   loading: false,
   search: {},
+  names: {},
   date: [],
   currency: '',
   list: [],
@@ -227,6 +291,14 @@ const state = reactive({
       name: 'history name' + i,
     };
   }),
+  selection: [],
+  currentDialog: '',
+  dialog: [
+    {
+      title: 'Update CPT Bid',
+      cpt: UpdateCptBid,
+    },
+  ],
 });
 const { proxy } = getCurrentInstance();
 // 挂载
@@ -243,19 +315,72 @@ const dateChange = (v) => {
   state.search.day = v[0] + '-' + v[1];
 };
 const filtersConfirm = (v) => {
-  console.info('filtersConfirm', v);
   state.filter = JSON.parse(JSON.stringify(v));
   proxy.$refs.filters.hide();
 };
 const filtersReset = () => {
   state.filter = {};
 };
-const toSearch = () => {};
+const toSearch = async () => {
+  const { search, names } = state;
+  if (!search.orgId || !search.campaignId) {
+    proxy.$message.info({
+      grouping: true,
+      message: $l('Campaign Group And Campaign Must Be Fill'),
+    });
+    return;
+  }
+  let adgroup = search.adgroupId;
+  if (adgroup[0] === 'all') {
+    adgroup = proxy.$refs.adgroup.getValue();
+  }
+  proxy.$refs.adgroup.getName();
+  console.info(adgroup);
+  getData(adgroup);
+};
+const getData = async (adgroup) => {
+  const total = 30;
+  const { orgName, campaignName, adgroupName } = state.names;
+  const list = window.$fd(total, (i) => {
+    const id = i + 1;
+    const adgroupId = adgroup[window.$rn(adgroup.length)];
+    console.info(adgroupId);
+    return {
+      id,
+      currency: state.currency,
+      orgName,
+      campaignName,
+      keyword: 'Keyword' + id,
+      adgroupName: adgroupName[adgroupId],
+      cptBid: window.$fa((window.$rn(999999, 100) / 100).toFixed(2), 2),
+    };
+  });
+  state.list = list;
+};
 const toUseHistory = (it, i) => {
   state.useHistory = it.name;
 };
-const statusCommand = (v) => {};
-const cptBidCommand = (v) => {};
+const statusCommand = (v) => {
+  if (state.selection.length) {
+  } else {
+    proxy.$message.info({
+      grouping: true,
+      message: $l('No Selection'),
+    });
+  }
+};
+const cptBidCommand = (v) => {
+  if (state.selection.length) {
+    state.dialog[0].title = window.$l(state.dialog[0].title);
+    state.dialog[0].params = { type: v, selection: state.selection };
+    state.currentDialog = 0;
+  } else {
+    proxy.$message.info({
+      grouping: true,
+      message: $l('No Selection'),
+    });
+  }
+};
 // 计算属性
 const filtersItem = computed(() => {
   const r = [];
@@ -275,7 +400,7 @@ const filtersItem = computed(() => {
 // maps
 const statusMap = [
   {
-    label: 'Active',
+    label: 'Activate',
     value: 'ACTIVE',
   },
   {
@@ -286,15 +411,15 @@ const statusMap = [
 const cptBidMap = [
   {
     label: 'Set New Bid',
-    value: 'newBid',
+    value: 'SetNewBid',
   },
   {
     label: 'Change According to CPT Bid',
-    value: 'cptBid',
+    value: 'ByCptBid',
   },
   {
     label: 'Change According to AVG CPT',
-    value: 'avgCpt',
+    value: 'ByAvgCpt',
   },
 ];
 // 卸载

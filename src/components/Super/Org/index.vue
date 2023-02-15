@@ -19,7 +19,10 @@
         :key="i"
         :label="it.name"
         :value="it.id"
-      />
+      >
+        <i :class="it.icon" :title="it.tips"></i>
+        <span class="pl4">{{ it.name }}</span>
+      </el-option>
     </el-select>
   </div>
 </template>
@@ -80,6 +83,7 @@ const change = (v) => {
   emit('update:modelValue', v);
   const has = campaignGroup.value.filter((it) => it.id === v)[0];
   emit('update:currency', has ? has.currency : '');
+  emit('update:orgName', has ? has.name : '');
   emit('change', v);
 };
 const clear = () => {

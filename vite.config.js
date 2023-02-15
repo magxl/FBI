@@ -67,6 +67,7 @@ export default defineConfig({
       '@views': '/src/views/',
       '@js': '/src/js/',
       '@img': '/src/assets/img/',
+      '@com': '/src/js/composition/',
     },
     dedupe: ['vue'],
   },

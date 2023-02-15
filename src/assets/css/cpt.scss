@@ -7,13 +7,23 @@
     height: calc(100vh - 56px);
   }
 }
-.DrawerFooter {
+.DrawerFooter, .DialogFooter {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   height: 56px;
   padding: 0 16px;
   border-top: 1px $dark1 solid;
+}
+.DialogBody {
+  min-height: 120px;
+  background-color: $white9;
+}
+.DialogContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
 }
 
 .Card {

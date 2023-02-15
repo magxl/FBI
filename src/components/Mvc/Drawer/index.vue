@@ -9,7 +9,7 @@
       append-to-body
       :size="state.drawerInfo.size"
       :direction="state.drawerInfo.direction"
-      :destroy-on-close="false"
+      :destroy-on-close="destroy"
       @closed="closed"
     >
       <component
@@ -17,7 +17,7 @@
         :is="state.drawerInfo.cpt"
         v-bind="$attrs"
         :params="state.drawerInfo.params"
-        @closeDrawer="closeDrawer"
+        @close="close"
       />
       <slot v-else />
     </el-drawer>
@@ -55,9 +55,7 @@ const destroy = computed(() => {
 const withHeader = computed(() => {
   return Boolean(state.drawerInfo.title);
 });
-// slot计算
-const slot = useSlots();
-const defaultSlot = slot.default;
+
 // 显隐
 watch(
   () => prop.current,
@@ -75,7 +73,7 @@ watch(
           visible: true,
         };
       } else {
-        closeDrawer();
+        close();
       }
     }
   },
@@ -97,7 +95,7 @@ const closed = () => {
 };
 // 主动关闭
 const { proxy } = getCurrentInstance();
-const closeDrawer = () => {
+const close = () => {
   proxy.$refs.drawer.handleClose();
 };
 </script>

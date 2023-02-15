@@ -5,6 +5,8 @@ export default {
     hide: true,
     sort: 9999,
     label: '404',
+    label_en_us: '404',
+    label_zh_cn: '404',
     icon: 'ad-chart1',
     position: ['menu'],
   },
@@ -16,6 +18,8 @@ export default {
       meta: {
         sort: 10,
         label: '404',
+        label_en_us: '404',
+        label_zh_cn: '404',
         tips: [],
       },
       component: () => import('@views/A/Launch/404.vue'),

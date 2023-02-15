@@ -47,83 +47,87 @@
           </div>
         </div>
       </template>
-      <el-table-column label="ID" prop="ID" width="80">
+      <el-table-column label="ID" prop="id" width="80">
         <template #default="{ row }">
-          <span @dblclick="$copy(row.ID, true)">{{ row.ID }}</span>
+          <span @dblclick="$copy(row.id, true)">{{ row.id }}</span>
         </template>
       </el-table-column>
       <el-table-column
         :label="$l('Name')"
-        prop="Name"
+        prop="name"
         width="300"
         show-overflow-tooltip
       >
         <template #default="{ row }">
-          <span class="alink hover-txt-orange txt-primary">{{ row.Name }}</span>
+          <span
+            class="alink hover-txt-orange txt-primary"
+            @click="toOrgDetail(row)"
+            >{{ row.name }}</span
+          >
         </template>
       </el-table-column>
-      <el-table-column :label="$l('Apps')" prop="Apps" width="240">
+      <el-table-column :label="$l('Apps')" prop="apps" width="240">
         <template #default="{ row }">
-          <Avatar :list="row.Apps" @to-click="toAppDetail" />
+          <Avatar :list="row.apps" @to-click="toAppDetail" />
         </template>
       </el-table-column>
       <el-table-column
         :label="$l('Country or Regions')"
-        prop="Country"
+        prop="country"
         width="240"
       >
         <template #default="{ row }">
-          <Avatar :list="row.Country" type="country" />
+          <Avatar :list="row.country" type="country" />
         </template>
       </el-table-column>
       <el-table-column
         :label="$l('Spends')"
-        prop="Spends"
+        prop="spends"
         width="120"
         align="right"
         sortable
-        :formatter="(row) => row.currency + row.Spends"
+        :formatter="(row) => row.currency + row.spends"
       />
       <el-table-column
         :label="$l('Installs')"
-        prop="Installs"
+        prop="installs"
         width="120"
         align="right"
         sortable
       />
       <el-table-column
         :label="$l('Impressions')"
-        prop="Impressions"
+        prop="impressions"
         width="120"
         align="right"
         sortable
       />
       <el-table-column
         :label="$l('Taps')"
-        prop="Taps"
+        prop="taps"
         width="120"
         align="right"
         sortable
       />
       <el-table-column
         :label="$l('AVG CPA')"
-        prop="AVGCPA"
+        prop="avgCpa"
         width="120"
         align="right"
         sortable
-        :formatter="(row) => row.currency + row.AVGCPA"
+        :formatter="(row) => row.currency + row.avgCpa"
       />
       <el-table-column
         :label="$l('AVG CPT')"
-        prop="AVGCPT"
+        prop="avgCpt"
         width="120"
         align="right"
         sortable
-        :formatter="(row) => row.currency + row.AVGCPT"
+        :formatter="(row) => row.currency + row.avgCpt"
       />
       <el-table-column
         :label="$l('CR')"
-        prop="CR"
+        prop="cr"
         width="100"
         align="right"
         sortable
@@ -131,7 +135,7 @@
       />
       <el-table-column
         :label="$l('TTR')"
-        prop="TTR"
+        prop="ttr"
         width="100"
         align="right"
         sortable
@@ -139,7 +143,7 @@
       />
       <el-table-column
         :label="$l('Modify Date')"
-        prop="ModifyDate"
+        prop="modifyDate"
         width="120"
       />
     </Table>
@@ -172,6 +176,7 @@ const state = reactive({
   ],
 });
 const { proxy } = getCurrentInstance();
+const router = useRouter();
 // 计算属性
 
 // 监听
@@ -184,7 +189,7 @@ onMounted(() => {
 const init = () => {
   const end = window.$moment().add(-1, 'day').format('YYYY-MM-DD');
   const start = window.$moment().add(-7, 'day').format('YYYY-MM-DD');
-  state.date = [start,end];
+  state.date = [start, end];
   dateChange([start, end]);
 };
 const dateChange = (v) => {
@@ -198,25 +203,25 @@ const loadData = async () => {
   const list = window.$fd(total, (i) => {
     const index = i + 1;
     return {
-      ID: window.$randomNumber(9999999, 10000000),
-      Name: 'Name' + index,
-      Apps: window.$fd(window.$randomNumber(10), (a) => window.$rc()).join(','),
+      id: window.$randomNumber(9999999, 10000000),
+      name: 'Name' + index,
+      apps: window.$fd(window.$randomNumber(10), (a) => window.$rc()).join(','),
       currency: window.$rn(2) ? '$' : '￥',
-      Country: window.$fd(
+      country: window.$fd(
         window.$randomNumber(30),
         (a) => countrys[window.$randomNumber(countrys.length - 1)],
       ),
-      Spends: window.$fa(
+      spends: window.$fa(
         (window.$randomNumber(999999999, 100) / 100).toFixed(2),
       ),
-      Installs: window.$fa(window.$randomNumber(9999999), 0),
-      Impressions: window.$fa(window.$randomNumber(9999999), 0),
-      Taps: window.$fa(window.$randomNumber(9999999), 0),
-      AVGCPA: window.$fa((window.$randomNumber(999999, 100) / 100).toFixed(2)),
-      AVGCPT: window.$fa((window.$randomNumber(999999, 100) / 100).toFixed(2)),
-      CR: (window.$randomNumber(10000, 100) / 100).toFixed(2),
-      TTR: (window.$randomNumber(10000, 100) / 100).toFixed(2),
-      ModifyDate: window
+      installs: window.$fa(window.$randomNumber(9999999), 0),
+      impressions: window.$fa(window.$randomNumber(9999999), 0),
+      taps: window.$fa(window.$randomNumber(9999999), 0),
+      avgCpa: window.$fa((window.$randomNumber(999999, 100) / 100).toFixed(2)),
+      avgCpt: window.$fa((window.$randomNumber(999999, 100) / 100).toFixed(2)),
+      cr: (window.$randomNumber(10000, 100) / 100).toFixed(2),
+      ttr: (window.$randomNumber(10000, 100) / 100).toFixed(2),
+      modifyDate: window
         .$moment()
         .add(window.$rn(100, -100), 'day')
         .format('YYYY-MM-DD'),
@@ -234,15 +239,15 @@ const toSummary = ({ columns, data }) => {
     return [];
   }
   const keys = [
-    { key: 'AVGCPA', value: 'avg', unit_prev: currency },
-    { key: 'AVGCPT', value: 'avg', unit_prev: currency },
-    { key: 'AVGCPM', value: 'avg', unit_prev: currency },
-    { key: 'TTR', value: 'avg', unit_append: '%' },
-    { key: 'CR', value: 'avg', unit_append: '%' },
-    { key: 'Installs', vlaue: 'sum' },
-    { key: 'Taps', value: 'sum' },
-    { key: 'Impressions', value: 'sum' },
-    { key: 'Spends', value: 'sum', unit_prev: currency },
+    { key: 'avgCpa', value: 'avg', unit_prev: currency },
+    { key: 'avgCpt', value: 'avg', unit_prev: currency },
+    { key: 'avgCpm', value: 'avg', unit_prev: currency },
+    { key: 'ttr', value: 'avg', unit_append: '%' },
+    { key: 'cr', value: 'avg', unit_append: '%' },
+    { key: 'installs', vlaue: 'sum' },
+    { key: 'taps', value: 'sum' },
+    { key: 'impressions', value: 'sum' },
+    { key: 'spends', value: 'sum', unit_prev: currency },
     // { key: 'NewDownloads', value: 'sum' },
     // { key: 'Redownloads', value: 'sum' },
     // { key: 'LatOnInstalls', value: 'sum' },
@@ -317,7 +322,7 @@ const toFilter = (initLoad) => {
   let list = [];
   if (state.valid) {
     state.olist.forEach((it) => {
-      if (it.Apps) {
+      if (it.apps) {
         list.push(it);
       }
     });
@@ -334,7 +339,14 @@ const toFilter = (initLoad) => {
     });
   });
 };
-
+const toOrgDetail = (row) => {
+  router.push({
+    name: 'A_CampaignGroupDetail',
+    params: {
+      orgId: row.id,
+    },
+  });
+};
 const toAppDetail = (info) => {
   state.drawer[0].title = window.$l('App Detail');
   state.drawer[0].params = { info };

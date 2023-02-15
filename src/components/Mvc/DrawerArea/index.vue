@@ -81,7 +81,7 @@ const bodyStyle = computed(() => {
 // 事件
 const emit = defineEmits();
 const toClose = () => {
-  emit('closeDrawer');
+  emit('close');
 };
 const toSubmit = () => {
   emit('submit');

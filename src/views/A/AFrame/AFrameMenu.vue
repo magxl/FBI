@@ -17,8 +17,8 @@
                 <em class="w24 txt-dark5 noShrink">
                   <i class="adicon" :class="it.meta.icon" />
                 </em>
-                <span class="txt-nowrap" :title="it.meta.langLabel">
-                  {{ it.meta.langLabel }}
+                <span class="txt-nowrap" :title="it.meta[`label_${lang}`]">
+                  {{ it.meta[`label_${lang}`] }}
                 </span>
               </template>
               <el-menu-item-group>
@@ -28,28 +28,29 @@
                     :key="ct.name"
                     :index="ct.name"
                     @click="goto(ct.name)"
-                    :title="ct.meta.langLabel"
+                    :title="ct.meta[`label_${lang}`]"
                   >
                     <em class="w24 txt-dark5 noShrink">
                       <i class="adicon" :class="ct.meta.icon" />
                     </em>
-                    <span class="pl4 txt-nowrap">{{ ct.meta.langLabel }}</span>
+                    <span class="pl4 txt-nowrap">{{
+                      ct.meta[`label_${lang}`]
+                    }}</span>
                   </el-menu-item>
                 </template>
               </el-menu-item-group>
             </el-sub-menu>
             <el-menu-item
               v-else-if="!it.meta.hide"
-              :key="it.name"
               :index="it.name"
               @click="goto(it.name)"
-              :title="it.meta.langLabel"
+              :title="it.meta[`label_${lang}`]"
               class="hover-txt-shadow-blue3"
             >
               <em class="w24 noShrink">
                 <i class="adicon" :class="it.meta.icon" />
               </em>
-              <span class="txt-nowrap">{{ it.meta.langLabel }}</span>
+              <span class="txt-nowrap">{{ it.meta[`label_${lang}`] }}</span>
             </el-menu-item>
           </template>
         </template>
@@ -85,6 +86,9 @@ onMounted(() => {
 });
 
 // 计算
+const lang = computed(() => {
+  return launch.lang;
+});
 const currentPage = computed(() => {
   return launch.currentPage;
 });

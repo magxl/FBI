@@ -9,17 +9,25 @@
           class="tab flexMode vc noselect txt-nowrap noShrink"
           :class="currentPage.key === it.key && 'current'"
           @click.stop="toPage(it)"
+          @contextmenu="showRightMenu"
         >
-          <span class="pr2 fs12 lh12">{{ it.meta.langLabel }}</span>
+          <div class="tabTxt flexMode vc fs12 lh12 pr2">
+            <!-- <span v-if="it.meta.multiple" class="pr2"> {{ it.params.nameLabel }} -</span> -->
+            <span>{{ it.meta[`label_${lang}`] }}</span>
+          </div>
           <Icon
             v-if="tabPages.length > 1"
             name="close"
-            class="icon ml5 fs16 "
-            :class="currentPage.key === it.key?'txt-shadow-white drop-shadow-red':'txt-shadow-white drop-shadow-white'"
+            class="icon ml5 fs16"
+            :class="
+              currentPage.key === it.key
+                ? 'txt-shadow-white drop-shadow-red'
+                : 'txt-shadow-white drop-shadow-white'
+            "
             @click.stop="toClose(i)"
           />
         </div>
-        <div class="pl4" />
+        <div class="pl4"></div>
       </div>
     </el-scrollbar>
   </div>
@@ -39,6 +47,9 @@ const { proxy } = getCurrentInstance();
 
 const login = computed(() => {
   return launch.login;
+});
+const lang = computed(() => {
+  return launch.lang;
 });
 // 历史tab
 const tabPages = computed(() => {
@@ -72,9 +83,9 @@ onMounted(() => {
 });
 // 事件
 const router = useRouter();
-const toPage = ({ name, key }) => {
+const toPage = ({ name, key, params }) => {
   if (key !== currentPage.value.key) {
-    router.push({ name });
+    router.push({ name, params });
   }
 };
 const toClose = (i) => {
@@ -82,9 +93,12 @@ const toClose = (i) => {
 };
 const scrollToTab = (v) => {
   // 定位到tab
-  state.scrollbar.wrap$
-    .querySelector(`#${v}`)
-    .scrollIntoView({ behavior: 'smooth' });
+  const scrollAim = state.scrollbar.wrap$.querySelector(`#${v}`);
+  state.scrollbar.setScrollLeft(scrollAim.offsetLeft);
+  // scrollAim.scrollIntoView({ behavior: 'smooth' });
+};
+const showRightMenu = () => {
+  console.info('showRightMenu');
 };
 
 // 卸载
@@ -98,6 +112,7 @@ const scrollToTab = (v) => {
   height: 32px;
   padding-left: 10px;
   .tab {
+    position: relative;
     padding: 4px 12px;
     margin-left: 4px;
     border: 1px solid transparent;
@@ -105,17 +120,34 @@ const scrollToTab = (v) => {
     border-radius: 6px 6px 0 0;
     color: $white9;
     border: 1px sloid transparent;
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 12px;
+      bottom: 0;
+      width: 36px;
+      z-index: 1;
+      background-image: linear-gradient(to right, $primary1, $primary);
+    }
+    .tabTxt {
+      max-width: 160px;
+    }
     // transition: $trans3;
     .icon {
       opacity: 0.3;
       transition: $trans1;
+      z-index: 2;
       &:hover {
         opacity: 0.6;
       }
     }
     &.current {
       color: $dark9;
-      background-color: $white9 !important;
+      background-color: $white !important;
+      &::after {
+        background-image: linear-gradient(to right, $white1, $white) !important;
+      }
       .icon {
         opacity: 1;
       }
@@ -123,7 +155,14 @@ const scrollToTab = (v) => {
     &:hover {
       color: $dark7;
       border-color: $dark1;
-      background-color: $white7;
+      background-color: #b3b6f8;
+      &::after {
+        background-image: linear-gradient(
+          to right,
+          rgba(179, 182, 248, 0.1),
+          #b3b6f8
+        );
+      }
       // box-shadow: 0 -2px 4px $littleBlue;
     }
   }

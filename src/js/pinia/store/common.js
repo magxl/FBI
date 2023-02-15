@@ -30,9 +30,9 @@ const actions = {
       },
     ];
     const permissionMap = [
-      { icon: 'adicon ad-noedit txt-dark5', tips: 'No Access Write' },
+      { icon: 'adicon ad-noedit txt-dark3', tips: 'No Access Write' },
       { icon: 'adicon ad-canedit txt-green', tips: 'You Can Edit' },
-      { icon: 'adicon ad-cohort txt-pink', tips: 'From OAuth' },
+      { icon: 'adicon ad-cohort txt-purple', tips: 'From OAuth' },
     ];
     const campaignGroup = window
       .$fakeData(window.$randomNumber(100), (i) => {

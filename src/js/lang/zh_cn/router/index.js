@@ -4,7 +4,7 @@ export default {
   Chart: '图表',
   'Main Board': '主看板',
   Automation: '自动化服务',
-  'Charts Monitor': '图表监控',
+  'Charts Monitor': '排行监控',
   Monitors: '监控组',
   'Spends Monitor': '支出监控',
   Tag: '标签',

@@ -3,6 +3,8 @@ export default {
   name: '404',
   meta: {
     label: '404',
+    label_en_us: '404',
+    label_zh_cn: '404',
   },
   component: () => import('@views/A/Launch/404.vue'),
 };

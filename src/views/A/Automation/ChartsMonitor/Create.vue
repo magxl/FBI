@@ -163,7 +163,7 @@ const toSubmit = () => {
   state.submiting = true;
   proxy.$setTimeout(() => {
     state.submiting = false;
-    emit('closeDrawer');
+    emit('close');
   }, window.$randomNumber(2000, 300));
 };
 // 卸载

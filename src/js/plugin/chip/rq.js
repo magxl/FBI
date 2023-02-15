@@ -94,7 +94,10 @@ service.interceptors.response.use(
       //   });
       // }
       if (config.showMsg) {
-        ElMessage.error(msg);
+        ElMessage.error({
+          grouping: true,
+          message: msg,
+        });
       }
     }
 
@@ -102,7 +105,6 @@ service.interceptors.response.use(
   },
   (error) => {
     // 错误请求抛出监听
-    console.info('响应错误', error);
     delPending(error.config);
     if (error && error.response) {
       // 1.公共错误处理
@@ -171,7 +173,10 @@ service.interceptors.response.use(
       }
       return Promise.reject();
     }
-    ElMessage.error(error.message);
+    ElMessage.error({
+      grouping: true,
+      message: error.message,
+    });
     // store.commit('launch/hideLoading')
     return Promise.resolve(error.response);
   },

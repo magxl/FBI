@@ -271,7 +271,7 @@ const toReset = () => {
   emit('filterSubmit');
   getLocalColumn();
   state.reseting = false;
-  emit('closeDrawer');
+  emit('close');
 };
 const toSubmit = () => {
   state.submiting = true;
@@ -279,7 +279,7 @@ const toSubmit = () => {
   localStorage.setItem(columnName.value, JSON.stringify(column));
   emit('filterSubmit');
   state.submiting = false;
-  emit('closeDrawer');
+  emit('close');
 };
 const getLocalColumn = () => {
   proxy.$setTimeout(() => {

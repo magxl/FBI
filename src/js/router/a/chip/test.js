@@ -3,7 +3,9 @@ export default {
   name: 'A_Test',
   meta: {
     sort: 1000,
-    label: '测试',
+    label: 'Test',
+    label_en_us: 'Test',
+    label_zh_cn: '测试',
     icon: 'ad-board1',
     position: ['menu'],
     tips: [
@@ -19,7 +21,9 @@ export default {
       name: 'A_Test_FormatterArea',
       meta: {
         sort: 1000,
-        label: '格式化地区',
+        label: 'Formatter',
+        label_en_us: 'Formatter',
+        label_zh_cn: '格式化',
         icon: 'ad-board1',
         position: ['menu'],
         keepalive: true
@@ -31,7 +35,9 @@ export default {
       name: 'A_Test_FakeData',
       meta: {
         sort: 1000,
-        label: '假数据',
+        label: 'Fake Data',
+        label_en_us: 'Fake Data',
+        label_zh_cn: '假数据',
         icon: 'ad-board1',
         position: ['menu'],
       },
@@ -42,7 +48,9 @@ export default {
       name: 'A_Test_NumberRange',
       meta: {
         sort: 1000,
-        label: '序列数据',
+        label: 'Sort Data',
+        label_en_us: 'Sort Data',
+        label_zh_cn: '序列数据',
         icon: 'ad-board1',
         position: ['menu'],
       },
@@ -53,7 +61,9 @@ export default {
       name: 'A_Test_SnippetsFormatter',
       meta: {
         sort: 1000,
-        label: '片段格式器',
+        label: 'Snippet Formatter',
+        label_en_us: 'Snippet Formatter',
+        label_zh_cn: '片段格式器',
         icon: 'ad-board1',
         position: ['menu'],
       },
