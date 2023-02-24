@@ -21,7 +21,6 @@ defineOptions({
   name: 'Launch',
   components: { CoverArea },
 });
-import { inject, reactive, ref } from 'vue';
 const store = inject('store');
 const { launch } = store;
 const { title } = launch();

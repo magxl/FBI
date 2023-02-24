@@ -1,5 +1,5 @@
 <template>
-  <div class="Recent">
+  <div class="OverviewRecent">
     <Card>
       <template #header>
         <span>{{$l('Recent')}}</span>
@@ -25,7 +25,6 @@
 defineOptions({
   name: 'OverviewRecent',
 });
-import { reactive } from 'vue';
 // 传参
 const prop = defineProps({
   currency: {
@@ -85,8 +84,9 @@ const initChart = () => {
           type: 'line',
           smooth: true,
           symbol: 'none',
+          stack: 'day',
           areaStyle: {
-            color: window.$linearColor(i),
+            color: window.$linearColor({i}),
           },
           data: window.$fakeData(7, (j) =>
             (window.$randomNumber(9999999) / 100).toFixed(2),

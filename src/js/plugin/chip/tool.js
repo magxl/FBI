@@ -4,6 +4,11 @@ export default {
   install(app) {
     window.$echarts = echarts;
     window.$bigNumber = BigNumber;
+
+    window.$getLang = () => {
+      return localStorage.getItem('lang');
+    };
+
     // echarts 渐变颜色
 
     window.$linearColor = ({ i = 0, color }) => {
@@ -103,7 +108,11 @@ export default {
       let r = prev;
       if (window.$getType(fixed) === 'Number') {
         if (fixed > 0) {
-          r = prev + '.' + arr[1].padEnd(fixed, 0).substr(0, fixed);
+          r = prev;
+          if (arr[1]) {
+            r += '.';
+            r += arr[1].padEnd(fixed, 0).substr(0, fixed);
+          }
         }
       }
       return r;

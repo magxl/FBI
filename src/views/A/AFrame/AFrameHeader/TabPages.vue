@@ -9,7 +9,7 @@
           class="tab flexMode vc noselect txt-nowrap noShrink"
           :class="currentPage.key === it.key && 'current'"
           @click.stop="toPage(it)"
-          @contextmenu="showRightMenu"
+          @contextmenu="(e) => showRightMenu(e, i)"
         >
           <div class="tabTxt flexMode vc fs12 lh12 pr2">
             <!-- <span v-if="it.meta.multiple" class="pr2"> {{ it.params.nameLabel }} -</span> -->
@@ -45,6 +45,71 @@ const store = inject('store');
 const launch = store.launch();
 const { proxy } = getCurrentInstance();
 
+// 挂载
+onMounted(() => {
+  state.scrollbar = proxy.$refs.scrollbar;
+  state.mounted = true;
+});
+// 事件
+const router = useRouter();
+const toPage = ({ name, key, params }) => {
+  if (key !== currentPage.value.key) {
+    router.push({ name, params });
+  }
+};
+const toClose = (i) => {
+  launch.closePage(i);
+};
+const scrollToTab = (v) => {
+  // 定位到tab
+  const scrollAim = state.scrollbar.wrap$.querySelector(`#${v}`);
+  state.scrollbar.setScrollLeft(scrollAim.offsetLeft);
+  // scrollAim.scrollIntoView({ behavior: 'smooth' });
+};
+const showRightMenu = (el, i) => {
+  el.preventDefault();
+  if (tabPages.value.length < 2) {
+    return;
+  }
+  launch.saveContextMenu({
+    el,
+    visible: true,
+    list: [
+      {
+        label: $l('Close'),
+        value: 'close',
+        icon: 'close',
+        cb: () => {
+          launch.closePage(i, 'close');
+        },
+      },
+      {
+        label: $l('Close Other'),
+        value: 'closeOther',
+        cb: () => {
+          launch.closePage(i, 'closeOther');
+        },
+      },
+      {
+        label: $l('Close Right'),
+        value: 'closeRight',
+        cb: () => {
+          launch.closePage(i, 'closeRight');
+        },
+      },
+      {
+        label: $l('Close Left'),
+        value: 'closeLeft',
+        cb: () => {
+          launch.closePage(i, 'closeLeft');
+        },
+      },
+    ],
+  });
+};
+
+// 计算属性
+
 const login = computed(() => {
   return launch.login;
 });
@@ -76,30 +141,6 @@ watch(
     immediate: true,
   },
 );
-// 挂载
-onMounted(() => {
-  state.scrollbar = proxy.$refs.scrollbar;
-  state.mounted = true;
-});
-// 事件
-const router = useRouter();
-const toPage = ({ name, key, params }) => {
-  if (key !== currentPage.value.key) {
-    router.push({ name, params });
-  }
-};
-const toClose = (i) => {
-  launch.closePage(i);
-};
-const scrollToTab = (v) => {
-  // 定位到tab
-  const scrollAim = state.scrollbar.wrap$.querySelector(`#${v}`);
-  state.scrollbar.setScrollLeft(scrollAim.offsetLeft);
-  // scrollAim.scrollIntoView({ behavior: 'smooth' });
-};
-const showRightMenu = () => {
-  console.info('showRightMenu');
-};
 
 // 卸载
 </script>

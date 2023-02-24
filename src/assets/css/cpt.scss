@@ -3,11 +3,12 @@
   height: calc(100vh - 56px - 56px);
   overflow-y: auto;
   overflow-x: hidden;
-  .nofooter{
+  .nofooter {
     height: calc(100vh - 56px);
   }
 }
-.DrawerFooter, .DialogFooter {
+.DrawerFooter,
+.DialogFooter {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -54,7 +55,8 @@
   .inputGroupLeft {
     position: relative;
     z-index: 1;
-    .el-input__wrapper, .el-button  {
+    .el-input__wrapper,
+    .el-button {
       border-radius: 4px 0 0 4px;
     }
   }
@@ -68,14 +70,15 @@
     position: relative;
     z-index: 1;
     margin-left: -1px;
-    .el-input__wrapper, .el-button  {
+    .el-input__wrapper,
+    .el-button {
       border-radius: 0 4px 4px 0;
     }
   }
 }
 
 // 图表占位区域
-.chartEmpty {
+.emptyBg {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -91,4 +94,49 @@
     #f9f9f9 100%
   );
   background-size: 12px 12px;
+}
+
+// 搜索按钮
+.searchBtn {
+  position: relative;
+  .el-icon {
+    z-index: 2;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: $trans3;
+    overflow: hidden;
+    border-radius: 12px;
+    background-color: transparent;
+    z-index: 0;
+  }
+  &::before {
+    content: attr(txt);
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: $trans3;
+    transform: translateY(-50%);
+    color: transparent;
+    z-index: 1;
+  }
+  &:hover {
+    z-index: 2;
+    &::after {
+      right: -48px;
+      background-color: $primary;
+    }
+    &::before {
+      left: 16px;
+      right: -48px;
+      color: $white;
+    }
+  }
 }

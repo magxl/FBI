@@ -21,6 +21,17 @@ Object.keys(files).map((it) => {
   routes.push(files[it].default);
 });
 routes.sort((a, b) => a.meta.sort - b.meta.sort);
+routes = routes.map((it) => {
+  if (it.children) {
+    it.children.sort((a, b) => a.meta.sort - b.meta.sort);
+    it.children.forEach((ct) => {
+      if (ct.children) {
+        ct.children.sort((a, b) => a.meta.sort - b.meta.sort);
+      }
+    });
+  }
+  return it;
+});
 
 // 初始化语言模版
 const initRoutes = (v) => {
@@ -91,7 +102,8 @@ router.beforeEach((to, from, next) => {
   }
 });
 router.afterEach((to, from) => {
-  // console.info('after',to);
+  // console.info('after to',to);
+  // console.info('after from',from);
   const launch = store.launch();
   const now = +new Date();
   console.info(
@@ -109,11 +121,13 @@ router.afterEach((to, from) => {
     }
   } else {
     const params = JSON.stringify(to.params);
-    const hasSameParams = hasHistory.filter(ft=>JSON.stringify(ft.params)===params)[0];
-    if(hasSameParams){
+    const hasSameParams = hasHistory.filter(
+      (ft) => JSON.stringify(ft.params) === params,
+    )[0];
+    if (hasSameParams) {
       to.key = hasSameParams.key;
       launch.saveData('currentPage', to);
-    }else{
+    } else {
       to.key = `page${now}${parseInt(Math.random() * 10000)}`;
       launch.saveData('currentPage', to);
       launch.savePage(to);

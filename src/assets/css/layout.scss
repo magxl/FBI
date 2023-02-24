@@ -37,6 +37,17 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+.absFull {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.hide {
+  display: none;
+}
 
 .flexMode {
   display: flex !important;
@@ -126,4 +137,8 @@
 
 .z9 {
   z-index: 9;
+}
+
+.inline-block {
+  display: inline-block;
 }

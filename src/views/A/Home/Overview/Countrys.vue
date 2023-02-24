@@ -1,5 +1,5 @@
 <template>
-  <div class="Countrys pl16 pr8 pb16">
+  <div class="OverviewCountrys pl16 pr8 pb16">
     <Card>
       <template #header>
         <span>{{$l('Countrys')}}</span>
@@ -16,7 +16,7 @@
         </div>
       </template>
       <div v-loading="state.loading">
-        <EChart v-if="!state.loading" :options="state.options[state.active]" type="pie" width="50%" />
+        <EChart v-if="!state.loading" :options="state.options[state.active]" type="pie" width="33%" />
       </div>
     </Card>
   </div>
@@ -25,7 +25,6 @@
 defineOptions({
   name: 'OverviewCountrys',
 });
-import { reactive } from 'vue';
 // 传参
 const prop = defineProps({
   currency: {

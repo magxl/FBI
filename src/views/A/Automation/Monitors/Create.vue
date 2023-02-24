@@ -328,7 +328,6 @@
 defineOptions({
   name: 'MonitorsCreate',
 });
-import { reactive } from 'vue';
 const { proxy } = getCurrentInstance();
 // 数据
 const state = reactive({
@@ -355,9 +354,9 @@ const timezoneOptions = computed(() => {
 const store = inject('store');
 const launch = store.launch();
 onMounted(() => {
-  const { timezone, timezone_name } = launch.localTimezone;
-  state.form.timezone = timezone;
-  state.form.timezone_name = timezone_name;
+  const { value, label } = launch.localTimezone;
+  state.form.timezone = value;
+  state.form.label = label;
 });
 // 事件
 const metricChange = (it, i) => {

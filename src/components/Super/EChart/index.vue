@@ -29,14 +29,6 @@ const prop = defineProps({
     default: '',
   },
 });
-import {
-  reactive,
-  getCurrentInstance,
-  onMounted,
-  watch,
-  nextTick,
-  onBeforeMount,
-} from 'vue';
 const { proxy } = getCurrentInstance();
 const store = inject('store');
 const launch = store.launch();
@@ -54,6 +46,7 @@ const state = reactive({
       show: true,
       trigger: 'axis',
       animation: false,
+      appendToBody: true,
       backgroundColor: 'rgba(50,50,50,.9)',
       padding: [8, 16],
       borderWidth: 0,
@@ -88,7 +81,7 @@ const style = computed(() => {
   let width = prop.width;
   let minusWidth = parseInt(prop.minusWidth) || 0;
   if (width.indexOf('%') > -1) {
-    width = parseInt((pageWidth.value * parseInt(width)) / 100) - minusWidth;
+    width = parseInt((pageWidth.value * parseInt(width)) / 100) - minusWidth - 32;
   } else {
     width = parseInt(width) - minusWidth;
   }
@@ -105,7 +98,6 @@ onBeforeMount(() => {
 onMounted(() => {
   state.mounted = true;
   chart = window.$echarts.init(proxy.$refs.chart);
-  initEcharts();
 });
 const canInit = computed(() => {
   return state.mounted && prop.options && Object.keys(prop.options).length;
@@ -123,8 +115,8 @@ watch(
   },
 );
 
-const initEcharts = async () => {
-  // setOptions();
+const initChart = async () => {
+  setOptions();
 };
 const setOptions = () => {
   nextTick(() => {
@@ -173,10 +165,11 @@ const combineArray = (aim, source) => {
 // 调用chart实例
 
 const getChart = () => {
-  return state.chart;
+  return chart;
 };
 defineExpose({
   getChart,
+  initChart,
 });
 </script>
 <style lang="scss" scoped>

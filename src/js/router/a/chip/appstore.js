@@ -35,7 +35,7 @@ export default {
     },
     {
       path: 'RecommendKeywords',
-      name: 'A_RecommendKeywrod',
+      name: 'A_RecommendKeyword',
       meta: {
         sort: 0,
         label: 'Recommend Keywords',

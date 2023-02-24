@@ -46,7 +46,7 @@
       <EChart :options="state.options" height="300" />
     </div>
     <div v-else class="border-b h300">
-      <div class="chartEmpty">
+      <div class="emptyBg">
         <span class="fs64 txt-dark1">Chart Area</span>
       </div>
     </div>

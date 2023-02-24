@@ -49,6 +49,10 @@
     width: 24px;
     height: 24px;
   }
+  &.circle16 {
+    width: 16px;
+    height: 16px;
+  }
 
   &.green {
     &:hover{
@@ -131,6 +135,12 @@
 
 .rotate180 {
   transform: rotateZ(180deg);
+}
+.rotateZ90 {
+  transform: rotateZ(90deg);
+}
+.rotateZ-90 {
+  transform: rotateZ(-90deg);
 }
 
 .hover-a {

@@ -212,7 +212,10 @@ const initTable = (v) => {
   const { pageSize, pageNum } = v;
   pageNum && (state.pageNum = pageNum);
   pageSize && (state.pageSize = pageSize);
-  window.$reset(proxy, 'dt');
+  state.dt = {
+    list: [],
+    total: null,
+  };
   getData();
 };
 const refreshTable = () => {

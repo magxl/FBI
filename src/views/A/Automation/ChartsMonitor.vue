@@ -1,13 +1,19 @@
 <template>
-  <Page title="Charts Monitor" class="ChartsMonitor">
-    <Table ref="table" :load-data="loadData" table-name="ChartsMonitor">
+  <Page class="ChartsMonitor">
+    <Table
+      ref="table"
+      minus-height="-48"
+      :load-data="loadData"
+      table-name="ChartsMonitor"
+    >
       <template #actions>
-        <div class="flexMode p0-16">
-          <el-button type="primary" plain circle @click="toCreate" size="small">
+        <div class="flexMode vc p0-16">
+          <span>{{ $l('Charts Monitors') }}</span>
+          <div class="p16 pr0 mr16 border-r"></div>
+          <el-button type="primary" plain circle size="small" @click="toCreate">
             <template #icon>
               <i class="adicon ad-plus1"></i>
             </template>
-            <!-- <span>{{ $l('创建') }}</span> -->
           </el-button>
         </div>
       </template>
@@ -20,18 +26,18 @@
       />
       <el-table-column
         :label="$l('Country or Regions')"
-        prop="country_or_regions"
+        prop="countryOrRegions"
         width="200"
       />
       <el-table-column :label="$l('Category')" prop="category" width="200" />
       <el-table-column
         :label="$l('New App Found')"
-        prop="new_app_found"
+        prop="newAppFound"
         width="140"
       />
-      <el-table-column :label="$l('Start Run')" prop="start_run" width="160" />
-      <el-table-column :label="$l('Last Run')" prop="last_run" width="160" />
-      <el-table-column :label="$l('End Run')" prop="end_run" width="160" />
+      <el-table-column :label="$l('Start Run')" prop="startRun" width="160" />
+      <el-table-column :label="$l('Last Run')" prop="lastRun" width="160" />
+      <el-table-column :label="$l('End Run')" prop="endRun" width="160" />
       <el-table-column :label="$l('Status')" prop="status" width="80">
         <template #default="{ row }">
           <div class="flexMode vc">

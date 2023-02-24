@@ -1,7 +1,7 @@
 <template>
   <Page title="Charts" class="AppStoreCharts" noscroll>
     <div class="flexMode vc p16 border-b">
-      <div class="pr10">
+      <div class="pr8">
         <el-cascader
           v-model="state.search.type"
           :options="typeMap"
@@ -11,22 +11,24 @@
           :placeholder="$l('Category')"
         />
       </div>
-      <div class="pr10">
-        <Country v-model="state.search.region" size="small" type="Appstore" />
+      <div class="pr8">
+        <Country v-model="state.search.country" type="Appstore" />
       </div>
-      <div class="pr10">
-        <Device
-          v-model="state.search.device"
-          size="small"
-          :placeholder="$l('Device')"
-        />
+      <div class="pr8">
+        <Device v-model="state.search.device" :placeholder="$l('Device')" />
       </div>
-      <div>
-        <el-button size="small" round plain type="primary" @click="toSearch">
+
+      <div class="pr8">
+        <el-button plain round @click="toReset">
+          <span>{{ $l('Reset') }}</span>
+        </el-button>
+      </div>
+      <div class="pr8">
+        <el-button round plain type="primary" @click="toSearch">
           <template #icon>
             <i class="adicon ad-search1"></i>
           </template>
-          <span>{{$l('Search')}}</span>
+          <span>{{ $l('Search') }}</span>
         </el-button>
       </div>
     </div>
@@ -77,12 +79,7 @@
                         </div>
                       </div>
                       <div class="flexMode hr w64 noShrink">
-                        <el-tag
-                          v-if="it === 'paid'"
-                          type="warning"
-                          round
-                          size="small"
-                        >
+                        <el-tag v-if="it === 'paid'" type="warning" round>
                           {{ dt.price }}
                         </el-tag>
                       </div>
@@ -94,7 +91,7 @@
           </div>
         </div>
       </el-scrollbar>
-      <Drawer v-model:current='state.currentDrawer' :drawer='state.drawer' />
+      <Drawer v-model:current="state.currentDrawer" :drawer="state.drawer" />
     </div>
   </Page>
 </template>
@@ -107,9 +104,10 @@ defineOptions({
 const state = reactive({
   search: {
     type: 36,
-    region: 'US',
+    country: 'US',
     device: 'IPHONE',
   },
+  osearch: {},
   types: ['free', 'paid', 'grossing'],
   apps: {},
   currentDrawer: '',
@@ -121,49 +119,18 @@ const state = reactive({
     },
   ],
 });
-const { proxy } = getCurrentInstance();
 const store = inject('store');
 const launch = store.launch();
 
-// 计算属性
-const typeMap = computed(() => {
-  return window.$map.category;
-});
-const typeProps = computed(() => {
-  return {
-    label: `label_${launch.lang}`,
-    // checkStrictly: true,
-    emitPath: false,
-    expandTrigger: 'hover',
-  };
-});
-const countryMap = computed(() => {
-  return window.$map.country.countryAppStore;
-});
-const lang = computed(() => {
-  return launch.lang
- });
-const columnMap = computed(() => {
-  return {
-    free: {
-      label_en_us: 'Free',
-      label_zh_cn: '免费',
-    },
-    paid: {
-      label_en_us: 'Paid',
-      label_zh_cn: '付费',
-    },
-    grossing: {
-      label_en_us: 'Grossing',
-      label_zh_cn: '总收入',
-    },
-  }
- });
-// 监听
-
 // 挂载
 
+onMounted(() => {
+  state.osearch = JSON.parse(JSON.stringify(state.search));
+});
 // 事件
+const toReset = () => {
+  state.search = JSON.parse(JSON.stringify(state.osearch));
+};
 const getData = async (type) => {
   state.apps[type] = { loading: true };
   setTimeout(() => {
@@ -194,16 +161,50 @@ const toSearch = () => {
 toSearch();
 const toDetail = (info) => {
   state.drawer[0].title = window.$l('App Detail');
-  state.drawer[0].params = {info};
+  state.drawer[0].params = { info };
   state.currentDrawer = 0;
 };
+// 计算属性
+const typeMap = computed(() => {
+  return window.$map.category;
+});
+const typeProps = computed(() => {
+  return {
+    label: `label_${launch.lang}`,
+    // checkStrictly: true,
+    emitPath: false,
+    expandTrigger: 'hover',
+  };
+});
+const lang = computed(() => {
+  return launch.lang;
+});
+// 监听
+
 // 卸载
+
+// Map
+
+const columnMap = {
+  free: {
+    label_en_us: 'Free',
+    label_zh_cn: '免费',
+  },
+  paid: {
+    label_en_us: 'Paid',
+    label_zh_cn: '付费',
+  },
+  grossing: {
+    label_en_us: 'Grossing',
+    label_zh_cn: '总收入',
+  },
+};
 </script>
 <style lang="scss" scoped>
 .appArea {
   height: calc(100% - 58px - 56px);
   .appItem {
-    &:hover{
+    &:hover {
       .hoverImg {
         filter: blur(16px);
       }
@@ -212,7 +213,7 @@ const toDetail = (info) => {
       position: absolute;
       top: 0;
       right: 0;
-      width:16px;
+      width: 16px;
       height: 16px;
       text-align: center;
       border-radius: 8px;

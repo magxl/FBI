@@ -4,9 +4,14 @@
       v-for="(it, i) in state.options"
       :key="i"
       @click="toClick(it)"
-      class="w32 h32 mr2 radiusP50 radius box-shadow-dark1 border-dark1 hover-y-8 point transition3"
+      class="relative w32 h32 mr2 radiusP50 radius box-shadow-dark1 border-dark1 hover-y-8 point transition3"
     >
-      <el-image :src="it" lazy fit="cover">
+      <el-image :src="it" lazy fit="cover" class="wp100 hp100">
+        <template #placeholder>
+          <div class="absCenter">
+            <i class="adicon ad-loading el-icon is-loading"></i>
+          </div>
+        </template>
         <template #error>
           <div class="flexMode hc vc wp100 hp100">
             <span class="txt-dark3 fs12 lh12">FAIL</span>
@@ -17,14 +22,19 @@
     <el-tooltip v-if="state.more.length" placement="top" raw-content>
       <span class="hover-a">+{{ state.more.length }}More</span>
       <template #content>
-        <div class="flexMode flexWrap vc" style="max-width: 304px">
+        <div class="flexMode flexWrap vc" style="max-width: 306px">
           <div
             v-for="(it, i) in state.more"
             :key="i"
             @click="toClick(it)"
-            class="w32 h32 mr2 radiusP50 radius box-shadow-white1 border-white1 hover-y-8 point transition3"
+            class="relative w32 h32 mr2 mb2 radiusP50 radius box-shadow-white1 border-white1 bg-white5 hover-y-8 point transition3"
           >
-            <el-image :src="it" lazy fit="cover">
+            <el-image :src="it" lazy fit="cover" class="wp100 hp100">
+              <template #placeholder>
+                <div class="absCenter">
+                  <i class="adicon ad-loading el-icon is-loading"></i>
+                </div>
+              </template>
               <template #error>
                 <div class="flexMode hc vc wp100 hp100">
                   <span class="txt-dark3 fs12 lh12">FAIL</span>
@@ -49,6 +59,10 @@ const prop = defineProps({
     type: [Array, String],
     default: () => [],
   },
+  max: {
+    type: Number,
+    default: 4,
+  },
 });
 // 数据
 const state = reactive({
@@ -63,8 +77,8 @@ const state = reactive({
 // 事件
 const emit = defineEmits();
 const initOptions = (v) => {
-  state.more = v.slice(4, v.length);
-  state.options = v.splice(0, 4);
+  state.more = v.slice(prop.max, v.length);
+  state.options = v.splice(0, prop.max);
 };
 
 const toClick = (v) => {

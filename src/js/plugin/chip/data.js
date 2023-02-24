@@ -17,7 +17,11 @@ export default {
       document.body.appendChild(oInput);
       oInput.select();
       document.execCommand('Copy'); // 无可替代更新
-      let message = showV ? '已复制 ' + v : '已复制';
+      const copyTxt = {
+        zh_cn: '已复制',
+        en_us: 'Copied',
+      }[window.$getLang()];
+      let message = showV ? copyTxt + ' ' + v : copyTxt;
       app.config.globalProperties.$message.success({
         message,
         grouping: true,

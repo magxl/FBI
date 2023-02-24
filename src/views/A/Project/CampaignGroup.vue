@@ -179,6 +179,9 @@ const { proxy } = getCurrentInstance();
 const router = useRouter();
 // 计算属性
 
+const countryMap = computed(() => {
+  return window.$map.country.countryAllMap;
+});
 // 监听
 
 // 挂载
@@ -198,7 +201,7 @@ const dateChange = (v) => {
 };
 const loadData = async () => {
   state.loading = true;
-  const countrys = ['CN', 'US', 'JP', 'HK', 'KR', 'IE', 'AF'];
+  const countryLen = countryMap.value.length;
   const total = window.$rn(100);
   const list = window.$fd(total, (i) => {
     const index = i + 1;
@@ -207,10 +210,9 @@ const loadData = async () => {
       name: 'Name' + index,
       apps: window.$fd(window.$randomNumber(10), (a) => window.$rc()).join(','),
       currency: window.$rn(2) ? '$' : '￥',
-      country: window.$fd(
-        window.$randomNumber(30),
-        (a) => countrys[window.$randomNumber(countrys.length - 1)],
-      ),
+      country: window.$fd(window.$rn(61), (i) => {
+        return countryMap.value[window.$rn(countryLen)];
+      }),
       spends: window.$fa(
         (window.$randomNumber(999999999, 100) / 100).toFixed(2),
       ),

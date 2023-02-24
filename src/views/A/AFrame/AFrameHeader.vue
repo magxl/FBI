@@ -57,6 +57,11 @@
       <div class="mgbtn circle30 white mr8" @click="toSetting">
         <i class="adicon ad-nav-system-set fs24 txt-white" />
       </div>
+      <!-- ↓ help ↓ -->
+      <div class="mgbtn circle30 white mr8" @click="toHelp">
+        <i class="adicon ad-help fs24" :class="helpVisible?'txt-littleGreen':'txt-white'" />
+      </div>
+      <!-- language -->
       <div class="p0-8">
         <Lang class="flexMode vs hp100" txt-color="txt-white9" />
       </div>
@@ -118,7 +123,6 @@ const store = inject('store');
 const launch = store.launch();
 const { proxy } = getCurrentInstance();
 const router = useRouter();
-// 计算属性
 
 const avatarCommand = ({ command, label }) => {
   if (command === 99) {
@@ -134,11 +138,19 @@ const toSetting = () => {
   state.currentDrawer = 1;
 };
 
+const toHelp = () => {
+  launch.saveData('help', { visible: true, keyword: '' });
+};
+
 const gotoBoard = () => {
   router.push({
     name: 'ABoard_Main',
   });
 };
+// 计算属性
+const helpVisible = computed(() => {
+  return launch.help.visible;
+ });
 // 卸载
 </script>
 <style lang="scss" scoped>

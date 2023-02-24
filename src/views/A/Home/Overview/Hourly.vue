@@ -1,12 +1,22 @@
 <template>
-  <div class="Hourly p16 pt0">
+  <div class="OverviewHourly p16 pt0">
     <Card>
       <template #header>
-        <span>{{$l('Hourly')}}</span>
-        <span class="fs12 txt-dark7">{{ time }} (UTC)</span>
+        <span>{{ $l('Hourly') }}</span>
+        <div class="flexMode vc fs12">
+          <span class="txt-dark7">
+            {{ time }}
+          </span>
+          <span class="txt-dark3">(UTC)</span>
+        </div>
       </template>
       <div v-loading="state.loading">
-        <EChart v-if="!state.loading" :options="state.options" width="100%" minus-width="400" />
+        <EChart
+          v-if="!state.loading"
+          :options="state.options"
+          width="100%"
+          minus-width="400"
+        />
       </div>
     </Card>
   </div>
@@ -22,7 +32,6 @@ const prop = defineProps({
     default: () => [],
   },
 });
-import { reactive } from 'vue';
 // 数据
 const state = reactive({
   loading: true,

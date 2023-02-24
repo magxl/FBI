@@ -64,15 +64,9 @@ const bodyClass = computed(() => {
   return [prop.submiting && 'noevent'];
 });
 const bodyStyle = computed(() => {
-  if (slots.value.footer) {
-    return {
-      height: `calc(100vh - 56px - ${window.global.config.drawer.footer})`,
-    };
-  } else {
-    return {
-      height: `calc(100vh - 56px)`,
-    };
-  }
+  return {
+    height: `calc(100vh - 56px - ${window.global.config.drawer.footer})`,
+  };
 });
 // 监听
 

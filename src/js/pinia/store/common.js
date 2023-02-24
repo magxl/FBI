@@ -2,6 +2,7 @@ const state = () => {
   return {
     menu: [], // 全局路由
     campaignGroup: [], // 广告系列组 即 org
+    roleMap: [], // 角色字典
   };
 };
 const actions = {
@@ -111,6 +112,22 @@ const actions = {
         };
       })
       .sort((a, b) => a.sort - b.sort);
+  },
+  // 角色信息
+  async getRoleMap() {
+    if (this.roleMap.length) {
+      return;
+    }
+    const list = window.$fd(window.$rn(30), (i) => {
+      const id = i + 1;
+      return {
+        id,
+        name: 'Name ' + id,
+        users: window.$rn(30),
+      };
+    });
+    this.roleMap = list;
+    return list;
   },
 };
 const getters = {};

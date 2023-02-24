@@ -3,8 +3,29 @@
     <Table ref="table" :load-data="loadData" table-name="Ranking">
       <template #actions>
         <div class="flexMode vc p0-16">
-          <div class="flexMode vc pr10">
-            <el-input
+          <div class="flexMode vc w240 pr10">
+            <el-select
+              ref="appidSelector"
+              class="wp100"
+              v-model="state.search.app_id"
+              multiple
+              clearable
+              filterable
+              allow-create
+              collapse-tags
+              :multiple-limit="5"
+              :placeholder="$l('APP ID: up to 5')"
+              @visible-change="appidVisibleChange"
+              @change="appidChange"
+            >
+              <el-option
+                v-for="(it, i) in appidMap"
+                :key="i"
+                :label="it.label"
+                :value="it.value"
+              />
+            </el-select>
+            <!-- <el-input
               v-model="state.search.app_id"
               size="small"
               clearable
@@ -18,53 +39,25 @@
                   <span>/{{ state.appidMax }}</span>
                 </div>
               </template>
-            </el-input>
+            </el-input> -->
           </div>
           <div class="w120 pr10">
-            <Device
-              v-model="state.search.device"
-              size="small"
-              :placeholder="$l('Device')"
-            />
+            <Device v-model="state.search.device" :placeholder="$l('Device')" />
           </div>
           <div class="pr10">
-            <el-select
-              v-model="state.search.regions"
-              size="small"
-              clearable
-              filterable
-              :placeholder="$l('Country or Regions')"
-            >
-              <el-option
-                v-for="(it, i) in countryLangMap"
-                :key="i"
-                :label="it.label_en"
-                :value="it.value"
-              />
-            </el-select>
+            <Country v-model="state.search.country" type="aso" />
           </div>
           <div class="pr10">
-            <el-button
-              plain
-              round
-              size="small"
-              @click="toReset"
-            >
-              <span>{{$l('Reset')}}</span>
+            <el-button plain round @click="toReset">
+              <span>{{ $l('Reset') }}</span>
             </el-button>
           </div>
           <div class="pr10">
-            <el-button
-              plain
-              round
-              type="primary"
-              size="small"
-              @click="toSearch"
-            >
+            <el-button plain round type="primary" @click="toSearch">
               <template #icon>
                 <i class="adicon ad-search1"></i>
               </template>
-              <span>{{$l('Search')}}</span>
+              <span>{{ $l('Search') }}</span>
             </el-button>
           </div>
         </div>
@@ -82,18 +75,22 @@
   </Page>
 </template>
 <script setup>
-import { getCurrentInstance } from "@vue/runtime-core";
+import { getCurrentInstance, nextTick } from '@vue/runtime-core';
 
 defineOptions({
   name: 'Ranking',
 });
 // 数据
-const {proxy} = getCurrentInstance();
+const { proxy } = getCurrentInstance();
 const state = reactive({
   table: {
     total: 1000,
   },
-  search: {},
+  search: {
+    device: 'IPHONE',
+    country: 'US',
+  },
+  osearch: {},
   appidMax: 5,
   appidCount: 0,
 });
@@ -108,13 +105,12 @@ const countryLangMap = computed(() => {
 // 监听
 
 // 挂载
-
+onMounted(() => {
+  state.osearch = JSON.parse(JSON.stringify(state.search));
+});
 // 事件
 const toReset = () => {
-  console.info(proxy);
-  console.info(proxy.state);
-  console.info(proxy.$data);
-  console.info(proxy.$options);
+  state.search = JSON.parse(JSON.stringify(state.osearch));
 };
 const toSearch = () => {
   proxy.$refs.table.initTable(state.search);
@@ -143,6 +139,35 @@ const loadData = (v) => {
     total: state.table.total,
   };
 };
+const appidChange = (v) => {
+  console.info(proxy.$refs.appidSelector.input);
+
+  nextTick(() => {
+    proxy.$refs.appidSelector.blur();
+    // proxy.$refs.appidSelector.focus();
+    // proxy.$refs.appidSelector.input.focus();
+  });
+};
+const appidVisibleChange = (v) => {
+  if (proxy.$refs.appidSelector) {
+    if (!v) {
+      nextTick(() => {
+        proxy.$refs.appidSelector.blur();
+        proxy.$refs.appidSelector.input.blur();
+      });
+      // nextTick(() => {
+      // proxy.$refs.appidSelector.selectWrapper.blur();
+      //   // proxy.$refs.appidSelector.focus();
+      //   // proxy.$refs.appidSelector.input.focus()
+      // });
+    } else {
+      // proxy.$refs.appidSelector.focus();
+    }
+  }
+};
 // 卸载
+
+// map
+const appidMap = [];
 </script>
 <style lang="scss" scoped></style>

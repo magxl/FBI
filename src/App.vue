@@ -6,16 +6,16 @@
     <div class="MAIN">
       <router-view />
     </div>
+    <Help />
   </div>
 </template>
 <script setup>
-import Loading from '@cpt/Onload/Loading/index.vue';
-import Navbar from './views/Launch/Navbar.vue';
-import ContextMenu from '@cpt/Onload/ContextMenu/index.vue';
+import Loading from './views/Launch/Loading/index.vue';
+// import Navbar from './views/Launch/Navbar.vue';
+import ContextMenu from './views/Launch/ContextMenu/index.vue';
+import Help from './views/Launch/Help/index.vue';
 
 //
-import { nextTick, reactive } from 'vue';
-
 const state = reactive({ timer: null });
 const store = inject('store');
 const launch = store.launch();
@@ -78,10 +78,33 @@ const initLang = () => {
 const initOptions = () => {
   // 页面宽高
   nextTick(() => {
+    const { page, frame, table } = window.global.config;
     const { clientWidth, clientHeight } = document.body;
-    const tableHeight = clientHeight - 56 - 56 - 32;
-    console.info('tableHeight', tableHeight);
-    launch.saveData('options', { clientWidth, clientHeight, tableHeight });
+    const tableHeight =
+      clientHeight -
+      frame.header -
+      page.header -
+      page.paddingTop -
+      page.paddingBottom -
+      table.pagination;
+    const pageHeight =
+      clientHeight -
+      page.paddingTop -
+      page.paddingBottom -
+      page.header -
+      frame.header;
+    console.info('config options', {
+      clientWidth,
+      clientHeight,
+      tableHeight,
+      pageHeight,
+    });
+    launch.saveData('options', {
+      clientWidth,
+      clientHeight,
+      tableHeight,
+      pageHeight,
+    });
   });
 };
 const initLoaded = () => {

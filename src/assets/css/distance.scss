@@ -35,6 +35,9 @@ $vars: 1,12,
   .maxw#{$var} {
     max-width: #{$var}px;
   }
+  .minw#{$var} {
+    min-width: #{$var}px;
+  }
 
   .h#{$var} {
     height: #{$var}px;
@@ -176,4 +179,7 @@ $mp: 0,
       }
     }
   }
+}
+.mb-1{
+  margin-bottom: -1px;
 }

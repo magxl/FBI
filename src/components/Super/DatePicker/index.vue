@@ -42,7 +42,7 @@ const prop = defineProps({
     default: '~',
   },
   // 是否不包含今天，默认包含
-  noToday: {
+  notoday: {
     type: Boolean,
     default: false,
   },
@@ -65,33 +65,40 @@ const store = inject('store');
 const launch = store.launch();
 // 挂载
 onMounted(() => {
+  if (!prop.modelValue.length) {
+    const start = -6 + offsetDay.value;
+    const end = offsetDay.value;
+    state.date = [
+      window.$moment().add(start, 'days').format('YYYY-MM-DD'),
+      window.$moment().add(end, 'days').format('YYYY-MM-DD'),
+    ];
+  }
   initShortBtn();
 });
 // 事件
 const emit = defineEmits();
 const disabledDate = (t) => {
-  const offset = parseInt(prop.disabledDate);
-  if (window.$getType(offset) === 'Number') {
-    let r = +new Date() + offset * 86400000;
-    if (!prop.noToday) {
-      r += 86400000;
-    }
+  if (window.$getType(prop.disabledDate) !== 'Function') {
+    let r = +new Date() + offsetDay.value * 86400000;
     return +t > r;
   } else {
     return prop.disabledDate();
   }
 };
 const dateChange = (v) => {
+  let r;
   if (prop.type === 'arr') {
-    emit('update:modelValue', v);
+    r = v;
   } else if (prop.tupe === 'obj') {
-    emit('update:modelValue', {
+    r = {
       startDate: v[0],
       endDate: v[1],
-    });
+    };
   } else {
-    emit('update:modelValue', v[0] + prop.separator + v[1]);
+    r = v[0] + prop.separator + v[1];
   }
+  emit('change', r);
+  emit('update:modelValue', r);
 };
 const initShortBtn = () => {
   const { shortcuts } = prop;
@@ -168,7 +175,7 @@ const initThisWeek = () => {
     value: () => {
       const now = window.$moment();
       let day = 0;
-      if (prop.noToday) {
+      if (prop.notoday) {
         day -= 1;
       }
       return [
@@ -188,7 +195,7 @@ const initLast7Days = () => {
     value: () => {
       let dayS = -6,
         dayE = 0;
-      if (prop.noToday) {
+      if (prop.notoday) {
         dayS -= 1;
         dayE -= 1;
       }
@@ -208,7 +215,7 @@ const initThisMonth = () => {
     text: map[lang.value],
     value: () => {
       let day = 0;
-      if (prop.noToday) {
+      if (prop.notoday) {
         day -= 1;
       }
       return [
@@ -228,7 +235,7 @@ const initLast30Days = () => {
     value: () => {
       let dayS = -29,
         dayE = 0;
-      if (prop.noToday) {
+      if (prop.notoday) {
         dayS -= 1;
         dayE -= 1;
       }
@@ -248,7 +255,7 @@ const initLastMonth = () => {
     text: map[lang.value],
     value: () => {
       let day = -1;
-      if (prop.noToday) {
+      if (prop.notoday) {
         day -= 1;
       }
       return [
@@ -267,6 +274,18 @@ const placeholder = computed(() => {
 });
 const shortcuts = computed(() => {
   return [];
+});
+const offsetDay = computed(() => {
+  const { notoday, disabledDate } = prop;
+  let offset = 0;
+  if (window.$getType(disabledDate) !== 'Function') {
+    const num = parseInt(disabledDate) || 0;
+    offset = num;
+    if (notoday && offset > -1) {
+      offset = -1;
+    }
+  }
+  return offset;
 });
 // maps
 const placeholderMap = {
@@ -289,7 +308,17 @@ const defaultShortcuts = {
   lastmonth: true,
 };
 // 监听
-
+watch(
+  () => prop.modelValue,
+  (n) => {
+    if (n && n.length) {
+      state.date = n;
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 // 卸载
 </script>
 <style lang="scss" scoped></style>

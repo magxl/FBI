@@ -13,40 +13,88 @@
       </el-input>
     </div>
     <el-scrollbar>
-      <template v-for="(it, i) in orgOptions">
-        <div
-          v-if="!it.hide"
-          :key="i"
-          class="orgItem flexMode vc p8-16"
-          :class="state.active === it.id && 'active'"
-          @click="toActive(it, i)"
-        >
-          <i class="adicon" :class="it.icon"></i>
-          <span class="pl8 fs14 txt-dark7">{{ it.name }}</span>
+      <div class="PageAfter">
+        <template v-for="(it, i) in orgOptions">
+          <div
+            v-if="!it.hide"
+            :key="i"
+            :id="`orgItem${it.id}`"
+            class="orgItem flexMode vc p8-16 hover-bg-blue1"
+            :class="prop.info.id === it.id && 'active'"
+            @click="toActive(it, i)"
+          >
+            <i class="adicon" :class="it.icon"></i>
+            <span class="pl8 fs12 txt-dark7">{{ it.name }}</span>
+          </div>
+        </template>
+        <div v-if="!orgOptions.length" class="flexMode hc p20">
+          <Nodata />
         </div>
-      </template>
+      </div>
     </el-scrollbar>
   </div>
 </template>
 <script setup>
+import { nextTick } from 'vue';
 // 定义
 defineOptions({
   name: 'CampaignGroupDetailLeftArea',
+});
+// 传参
+const prop = defineProps({
+  info: {
+    type: Object,
+    default: () => {},
+  },
 });
 // 数据
 const state = reactive({
   filter: {},
 });
+const { proxy } = getCurrentInstance();
 const store = inject('store');
+const launch = store.launch();
 const common = store.common();
 
 // 挂载
-onMounted(() => {
-  common.getCampaignGroup();
+onMounted(async () => {
+  await common.getCampaignGroup();
 });
 // 事件
+const emit = defineEmits();
+const initCampaignScrollIntoView = () => {
+  // 滚动到目标org
+  const id = prop.info.id;
+  const dom = `#orgItem${id}`;
+  proxy.$el.querySelector(dom).scrollIntoView({ behavior: 'smooth' });
+};
 const toActive = (it, i) => {
-  state.active = it.id;
+  // state.active = it.id;
+  emit('change', { id: it.id });
+};
+const toShowMenu = (el, it) => {
+  el.preventDefault();
+  if (it.id === prop.info.id) {
+    return;
+  }
+  launch.saveContextMenu({
+    el,
+    visible: true,
+    list: [
+      {
+        label: $l('Open'),
+        cb: () => {
+          toActive(it);
+        },
+      },
+      {
+        label: $l('Open in New Tab'),
+        cb: () => {
+          emit('change', { id: it.id, mode: 'newTab' });
+        },
+      },
+    ],
+  });
 };
 // 计算属性
 
@@ -60,13 +108,28 @@ const orgOptions = computed(() => {
     return it;
   });
 });
-// 监听
+const canInit = computed(() => {
+  return orgOptions.value.length && prop.info.id;
+});
 
+// 监听
+watch(
+  () => canInit.value,
+  (n) => {
+    if (n) {
+      nextTick(() => {
+        initCampaignScrollIntoView();
+      });
+    }
+  },
+);
 // 卸载
 </script>
 <style lang="scss" scoped>
 .orgItem {
-  &.active {
+  cursor: point;
+  &.active,
+  &:focus {
     background-color: $primary1;
     .txt-dark7 {
       color: $primary;

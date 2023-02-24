@@ -1,8 +1,15 @@
 <template>
-  <Page title="Monitors" class="Monitors">
-    <Table ref="table" :load-data="loadData" table-name="Monitors">
+  <Page class="Monitors">
+    <Table
+      ref="table"
+      minus-height="-48"
+      :load-data="loadData"
+      table-name="Monitors"
+    >
       <template #actions>
         <div class="flexMode vc p0-16">
+          <span>{{ $l('Monitors') }}</span>
+          <div class="p16 pr0 mr16 border-r"></div>
           <el-button type="primary" plain circle size="small" @click="toCreate">
             <template #icon>
               <i class="adicon ad-plus1"></i>
@@ -10,16 +17,21 @@
           </el-button>
         </div>
       </template>
-      <el-table-column type="selection" width="56" align="center" fixed="left" />
+      <el-table-column
+        type="selection"
+        width="56"
+        align="center"
+        fixed="left"
+      />
       <el-table-column label="ID" prop="id" width="100" fixed="left" />
       <el-table-column :label="$l('Type')" prop="type" width="120" sortable>
         <template #default="{ row }">
-          <span
-            class="radius4 p4-8 fs12"
+          <div
+            class="radius4 p4-8 fs10-l inline-block txt-nowrap"
             :class="[typeMap[row.type].txt, typeMap[row.type].bg]"
           >
             {{ typeMap[row.type].label }}
-          </span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column
@@ -28,10 +40,14 @@
         width="200"
         show-overflow-tooltip
       />
-      <el-table-column :label="$l('Campaign Group ID')" prop="org_id" width="160" />
+      <el-table-column
+        :label="$l('Campaign Group ID')"
+        prop="orgId"
+        width="160"
+      />
       <el-table-column
         :label="$l('Campaign Group')"
-        prop="org_name"
+        prop="orgName"
         width="200"
         show-overflow-tooltip
       />
@@ -39,13 +55,13 @@
         <template #default="{ row }">
           <div class="flexMode vc">
             <div class="dot8" :class="statusMap[row.status].bg"></div>
-            <div class="pl8">{{ $l(statusMap[row.status].label) }}</div>
+            <div class="pl8 txt-dark5">{{ $l(statusMap[row.status].label) }}</div>
           </div>
         </template>
       </el-table-column>
-      <el-table-column :label="$l('Start Run')" prop="start_run" width="140" />
-      <el-table-column :label="$l('Last Run')" prop="last_run" width="140" />
-      <el-table-column :label="$l('End Run')" prop="end_run" width="140" />
+      <el-table-column :label="$l('Start Run')" prop="startRun" width="140" />
+      <el-table-column :label="$l('Last Run')" prop="lastRun" width="140" />
+      <el-table-column :label="$l('End Run')" prop="endRun" width="140" />
       <el-table-column label="-" />
 
       <el-table-column :label="$l('Operation')" fixed="right" width="160">

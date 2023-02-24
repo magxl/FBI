@@ -108,7 +108,7 @@ $var in $colors {
   .hover-box-shadow-#{''+$key} {
     transition: $trans3;
     &:hover {
-      box-shadow: 0 0 16px #{$var};
+      box-shadow: 0 0 16px #{$var} !important;
     }
   }
 
@@ -126,6 +126,13 @@ $var in $colors {
   .border-l-#{''+$key}-dashed {
     border-left: 1px dashed #{$var};
   }
+  .border-r-#{''+$key} {
+    border-right: 1px solid #{$var};
+  }
+
+  .border-r-#{''+$key}-dashed {
+    border-right: 1px dashed #{$var};
+  }
 
   .border-b-#{''+$key} {
     border-bottom: 1px solid #{$var};
@@ -141,6 +148,13 @@ $var in $colors {
 
   &:hover {
     filter: drop-shadow(0 0 3px $blue);
+  }
+}
+.drop-shadow-primary3 {
+  cursor: pointer;
+
+  &:hover {
+    filter: drop-shadow(0 0 3px $primary3);
   }
 }
 

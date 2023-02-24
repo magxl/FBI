@@ -1,14 +1,19 @@
 <template>
-  <div class="Statistics pt16">
+  <div class="OverviewStatistics">
     <el-scrollbar class="hp100">
       <div class="flexMode vs p16 pt0">
         <Card
           v-for="(it, i) in state.list"
           :key="i"
-          :title="it.title"
           :class="i !== state.list.length - 1 && 'mr16'"
           :style="state.minWidth"
         >
+          <template #header>
+            <div class="flexMode vr">
+              <span>{{ it.title }}</span>
+              <span class="pl8 fs12 txt-dark3">(UTC)</span>
+            </div>
+          </template>
           <div class="flexMode ha p16">
             <div v-for="(dt, d) in it.data" :key="d" class="p0-8">
               <div class="txt-dark5 fs14">{{ $l(dt.name) }}</div>
@@ -42,7 +47,6 @@ const prop = defineProps({
     default: () => [],
   },
 });
-import { reactive, nextTick } from 'vue';
 const { proxy } = getCurrentInstance();
 // 数据
 const state = reactive({
@@ -59,7 +63,7 @@ const pageWidth = computed(() => {
 
 // 挂载
 onMounted(() => {
-  let minWidth = (pageWidth.value - (prop.currency.length  * 16) - 16 ) / 2;
+  let minWidth = (pageWidth.value - prop.currency.length * 16 - 16) / 2;
   minWidth = minWidth < 512 ? 512 : minWidth;
   state.minWidth = `min-width:${minWidth}px;`;
 });
@@ -69,12 +73,15 @@ const fakeData = () => {
   state.list = window.$fakeData(prop.currency.length, (i) => {
     const { label, value } = prop.currency[i];
     return {
-      title: label + ' (UTC)',
+      title: label,
       symbol: value,
       data: window.$fakeData(3, (j) => {
         return {
           name: daysName[j],
-          value: (window.$randomNumber(999999999) / 100).toFixed(2),
+          value: window.$fa(
+            (window.$randomNumber(999999999) / 100).toFixed(2),
+            2,
+          ),
           compare1: (window.$randomNumber(10000, -5000) / 100).toFixed(2),
           compare2: (window.$randomNumber(10000, -5000) / 100).toFixed(2),
         };
@@ -86,7 +93,7 @@ fakeData();
 // 卸载
 </script>
 <style lang="scss" scoped>
-.Statistics {
-  height: 194px;
+.OverviewStatistics {
+  height: 178px;
 }
 </style>

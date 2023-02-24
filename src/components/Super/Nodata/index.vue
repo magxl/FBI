@@ -25,7 +25,7 @@ const emptyMap = computed(() => {
   return window.$map.common.emptyMap;
 });
 const imageSize = computed(() => {
-  return Number(prop.imageSize);
+  return Number(prop.size);
 });
 const description = computed(() => {
   return emptyMap.value[launch.lang];

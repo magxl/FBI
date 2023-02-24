@@ -46,8 +46,8 @@
     <div class="relative" style="height: calc(100% - 58px - 56px)">
       <el-scrollbar class="hp100">
         <div class="flexMode">
-          <div v-if="state.total === null" class="absCenter fs48 txt-dark1">
-            Waiting For Your Search
+          <div v-if="state.total === null" class="emptyBg absFull">
+            <div class="fs48 txt-dark1 txt-nowrap">Waiting For Search</div>
           </div>
 
           <div v-else class="appsArea p16">
@@ -157,10 +157,10 @@ const toSearch = () => {
   let aim = localKeyword;
   if (has) {
     // 重复则删除
-     aim.splice(hasIndex, 1);
+    aim.splice(hasIndex, 1);
   }
   aim.unshift(keyword);
-  aim = aim.slice(0,5);
+  aim = aim.slice(0, 5);
   localStorage.setItem('SearchRankingKeyword', aim.join(','));
   state.localKeyword = aim;
 };

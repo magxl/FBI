@@ -1,5 +1,5 @@
 <template>
-  <div class="CampaignGroups p0-16 pb16">
+  <div class="OverviewCampaignGroups p0-16 pb16">
     <Card>
       <template #header>
         <span>{{$l('Campaign Groups')}}</span>
@@ -25,7 +25,6 @@
 defineOptions({
   name: 'OverviewCampaignGroups',
 });
-import { reactive } from 'vue';
 // 传参
 const prop = defineProps({
   currency: {
@@ -42,20 +41,6 @@ const state = reactive({
     RMB: {},
     JPY: {},
   },
-  tool: [
-    {
-      label: 'Day',
-      value: 'day',
-    },
-    {
-      label: 'Week',
-      value: 'week',
-    },
-    {
-      label: 'Month',
-      value: 'month',
-    },
-  ],
 });
 
 // 计算属性

@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="loading"
-    class="CptLoading"
+    class="OnloadLoading"
     :class="{ preventStop: loading.preventStop }"
   >
     <div class="loadingArea backdrop" :class="{ loading: state.visible }">
@@ -57,9 +57,8 @@
 </template>
 <script setup>
 defineOptions({
-  name: 'CptLoading',
+  name: 'OnloadLoading',
 });
-import { reactive } from 'vue';
 // 数据
 const state = reactive({
   visible: true,
@@ -94,7 +93,7 @@ watch(
 // 卸载
 </script>
 <style lang="scss" scoped>
-.CptLoading {
+.OnloadLoading {
   position: fixed;
   left: 50%;
   bottom: 0;

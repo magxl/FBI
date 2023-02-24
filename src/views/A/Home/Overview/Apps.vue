@@ -1,5 +1,5 @@
 <template>
-  <div class="Apps pl8 pr16 pb16">
+  <div class="OverviewApps pl8 pr16 pb16">
     <Card>
       <template #header>
         <span>{{$l('Apps')}}</span>
@@ -16,7 +16,7 @@
         </div>
       </template>
       <div v-loading="state.loading">
-        <EChart v-if="!state.loading" :options="state.options[state.active]" type="pie" width="50%" />
+        <EChart v-if="!state.loading" :options="state.options[state.active]" type="pie" width="33%" />
       </div>
     </Card>
   </div>
@@ -25,7 +25,6 @@
 defineOptions({
   name: 'OverviewApps',
 });
-import { reactive } from 'vue';
 // 传参
 const prop = defineProps({
   currency: {

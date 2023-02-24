@@ -7,7 +7,11 @@ const state = () => {
     currentPage: {}, // 当前页面
     historyPages: [], // 历史访问记录
     tabPages: [], // 选项卡缓存
-    contextMenu: {}, // 右键菜单信息
+    contextMenu: {
+      visible: false,
+      list: [],
+      position: {}, // 位置信息
+    }, // 右键菜单信息
     loading: {
       // 页面加载状态，非请求状态
       visible: false,
@@ -16,6 +20,11 @@ const state = () => {
     pageWidth: 0,
     options: {}, // 配置项
     localTimezone: {}, // 本地时区
+    help: {
+      // 帮助模块
+      visible: false,
+      keyword: '',
+    },
   };
 };
 const actions = {
@@ -91,18 +100,25 @@ const actions = {
     this.saveTabPages();
   },
   closePage(index, mode = 'close') {
+    // 当前页面索引
+    let cindex = null;
+    try {
+      this.tabPages.forEach((it, i) => {
+        if (it.key === this.currentPage.key) {
+          cindex = i;
+          throw new Error();
+        }
+      });
+    } catch (error) {}
     // 单个关闭
     const close = () => {
       const aimPage = this.tabPages[index];
       this.tabPages.splice(index, 1);
-      if (aimPage.key === this.currentPage.key) {
-        /*
-          关闭的是当前页面
-          新的当前位置 页面信息
-          不存在页面，即关闭的是最后一个
-          最后一个页面设置为当前页面
-        */
-        let newCurrentPage = this.tabPages[index] || this.tabPages[index - 1];
+      // 关闭的是当前页面时
+      if (cindex === index) {
+        // 判断新回显页面索引
+        const newPageIndex = (index = 0 ? 0 : index - 1);
+        const newCurrentPage = this.tabPages[newPageIndex];
         if (newCurrentPage.meta.multiple) {
           router.push({
             name: newCurrentPage.name,
@@ -117,22 +133,62 @@ const actions = {
     // 关闭其它
     const closeOther = () => {
       const aimPage = this.tabPages[index];
+      // 关闭的页面有当前回显页面时，将目标页面变成当前页面
+      if (cindex !== index) {
+        if (aimPage.meta.multiple) {
+          router.push({
+            name: aimPage.name,
+            params: aimPage.params,
+            query: aimPage.query,
+          });
+        } else {
+          router.push({ name: aimPage.name });
+        }
+      }
       this.tabPages = [aimPage];
     };
     // 关闭右侧
     const closeRight = () => {
       const total = this.tabPages.length;
+      const aimPage = this.tabPages[index];
+
       // 不是最后一个才能关闭右侧
       if (total - 1 > index) {
         this.tabPages.splice(index + 1, total - index - 1);
+      }
+      if (cindex > index) {
+        // 当前页面在关闭的页面中时，将目标页面变为当前页面
+        if (aimPage.meta.multiple) {
+          router.push({
+            name: aimPage.name,
+            params: aimPage.params,
+            query: aimPage.query,
+          });
+        } else {
+          router.push({ name: aimPage.name });
+        }
       }
     };
     // 关闭左侧
     const closeLeft = () => {
       const total = this.tabPages.length;
+      const aimPage = this.tabPages[index];
+
       // 不是第一个才能关闭左侧
       if (index) {
         this.tabPages.splice(0, index);
+      }
+      if (cindex < index) {
+        // 当前页面在关闭的页面中时，将目标页面变为当前页面
+        if (aimPage.meta.multiple) {
+          router.push({
+            name: aimPage.name,
+            params: aimPage.params,
+            query: aimPage.query,
+          });
+        } else {
+          router.push({ name: aimPage.name });
+        }
       }
     };
     const closeType = {
@@ -147,14 +203,20 @@ const actions = {
   saveTabPages() {
     localStorage.setItem('tabPages', JSON.stringify(this.tabPages));
   },
-  saveContextMenu(el) {
-    console.info(el);
+  saveContextMenu(v = {}) {
+    const { el = {}, visible = false, list = [] } = v;
+    const { x, y } = el;
+    this.contextMenu = {
+      position: { x, y },
+      visible,
+      list,
+    };
   },
   registRouter() {},
   getLocalTimezone() {
     this.localTimezone = {
-      timezone: new Date().getTimezoneOffset() / -60,
-      timezone_name: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      value: new Date().getTimezoneOffset() / -60,
+      label: Intl.DateTimeFormat().resolvedOptions().timeZone,
     };
   },
 };

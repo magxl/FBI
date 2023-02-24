@@ -35,10 +35,9 @@ const prop = defineProps({
     default: false,
   },
 });
-import { reactive } from 'vue';
 // 数据
 const state = reactive({
-  v:''
+  v: '',
 });
 
 // 计算属性
@@ -62,11 +61,19 @@ const options = computed(() => {
   return r;
 });
 // 监听
-
+watch(
+  () => prop.modelValue,
+  (n, o) => {
+    if (n !== o) {
+      state.v = prop.modelValue;
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 // 挂载
-onMounted(() => {
-  prop.modelValue && (state.v = prop.modelValue);
-});
+
 // 事件
 const emit = defineEmits();
 const change = (v) => {

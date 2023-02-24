@@ -3,14 +3,21 @@
     <div
       v-for="(it, i) in state.options"
       :key="i"
-      class="w32 h32 mr2 mb2 radiusP50 radius box-shadow-dark1 border-dark1"
+      class="relative flexMode hc vc w32 h32 mr2 mb2 radiusP50 radius box-shadow-dark1 border-dark1"
+      :title="it[`label_${lang}`]"
     >
       <el-image
-        :src="$getImg(`country/${it.toLowerCase()}.png`)"
+        :src="$getImg(`country/${it.value_lower}.png`)"
         lazy
         fit="cover"
-        style="margin:-1px;"
+        class="wp100 hp100"
+        style="margin: -1px"
       >
+        <template #placeholder>
+          <div class="absCenter">
+            <i class="adicon ad-loading el-icon is-loading"></i>
+          </div>
+        </template>
         <template #error>
           <div class="flexMode hc vc wp100 hp100">
             <span class="txt-dark3 fs12 lh12">FAIL</span>
@@ -21,18 +28,25 @@
     <el-tooltip v-if="state.more.length" placement="top" raw-content>
       <span class="hover-a">+{{ state.more.length }}More</span>
       <template #content>
-        <div class="flexMode flexWrap vc" style="max-width: 304px">
+        <div class="flexMode flexWrap vc" style="max-width: 306px">
           <div
             v-for="(it, i) in state.more"
             :key="i"
-            class="w32 h32 mr2 mb2 radiusP50 radius box-shadow-white1 border-white1"
+            class="relative flexMode hc vc w32 h32 mr2 mb2 radiusP50 radius box-shadow-white1 border-white1 bg-white5"
+            :title="it[`label_${lang}`]"
           >
             <el-image
-              :src="$getImg(`country/${it.toLowerCase()}.png`)"
+              :src="$getImg(`country/${it.value_lower}.png`)"
               lazy
               fit="cover"
-              style="margin:-1px;"
+              class="wp100 hp100"
+              style="margin: -1px"
             >
+              <template #placeholder>
+                <div class="absCenter">
+                  <i class="adicon ad-loading el-icon is-loading"></i>
+                </div>
+              </template>
               <template #error>
                 <div class="flexMode hc vc wp100 hp100">
                   <span class="txt-dark3 fs12 lh12">FAIL</span>
@@ -63,9 +77,12 @@ const state = reactive({
   options: [],
   more: [],
 });
-
+const store = inject('store');
+const launch = store.launch();
 // 计算属性
-
+const lang = computed(() => {
+  return launch.lang;
+});
 // 挂载
 
 // 事件
