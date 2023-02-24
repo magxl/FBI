@@ -6,7 +6,7 @@
           v-for="(it, i) in state.list"
           :key="i"
           :class="i !== state.list.length - 1 && 'mr16'"
-          :style="state.minWidth"
+          :style="minWidth"
         >
           <template #header>
             <div class="flexMode vr">
@@ -17,17 +17,28 @@
           <div class="flexMode ha p16">
             <div v-for="(dt, d) in it.data" :key="d" class="p0-8">
               <div class="txt-dark5 fs14">{{ $l(dt.name) }}</div>
-              <div class="fs24 lh48 txt-dark9">
+              <div
+                class="lh48 txt-dark9"
+                :class="dt.value.length > 10 ? 'fs18' : 'fs24'"
+              >
                 {{ it.symbol }}{{ dt.value }}
               </div>
-              <div class="flexMode vc fs14">
-                <span :class="dt.compare1 > 0 ? 'txt-green' : 'txt-red'"
-                  >{{ dt.compare1 }}%</span
+              <div class="compareArea flexMode vc fs14">
+                <div
+                  class="relative"
+                  :class="dt.compare1 > 0 ? 'txt-green' : 'txt-red'"
                 >
+                  <i class="adicon ad-up"></i>
+                  <span>{{ dt.compare1 }}%</span>
+                </div>
                 <span class="p0-5 txt-dark3">|</span>
-                <span :class="dt.compare2 > 0 ? 'txt-green' : 'txt-red'"
-                  >{{ dt.compare2 }}%</span
+                <div
+                  class="relative"
+                  :class="dt.compare2 > 0 ? 'txt-green' : 'txt-red'"
                 >
+                  <span>{{ dt.compare2 }}%</span>
+                  <i class="adicon ad-up"></i>
+                </div>
               </div>
             </div>
           </div>
@@ -51,7 +62,6 @@ const { proxy } = getCurrentInstance();
 // 数据
 const state = reactive({
   list: [],
-  minWidth: '',
 });
 const store = inject('store');
 const launch = store.launch();
@@ -59,14 +69,14 @@ const launch = store.launch();
 const pageWidth = computed(() => {
   return launch.pageWidth;
 });
+const minWidth = computed(() => {
+  let r = (pageWidth.value - prop.currency.length * 16 - 16) / 2;
+  r = r < 512 ? 512 : r;
+  return `min-width:${r}px;`;
+});
 // 监听
 
 // 挂载
-onMounted(() => {
-  let minWidth = (pageWidth.value - prop.currency.length * 16 - 16) / 2;
-  minWidth = minWidth < 512 ? 512 : minWidth;
-  state.minWidth = `min-width:${minWidth}px;`;
-});
 // 事件
 const fakeData = () => {
   const daysName = ['今日', '本周', '本月'];
@@ -95,5 +105,24 @@ fakeData();
 <style lang="scss" scoped>
 .OverviewStatistics {
   height: 178px;
+  .compareArea {
+    .adicon {
+      position: absolute;
+      left: 50%;
+      font-size: 12px;
+      transform: translate(-50%, 0);
+    }
+    .txt-red {
+      .adicon {
+        display: inline-block;
+        transform: translate(-50%, 10px) rotate(180deg);
+      }
+    }
+    .txt-green {
+      .adicon{
+        transform: translate(-50%, -6px);
+      }
+    }
+  }
 }
 </style>

@@ -139,7 +139,7 @@ const toSetting = () => {
 };
 
 const toHelp = () => {
-  launch.saveData('help', { visible: true, keyword: '' });
+  launch.saveData('help', { visible: !launch.help.visible });
 };
 
 const gotoBoard = () => {

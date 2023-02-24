@@ -24,6 +24,7 @@ const state = () => {
       // 帮助模块
       visible: false,
       keyword: '',
+      size: false, // 尺寸
     },
   };
 };

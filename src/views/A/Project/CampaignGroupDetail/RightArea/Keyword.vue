@@ -79,6 +79,10 @@ defineOptions({
 });
 // 传参
 const prop = defineProps({
+  info: {
+    type: Object,
+    default: () => {},
+  },
   scrollTop: {
     type: Number,
     default: 0,

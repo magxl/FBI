@@ -35,7 +35,14 @@
           <DatePicker v-model="state.search.date" shortcuts type="str" />
         </div>
         <div class="pr8">
-          <el-button class="searchBtn" :txt="$l('Search')" plain circle type="primary" @click="toSearch">
+          <el-button
+            class="searchBtn"
+            :txt="$l('Search')"
+            plain
+            circle
+            type="primary"
+            @click="toSearch"
+          >
             <template #icon>
               <i class="adicon ad-search1"></i>
             </template>
@@ -43,12 +50,41 @@
         </div>
       </div>
     </template>
+    <div class="p0-16">
+      <el-tabs v-model="state.active">
+        <el-tab-pane
+          v-for="it in tabs"
+          :key="it.value"
+          :label="it.label"
+          :name="it.value"
+        ></el-tab-pane>
+      </el-tabs>
+      <div class="cptArea">
+        <keep-alive>
+          <component :is="cpt" />
+        </keep-alive>
+      </div>
+    </div>
   </Page>
 </template>
 <script setup>
+import TabCampaign from './CampaignGroupDetailTab/Campaign.vue';
+import TabAdGroup from './CampaignGroupDetailTab/AdGroup.vue';
+import TabKeyword from './CampaignGroupDetailTab/Keyword.vue';
+import TabSearchTerm from './CampaignGroupDetailTab/SearchTerm.vue';
+import TabAds from './CampaignGroupDetailTab/Ads.vue';
+import TabSov from './CampaignGroupDetailTab/Sov.vue';
 // 定义
 defineOptions({
   name: 'CampaignGroupDetailTab',
+  components: {
+    TabCampaign,
+    TabAdGroup,
+    TabKeyword,
+    TabSearchTerm,
+    TabAds,
+    TabSov,
+  },
 });
 // 传参
 const prop = defineProps({
@@ -82,6 +118,9 @@ const timezoneLabel = computed(() => {
   return timezoneMap.value.filter((ft) => state.search.timezone === ft.value)[0]
     .label;
 });
+const cpt = computed(() => {
+  return `Tab${state.active}`;
+});
 // 监听
 watch(
   () => canInit.value,
@@ -99,5 +138,31 @@ watch(
 // 卸载
 
 // Map
+const tabs = [
+  {
+    label: $l('Campaign'),
+    value: 'Campaign',
+  },
+  {
+    label: $l('Ad Group'),
+    value: 'AdGroup',
+  },
+  {
+    label: $l('Keyword'),
+    value: 'Keyword',
+  },
+  {
+    label: $l('Search Term'),
+    value: 'SearchTerm',
+  },
+  {
+    label: $l('Ads'),
+    value: 'Ads',
+  },
+  {
+    label: $l('SOV'),
+    value: 'Sov',
+  },
+];
 </script>
 <style lang="scss" scoped></style>

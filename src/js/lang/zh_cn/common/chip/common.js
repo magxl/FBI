@@ -15,6 +15,8 @@ export default {
   'Ad Groups': '广告组',
   'Ad Group ID': '广告组 ID',
   'Ad Groups ID': '广告组 ID',
+  'Ad Placement': '广告位',
+  'Ad Placements': '广告位',
   Keyword: '关键词',
   Keywords: '关键词',
   'Keyword ID': '关键词 ID',

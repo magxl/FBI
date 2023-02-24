@@ -1,12 +1,23 @@
 <template>
-  <div class="OnloadHelp" :class="{ visible }">
-    <div class="helpArea radius8 bg-white9 backdrop box-shadow-dark1">
+  <div class="OnloadHelp" :class="[visible && 'visible', size ? 'large' : '']">
+    <div
+      class="helpArea radius8 bg-white9 backdrop box-shadow-dark1 border-dark1"
+      :style="helpStyle"
+    >
       <div class="flexMode vc h48 border-b bg-gray1 radius-t8">
-        <div class="flexMode hc vc w24 h36 pl8 hover-txt-primary">
-          <i class="adicon ad-arrow-right rotate180"></i>
+        <div
+          class="flexMode hc vc w24 h36 pl8 hover-txt-primary"
+          @click="toToggleSize"
+        >
+          <i class="adicon ad-arrow-right rotate180 transition3"></i>
         </div>
         <div class="pl10 flexGrow">
-          <el-input v-model="state.v" clearable placeholder=" ">
+          <el-input
+            v-model="state.v"
+            clearable
+            placeholder=" "
+            @keydown.enter="getData"
+          >
             <template #prefix>
               <i class="adicon ad-search1"></i>
             </template>
@@ -53,8 +64,16 @@ const state = reactive({
 const store = inject('store');
 const launch = store.launch();
 // 挂载
-
+onMounted(() => {
+  init();
+});
 // 事件
+const init = () => {
+  const setting = JSON.parse(localStorage.getItem('helpSetting'));
+  if (setting) {
+    launch.saveData('help', setting);
+  }
+};
 const getData = () => {
   const { v } = state;
   state.list = window.$fd(window.$rn(10), (i) => {
@@ -73,12 +92,35 @@ const toAddUseful = (it, i) => {
 const toClose = () => {
   launch.saveData('help', { visible: false, keyword: '' });
 };
+const toToggleSize = () => {
+  saveHelp(!size.value);
+  launch.saveData('help', { size: !size.value });
+};
+const saveHelp = (size) => {
+  localStorage.setItem('helpSetting', JSON.stringify({ size }));
+};
 // 计算属性
 const visible = computed(() => {
   return launch.help.visible;
 });
 const keyword = computed(() => {
   return launch.help.keyword;
+});
+const size = computed(() => {
+  return launch.help.size;
+});
+const pageHeight = computed(() => {
+  return launch.options.pageHeight;
+});
+const helpStyle = computed(() => {
+  if (size.value) {
+    return {
+      height: pageHeight.value - 32 + 'px',
+      width: 640 + 'px',
+    };
+  } else {
+    return '';
+  }
 });
 // 监听
 watch(
@@ -102,17 +144,33 @@ watch(
   position: fixed;
   bottom: 16px;
   right: 16px;
-  transform: translate(332px, 0);
   transition: $trans3;
   z-index: 19910608;
   &.visible {
-    transform: translate(0, 0);
+    .helpArea {
+      transform: translate(0, 0) !important;
+    }
   }
   .helpArea {
     width: 300px;
     height: 480px;
+    transition: $trans3;
+    transform: translate(332px, 0);
+
     .helpBody {
       height: 432px;
+    }
+  }
+  &.large {
+    .helpArea {
+      transform: translate(662px, 0);
+
+      .ad-arrow-right {
+        transform: rotateZ(0);
+      }
+      .helpBody {
+        height: 772px;
+      }
     }
   }
 }

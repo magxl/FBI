@@ -281,15 +281,15 @@ const toDownload = () => {
     .getColumns()
     .filter((it) => it.visible && it.prop);
   // 列标题
-  const thead = columns.map((it) => it.prop);
+  const thead = columns.map((it) => it.label);
   // 列主体
   const selection = proxy.$refs.table.getSelectionRows();
   // 有选中时，只导出选中数据
   const r = selection.length ? selection : state.dt.list;
   const tbody = r.map((it) => {
     const row = [];
-    thead.forEach((ft) => {
-      row.push(`"${it[ft]}"`);
+    columns.forEach((ft) => {
+      row.push(`"${it[ft.prop]}"`);
     });
     return row.join(',');
   });

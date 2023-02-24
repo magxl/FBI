@@ -3,29 +3,39 @@
     <div class="flexMode vs p16 pt0">
       <Card class="cardArea">
         <template #header>
-          {{ $l('Spend') }}
+          <span>{{ $l('Spend') }}</span>
+          <div class="flexMode vc fs12">
+            <span>{{ state.days }}</span>
+            <span class="pl4 txt-dark3">{{ $l('Days') }}</span>
+          </div>
         </template>
         <div class="relative">
           <EChart
             :options="state.spendOptions"
             type="pie"
-            height="160"
+            height="146"
             width="160"
             class="flexMode hc vc"
           />
-          <div class="pb8">
-            <div class="flexMode vc hb p4-16">
+          <div v-if="state.spendOptions.series" class="pb8">
+            <div class="flexMode vc hb p4-8">
               <div class="dot8 bg-primary"></div>
               <div class="pl4 fs12 txt-dark5">
-                <span>{{ state.spendOptions.series?.[0].data[0].symbol }}</span>
-                <span>{{ state.spendOptions.series?.[0].data[0].format }}</span>
+                <span>{{ state.spendOptions.series[0].data[0].symbol }}</span>
+                <span>{{ state.spendOptions.series[0].data[0].format }}</span>
+                <span class="pl4 txt-dark3">(</span>
+                <span class="txt-primary">{{ spendPercent[0] }}%</span>
+                <span class="txt-dark3">)</span>
               </div>
             </div>
-            <div class="flexMode vc hb p4-16">
+            <div class="flexMode vc hb p4-8">
               <div class="dot8 bg-orange"></div>
               <div class="pl4 fs12 txt-dark5">
-                <span>{{ state.spendOptions.series?.[0].data[1].symbol }}</span>
-                <span>{{ state.spendOptions.series?.[0].data[1].format }}</span>
+                <span>{{ state.spendOptions.series[0].data[1].symbol }}</span>
+                <span>{{ state.spendOptions.series[0].data[1].format }}</span>
+                <span class="pl4 txt-dark3">(</span>
+                <span class="txt-orange">{{ spendPercent[1] }}%</span>
+                <span class="txt-dark3">)</span>
               </div>
             </div>
           </div>
@@ -72,15 +82,18 @@
           <span>{{ $l('Task Queue') }}</span>
           <span class="fs12 txt-dark5">Today</span>
         </template>
-        <div class="h200 p8">
-          <div
-            v-for="it in state.taskList"
-            :key="it.id"
-            class="flexMode vc hb p8 fs12"
-          >
-            <span>{{ it.title }}</span>
-            <span class="txt-dark5">{{ it.time }}</span>
-          </div>
+        <div class="relative h200 p8 yscroll">
+          <template v-if="state.taskList.length">
+            <div
+              v-for="it in state.taskList"
+              :key="it.id"
+              class="flexMode vc hb p8 fs12"
+            >
+              <span>{{ it.title }}</span>
+              <span class="txt-dark5">{{ it.time }}</span>
+            </div>
+          </template>
+          <Nodata v-else size="48" class="absCenter" />
         </div>
       </Card>
     </div>
@@ -104,6 +117,7 @@ const state = reactive({
   spendOptions: {},
   options: {},
   taskList: [],
+  days: 0, // 总计统计的天数
 });
 const { proxy } = getCurrentInstance();
 
@@ -113,6 +127,7 @@ onMounted(() => {
 });
 // 事件
 const initOptions = () => {
+  state.days = window.$fa(window.$rn(9999), 0);
   initSpend();
   initYearData();
   initTaskData();
@@ -144,7 +159,7 @@ const initSpend = () => {
             fontSize: 12,
             fontWeight: 'bold',
             formatter: ({ name, value }) => {
-              return `${window.$fa(value,2)}\n${name}`;
+              return `${window.$fa(value, 2)}\n${name}`;
             },
           },
         },
@@ -297,16 +312,26 @@ const dateChange = (v) => {
   proxy.$refs.yearChart.initChart();
 };
 // 计算属性
-
+const spendPercent = computed(() => {
+  const { data = [] } = state.spendOptions.series?.[0];
+  if (data.length) {
+    const a0 = Number(data[0].value);
+    const a1 = Number(data[1].value);
+    const total = a0 + a1;
+    return [((a0 / total) * 100).toFixed(2), ((a1 / total) * 100).toFixed(2)];
+  } else {
+    return [];
+  }
+});
 // 监听
 
 // 卸载
 </script>
 <style lang="scss" scoped>
 .cardArea {
-  width: 160px;
+  width: 200px;
 }
 .otherArea {
-  width: calc(100% - 512px);
+  width: calc(100% - 552px);
 }
 </style>

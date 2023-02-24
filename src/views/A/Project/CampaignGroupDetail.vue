@@ -164,6 +164,7 @@ watch(
   () => prop.orgId,
   (n) => {
     if (n) {
+      console.info('detail watch id', n);
       const orgId = Number(n);
       state.search.orgId = orgId;
       getData({ id: orgId, name: 'Org From Params ' + orgId });
