@@ -1,18 +1,22 @@
 <template>
   <div class="MvcTable" v-loading="loading">
     <TableTool
+      ref="tableTool"
       :table-name="prop.tableName"
       :tool="prop.tool"
       :top-show="topShow"
       @tool-event="toolEvent"
     >
       <slot name="actions" />
+      <template #filter>
+        <slot name="filter" />
+      </template>
     </TableTool>
     <el-table
       ref="table"
       :key="state.tableKey"
       :data="state.dt.list"
-      :height="state.height"
+      :height="height"
       :class="borderTop && 'border-t'"
       :empty-text="emptyTxt"
       v-bind="$attrs"
@@ -59,7 +63,7 @@
     <Drawer
       v-model:current="state.currentDrawer"
       :drawer="state.drawer"
-      @filter-submit="filterSubmit"
+      @config-submit="configSubmit"
     />
   </div>
 </template>
@@ -150,62 +154,9 @@ const state = reactive({
   currentDrawer: '',
 });
 
-// 计算属性
-const loading = computed(() => {
-  return mode.value === 'list' ? prop.loading : state.loading;
-});
-const slots = computed(() => {
-  return proxy.$slots;
-});
-const topShow = computed(() => {
-  return prop.tool !== false || slots.actions || false;
-});
-const staticTable = computed(() => {
-  const now = +new Date();
-  // 没有传入list ? 动态表格 : 静态表格
-  return !prop.list ? String(now) : now;
-});
-const mode = computed(() => {
-  const type = window.$getType(staticTable.value);
-  return type === 'String' ? 'loadData' : 'list';
-});
-const layout = computed(() => {
-  return window.$getType(staticTable.value) === 'String'
-    ? 'sizes, slot, ->, prev, pager, next, jumper'
-    : 'slot';
-});
-const emptyMap = computed(() => {
-  return window.$map.common.emptyMap;
-});
-const emptyTxt = computed(() => {
-  return emptyMap[launch.lang];
-});
 // 挂载
-onMounted(() => {
-  clearTimeout(state.timer);
-  const { frame, page, table } = window.global.config;
-  // 减去高度          页头 48 间距 4+4  分页48  Frame56
-
-  const staticMinus =
-    table.pagination +
-    page.header +
-    page.paddingTop +
-    page.paddingBottom +
-    frame.header;
-  state.timer = setTimeout(() => {
-    initHeight(staticMinus);
-  }, 500);
-});
 // 事件
 const emit = defineEmits();
-const initHeight = (staticMinus) => {
-  let height = Number(prop.height) || document.body.clientHeight - staticMinus;
-
-  height = height - Number(prop.minusHeight);
-  height = topShow && (height -= 48);
-  // height = pagination && (height -= 56);
-  state.height = height;
-};
 
 const initTable = (v) => {
   state.search = v;
@@ -268,7 +219,7 @@ const toolEvent = (v) => {
       initTable();
       emit('refresh');
       break;
-    case 'filter':
+    case 'config':
       toSetTable();
       break;
   }
@@ -319,7 +270,7 @@ const toSetTable = () => {
   state.drawer[0].title = proxy.$l(state.drawer[0].title);
   state.currentDrawer = 0;
 };
-const filterSubmit = (v) => {
+const configSubmit = (v) => {
   // proxy.$refs.tableColumnFilter.initColumns();
   refreshTable();
 };
@@ -463,12 +414,61 @@ const editRow = ({ row = {}, i }) => {
     };
   }
 };
+// 关闭filter面板
+const toCloseFilter = () => {
+  proxy.$refs.tableTool.toCloseFilter();
+};
 
-defineExpose({
-  editRow,
-  refreshTable,
-  initTable,
-  toFilter,
+// 计算属性
+const loading = computed(() => {
+  return mode.value === 'list' ? prop.loading : state.loading;
+});
+const slots = computed(() => {
+  return proxy.$slots;
+});
+const topShow = computed(() => {
+  return prop.tool !== false || slots.actions || false;
+});
+const staticTable = computed(() => {
+  const now = +new Date();
+  // 没有传入list ? 动态表格 : 静态表格
+  return !prop.list ? String(now) : now;
+});
+const mode = computed(() => {
+  const type = window.$getType(staticTable.value);
+  return type === 'String' ? 'loadData' : 'list';
+});
+const layout = computed(() => {
+  return window.$getType(staticTable.value) === 'String'
+    ? 'sizes, slot, ->, prev, pager, next, jumper'
+    : 'slot';
+});
+const emptyMap = computed(() => {
+  return window.$map.common.emptyMap;
+});
+const emptyTxt = computed(() => {
+  return emptyMap[launch.lang];
+});
+const height = computed(() => {
+  let r;
+  if (prop.height) {
+    r = parseInt(prop.height);
+  } else {
+    r = launch.options.pageHeight;
+  }
+  if (prop.minusHeight) {
+    r -= parseInt(prop.minusHeight);
+  }
+  if (topShow.value) {
+    r -= window.global.config.table.tool;
+  }
+  r -= window.global.config.table.pagination;
+  return r;
+});
+const tableHeight = computed(() => {
+  return {
+    height: height.value + 'px',
+  };
 });
 // 监听
 watch(
@@ -493,6 +493,14 @@ watch(
     immediate: true,
   },
 );
+
+defineExpose({
+  editRow,
+  refreshTable,
+  initTable,
+  toFilter,
+  toCloseFilter,
+});
 // 卸载
 </script>
 <style lang="scss" scoped></style>

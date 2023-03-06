@@ -6,12 +6,8 @@
       filterable
       :placeholder="$l('Country or Regions')"
     >
-      <template #prefix>
-        <span
-          v-if="state.v"
-          class="areaicon"
-          :class="'area-' + state.v.toLowerCase()"
-        ></span>
+      <template v-if="state.v.length" #prefix>
+        <span class="areaicon" :class="'area-' + state.v.toLowerCase()" />
       </template>
       <el-option
         v-for="(it, i) in options"
@@ -64,7 +60,7 @@ watch(
   },
   {
     immediate: true,
-  }
+  },
 );
 // 挂载
 // 事件

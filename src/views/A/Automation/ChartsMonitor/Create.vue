@@ -1,5 +1,9 @@
 <template>
-  <div class="ChartsMonitorCreate DrawerBody">
+  <DrawerArea
+    :submiting="state.submiting"
+    @submit="toValidate"
+    class="ChartsMonitorCreate DrawerBody"
+  >
     <el-form
       ref="form"
       :rules="state.rules"
@@ -96,17 +100,7 @@
         <!-- 占位留白 -->
       </div>
     </el-form>
-  </div>
-  <div class="DrawerFooter">
-    <el-button
-      :loading="state.submiting"
-      round
-      type="primary"
-      @click="toValidate"
-    >
-      {{ $l('Submit') }}
-    </el-button>
-  </div>
+  </DrawerArea>
 </template>
 <script setup>
 defineOptions({
@@ -145,7 +139,7 @@ const categoryOptions = computed(() => {
 });
 const lang = computed(() => {
   return launch.lang;
- });
+});
 // 监听
 
 // 挂载

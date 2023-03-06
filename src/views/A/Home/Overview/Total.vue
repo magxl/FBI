@@ -18,23 +18,18 @@
             class="flexMode hc vc"
           />
           <div v-if="state.spendOptions.series" class="pb8">
-            <div class="flexMode vc hb p4-8">
-              <div class="dot8 bg-primary"></div>
+            <div
+              v-for="(ct, c) in prop.currency"
+              :key="c"
+              class="flexMode vc hb p4-8"
+              :class="`total${ct.label}`"
+            >
+              <div class="dot8"></div>
               <div class="pl4 fs12 txt-dark5">
-                <span>{{ state.spendOptions.series[0].data[0].symbol }}</span>
-                <span>{{ state.spendOptions.series[0].data[0].format }}</span>
+                <span>{{ state.spendOptions.series[0].data[c].symbol }}</span>
+                <span>{{ state.spendOptions.series[0].data[c].format }}</span>
                 <span class="pl4 txt-dark3">(</span>
-                <span class="txt-primary">{{ spendPercent[0] }}%</span>
-                <span class="txt-dark3">)</span>
-              </div>
-            </div>
-            <div class="flexMode vc hb p4-8">
-              <div class="dot8 bg-orange"></div>
-              <div class="pl4 fs12 txt-dark5">
-                <span>{{ state.spendOptions.series[0].data[1].symbol }}</span>
-                <span>{{ state.spendOptions.series[0].data[1].format }}</span>
-                <span class="pl4 txt-dark3">(</span>
-                <span class="txt-orange">{{ spendPercent[1] }}%</span>
+                <span class="percent">{{ spendPercent[c] }}%</span>
                 <span class="txt-dark3">)</span>
               </div>
             </div>
@@ -73,8 +68,7 @@
           ref="yearChart"
           :options="state.options"
           height="200"
-          width="100%"
-          minus-width="216"
+          :width="chartWidth"
         />
       </Card>
       <Card class="w320 ml16 noShrink">
@@ -100,6 +94,8 @@
   </div>
 </template>
 <script setup>
+import { watchEffect } from 'vue';
+
 // 定义
 defineOptions({
   name: 'OverviewTotal',
@@ -113,6 +109,7 @@ const prop = defineProps({
 });
 // 数据
 const state = reactive({
+  search: {},
   date: [],
   spendOptions: {},
   options: {},
@@ -120,7 +117,8 @@ const state = reactive({
   days: 0, // 总计统计的天数
 });
 const { proxy } = getCurrentInstance();
-
+const store = inject('store');
+const launch = store.launch();
 // 挂载
 onMounted(() => {
   initOptions();
@@ -166,7 +164,7 @@ const initSpend = () => {
         labelLine: {
           show: false,
         },
-        data: window.$fd(2, (i) => {
+        data: window.$fd(prop.currency.length, (i) => {
           const value = (window.$rn(9999999999, 100) / 100).toFixed(2);
           return {
             name: prop.currency[i].label,
@@ -241,7 +239,7 @@ const initYearData = () => {
         {
           gt: 5000000,
           lte: 10000000,
-          color: '#fa8b0c',
+          color: '#FFBB01',
         },
         {
           gt: 10000000,
@@ -302,26 +300,41 @@ const initTaskData = () => {
     };
   });
 };
-const dateChange = (v) => {
+const dateChange = (v, from) => {
+  const date = v || state.search.date || [];
   state.options.dataZoom = [
     {
-      startValue: v[0],
-      endValue: v[1],
+      startValue: date[0],
+      endValue: date[1],
+    },
+    {
+      type: 'slider',
     },
   ];
-  proxy.$refs.yearChart.initChart();
+  if (proxy.$refs.yearChart) {
+    proxy.$refs.yearChart.initChart();
+  }
 };
 // 计算属性
 const spendPercent = computed(() => {
   const { data = [] } = state.spendOptions.series?.[0];
   if (data.length) {
-    const a0 = Number(data[0].value);
-    const a1 = Number(data[1].value);
-    const total = a0 + a1;
-    return [((a0 / total) * 100).toFixed(2), ((a1 / total) * 100).toFixed(2)];
+    let total = 0;
+    const arr = window.$fd(prop.currency.length, (i) => {
+      const v = Number(data[i].value);
+      total += v;
+      return v;
+    });
+    const r = window.$fd(prop.currency.length, (i) => {
+      return ((arr[i] / total) * 100).toFixed(2);
+    });
+    return r;
   } else {
     return [];
   }
+});
+const chartWidth = computed(() => {
+  return launch.options.pageWidth - 200 - 320 - 32 - 32 + '';
 });
 // 监听
 
@@ -333,5 +346,21 @@ const spendPercent = computed(() => {
 }
 .otherArea {
   width: calc(100% - 552px);
+}
+.totalUSD {
+  .dot8 {
+    background-color: $primary;
+  }
+  .percent {
+    color: $primary;
+  }
+}
+.totalRMB {
+  .dot8 {
+    background-color: $orange;
+  }
+  .percent {
+    color: $orange;
+  }
 }
 </style>

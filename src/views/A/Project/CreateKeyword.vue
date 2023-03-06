@@ -457,20 +457,7 @@ const toUseHotMode = (it, i) => {
   };
 };
 // maps
-const matchTypeMap = [
-  {
-    label: 'Exact',
-    label_en_us: 'Exact',
-    label_zh_cn: '精准',
-    value: 'EXACT',
-  },
-  {
-    label: 'Broad',
-    label_en_us: 'Broad',
-    label_zh_cn: '广泛',
-    value: 'BROAD',
-  },
-];
+const matchTypeMap = window.$map.campaign.matchType;
 const keywordStatusMap = [
   {
     label: 'Running',

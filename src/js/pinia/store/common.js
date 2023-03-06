@@ -74,7 +74,7 @@ const actions = {
     return window
       .$fakeData(window.$randomNumber(100), (i) => {
         const status = statusMapArr[window.$randomNumber(statusMapArr.length)];
-        const icon = ['adicon', status.icon, status.txt].join(' ');
+        const icon = status.class;
         const supplySources = adplacementOptions[window.$randomNumber(4)];
         const id = i + 1;
         return {
@@ -99,7 +99,7 @@ const actions = {
     return window
       .$fakeData(window.$randomNumber(100), (i) => {
         const status = statusMapArr[window.$randomNumber(statusMapArr.length)];
-        const icon = ['adicon', status.icon, status.txt].join(' ');
+        const icon = status.class;
         const id = i + 1;
         return {
           id,

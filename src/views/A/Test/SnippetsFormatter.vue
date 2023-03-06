@@ -19,7 +19,7 @@
             <span>{{ it.label }}</span>
           </el-radio>
         </el-radio-group>
-        <el-button size="small" @click="toCopy">复制</el-button>
+        <el-button @click="toCopy">复制</el-button>
       </div>
       <div class="p10 h300 yscroll">
         <div v-for="(it, i) in state.text" :key="i">

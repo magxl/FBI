@@ -1,12 +1,12 @@
 <template>
   <div class="OverviewStatistics">
-    <el-scrollbar class="hp100">
+    <el-scrollbar>
       <div class="flexMode vs p16 pt0">
         <Card
           v-for="(it, i) in state.list"
           :key="i"
-          :class="i !== state.list.length - 1 && 'mr16'"
-          :style="minWidth"
+          :class="[i !== state.list.length - 1 && 'mr16']"
+          :style="[minWidth, cardClass]"
         >
           <template #header>
             <div class="flexMode vr">
@@ -65,18 +65,10 @@ const state = reactive({
 });
 const store = inject('store');
 const launch = store.launch();
-// 计算属性
-const pageWidth = computed(() => {
-  return launch.pageWidth;
-});
-const minWidth = computed(() => {
-  let r = (pageWidth.value - prop.currency.length * 16 - 16) / 2;
-  r = r < 512 ? 512 : r;
-  return `min-width:${r}px;`;
-});
-// 监听
-
 // 挂载
+onMounted(() => {
+  fakeData();
+});
 // 事件
 const fakeData = () => {
   const daysName = ['今日', '本周', '本月'];
@@ -99,12 +91,27 @@ const fakeData = () => {
     };
   });
 };
-fakeData();
+// 计算属性
+const pageWidth = computed(() => {
+  return launch.pageWidth;
+});
+const minWidth = computed(() => {
+  let r = (pageWidth.value - prop.currency.length * 16 - 16) / 2;
+  r = r < 512 || r > 512 ? 512 : r;
+  return `min-width:${r}px;`;
+});
+const cardClass = computed(() => {
+  return {
+    width: `calc(100% / ${prop.currency.length})`,
+  };
+});
+// 监听
+
 // 卸载
 </script>
 <style lang="scss" scoped>
 .OverviewStatistics {
-  height: 178px;
+  height: 180px;
   .compareArea {
     .adicon {
       position: absolute;
@@ -119,7 +126,7 @@ fakeData();
       }
     }
     .txt-green {
-      .adicon{
+      .adicon {
         transform: translate(-50%, -6px);
       }
     }

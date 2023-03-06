@@ -68,7 +68,7 @@ const initChart = () => {
       {
         type: 'pie',
         top: 0,
-        radius: '60%',
+        radius: ['30%', '60%'],
         itemStyle: {
           borderRadius: 4,
         },

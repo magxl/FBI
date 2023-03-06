@@ -2,11 +2,11 @@
   <div class="SuperDatePicker">
     <el-date-picker
       v-model="state.date"
-      v-bind="$attrs"
       class="wp100"
       type="daterange"
-      :range-separator="prop.separator"
       value-format="YYYY-MM-DD"
+      :clearable="false"
+      :range-separator="prop.separator"
       :shortcuts="state.shortBtn"
       :end-placeholder="placeholder.end"
       :start-placeholder="placeholder.start"
@@ -16,6 +16,8 @@
   </div>
 </template>
 <script setup>
+import { watchEffect } from 'vue';
+
 // 定义
 defineOptions({
   name: 'SuperDatePicker',
@@ -24,6 +26,10 @@ defineOptions({
 const prop = defineProps({
   modelValue: {
     type: [String, Array],
+    default: () => [],
+  },
+  defaultDate: {
+    type: Array,
     default: () => [],
   },
   // 返回v-model的类型，obj时格式为{startDate,endDate}
@@ -65,13 +71,14 @@ const store = inject('store');
 const launch = store.launch();
 // 挂载
 onMounted(() => {
-  if (!prop.modelValue.length) {
+  if (!prop.defaultDate.length) {
     const start = -6 + offsetDay.value;
     const end = offsetDay.value;
     state.date = [
       window.$moment().add(start, 'days').format('YYYY-MM-DD'),
       window.$moment().add(end, 'days').format('YYYY-MM-DD'),
     ];
+    dateChange(state.date);
   }
   initShortBtn();
 });
@@ -79,7 +86,7 @@ onMounted(() => {
 const emit = defineEmits();
 const disabledDate = (t) => {
   if (window.$getType(prop.disabledDate) !== 'Function') {
-    let r = +new Date() + offsetDay.value * 86400000;
+    const r = +new Date() + offsetDay.value * 86400000;
     return +t > r;
   } else {
     return prop.disabledDate();
@@ -97,7 +104,7 @@ const dateChange = (v) => {
   } else {
     r = v[0] + prop.separator + v[1];
   }
-  emit('change', r);
+  emit('change', r, 'cpt');
   emit('update:modelValue', r);
 };
 const initShortBtn = () => {
@@ -272,9 +279,6 @@ const lang = computed(() => {
 const placeholder = computed(() => {
   return placeholderMap[lang.value];
 });
-const shortcuts = computed(() => {
-  return [];
-});
 const offsetDay = computed(() => {
   const { notoday, disabledDate } = prop;
   let offset = 0;
@@ -309,16 +313,21 @@ const defaultShortcuts = {
 };
 // 监听
 watch(
-  () => prop.modelValue,
+  () => prop.defaultDate,
   (n) => {
-    if (n && n.length) {
+    if (n.length) {
       state.date = n;
+      dateChange(n);
     }
   },
-  {
-    immediate: true,
-  },
 );
+// watchEffect(() => {
+//   console.info(state.date);
+//   if (state.date.length) {
+//     return;
+//   }
+//   state.date = prop.modelValue;
+// });
 // 卸载
 </script>
 <style lang="scss" scoped></style>

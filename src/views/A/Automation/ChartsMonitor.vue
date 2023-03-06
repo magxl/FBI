@@ -10,7 +10,7 @@
         <div class="flexMode vc p0-16">
           <span>{{ $l('Charts Monitors') }}</span>
           <div class="p16 pr0 mr16 border-r"></div>
-          <el-button type="primary" plain circle size="small" @click="toCreate">
+          <el-button type="primary" plain circle @click="toCreate">
             <template #icon>
               <i class="adicon ad-plus1"></i>
             </template>

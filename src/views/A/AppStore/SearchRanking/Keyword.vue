@@ -2,7 +2,7 @@
   <div class="SearchRankingKeyword p16">
     <div class="Card w240">
       <div class="CardBody pb16">
-        <el-table size="small" :data="prop.keywords">
+        <el-table :data="prop.keywords">
           <el-table-column :label="$l('Keyword')" prop="keyword"></el-table-column>
           <el-table-column :label="$l('Volume')" prop="volume"></el-table-column>
         </el-table>

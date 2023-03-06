@@ -26,6 +26,7 @@ const state = () => {
       keyword: '',
       size: false, // 尺寸
     },
+    worker: {}, // webworker
   };
 };
 const actions = {
@@ -118,7 +119,7 @@ const actions = {
       // 关闭的是当前页面时
       if (cindex === index) {
         // 判断新回显页面索引
-        const newPageIndex = (index = 0 ? 0 : index - 1);
+        const newPageIndex = index === 0 ? 0 : index - 1;
         const newCurrentPage = this.tabPages[newPageIndex];
         if (newCurrentPage.meta.multiple) {
           router.push({

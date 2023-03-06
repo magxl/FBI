@@ -53,6 +53,7 @@ const config = {
   table: {
     header: 40,
     pagination: 48,
+    tool: 48,
   },
   drawer: {
     footer: 56,

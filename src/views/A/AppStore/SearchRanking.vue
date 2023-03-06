@@ -17,7 +17,7 @@
           />
         </div>
         <div class="inputGroupRight">
-          <el-button type="primary" plain size="small" @click="toSearch">
+          <el-button type="primary" plain @click="toSearch">
             <template #icon>
               <i class="adicon ad-search1"></i>
             </template>
@@ -29,7 +29,6 @@
         <el-tag
           v-for="(it, i) in state.localKeyword"
           :key="it"
-          size="small"
           round
           effect="plain"
           type="info"

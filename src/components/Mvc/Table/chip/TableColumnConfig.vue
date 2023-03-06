@@ -2,7 +2,9 @@
   <DrawerArea noscroll>
     <div class="relative flexMode vs p10 hp100">
       <!-- fixed left -->
-      <div class="relative dragArea wp33 mr5 border-dark3-dashed radius8 hover-box-shadow-dark1">
+      <div
+        class="relative dragArea wp33 mr5 border-dark3-dashed radius8 hover-box-shadow-dark1"
+      >
         <div class="flexMode hb vc h40 p10 bg-f5 radius-t8 border-b">
           <span class="fs14">{{ $l('Fixed Left') }}</span>
           <div v-if="leftVisible">
@@ -18,6 +20,7 @@
             :list="state.columns.left"
             group="columnFilter"
             class="dragBody p5-0"
+            :style="bodyStyle"
             @start="onStart"
             @end="onEnd"
           >
@@ -49,7 +52,9 @@
       </div>
       <!-- ↑ fixed left ↑ -->
       <!-- fixed center -->
-      <div class="relative dragArea wp33 m0-5 border-dark3-dashed radius8 hover-box-shadow-dark1">
+      <div
+        class="relative dragArea wp33 m0-5 border-dark3-dashed radius8 hover-box-shadow-dark1"
+      >
         <div class="flexMode hb vc h40 p10 bg-f5 border-b radius-t8">
           <span class="fs14">{{ $l('Center') }}</span>
           <div v-if="centerVisible">
@@ -65,6 +70,7 @@
             :list="state.columns.center"
             group="columnFilter"
             class="dragBody p5-0"
+            :style="bodyStyle"
             @start="onStart"
             @end="onEnd"
           >
@@ -102,7 +108,9 @@
       </div>
       <!-- ↑ fixed center ↑ -->
       <!-- fixed right -->
-      <div class="relative dragArea wp33 ml5 border-dark3-dashed radius8 hover-box-shadow-dark1">
+      <div
+        class="relative dragArea wp33 ml5 border-dark3-dashed radius8 hover-box-shadow-dark1"
+      >
         <div class="flexMode hb vc h40 p10 bg-f5 border-b radius-t8">
           <span class="fs14">{{ $l('Fixed Right') }}</span>
           <div v-if="rightVisible">
@@ -118,6 +126,7 @@
             :list="state.columns.right"
             group="columnFilter"
             class="dragBody p5-0"
+            :style="bodyStyle"
             @start="onStart"
             @end="onEnd"
           >
@@ -150,7 +159,7 @@
       <!-- ↑ fixed right ↑ -->
     </div>
     <template #footer>
-      <el-button @click="toReset" size="small" :loading="reseting" round>
+      <el-button @click="toReset" :loading="reseting" round>
         {{ $l('Reset') }}
       </el-button>
       <el-button
@@ -179,7 +188,6 @@ const prop = defineProps({
     default: () => {},
   },
 });
-const { proxy } = getCurrentInstance();
 // 数据
 const state = reactive({
   submiting: false,
@@ -191,25 +199,9 @@ const state = reactive({
   },
   total: 0,
 });
-// 计算属性
-const leftVisible = computed(() => {
-  return state.columns.left.filter((it) => it.visible).length;
-});
-const centerVisible = computed(() => {
-  return state.columns.center.filter((it) => it.visible).length;
-});
-const rightVisible = computed(() => {
-  return state.columns.right.filter((it) => it.visible).length;
-});
-const columnName = computed(() => {
-  return prop.params.tableName + '_Column';
-});
-const scrollStyle = computed(() => {
-  return {
-    height: `calc(100% - 40px)`,
-  };
-});
-// 监听
+const { proxy } = getCurrentInstance();
+const store = inject('store');
+const launch = store.launch();
 // 初始
 const init = () => {
   const localColumns = JSON.parse(localStorage.getItem(columnName.value));
@@ -268,7 +260,7 @@ const createColumn = ({ left, center, right }) => {
 const toReset = () => {
   state.reseting = true;
   localStorage.removeItem(columnName.value);
-  emit('filterSubmit');
+  emit('configSubmit');
   getLocalColumn();
   state.reseting = false;
   emit('close');
@@ -277,7 +269,7 @@ const toSubmit = () => {
   state.submiting = true;
   const { column } = createColumn(state.columns);
   localStorage.setItem(columnName.value, JSON.stringify(column));
-  emit('filterSubmit');
+  emit('configSubmit');
   state.submiting = false;
   emit('close');
 };
@@ -318,6 +310,30 @@ const onEnd = (e) => {
   // e.stopPropagation();
   // e.dataTransfer = e.originalEvent.dataTransfer;
 };
+// 计算属性
+const leftVisible = computed(() => {
+  return state.columns.left.filter((it) => it.visible).length;
+});
+const centerVisible = computed(() => {
+  return state.columns.center.filter((it) => it.visible).length;
+});
+const rightVisible = computed(() => {
+  return state.columns.right.filter((it) => it.visible).length;
+});
+const columnName = computed(() => {
+  return prop.params.tableName + '_Column';
+});
+const scrollStyle = computed(() => {
+  return {
+    height: `calc(100% - 40px)`,
+  };
+});
+const bodyStyle = computed(() => {
+  return {
+    height: launch.options.drawerHeight - 16 - 40 - 10 + 'px',
+  };
+});
+// 监听
 // 卸载
 </script>
 <style lang="scss" scoped>

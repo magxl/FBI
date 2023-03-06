@@ -43,7 +43,7 @@
                 <i class="adicon ad-search1"></i>
               </template>
             </el-button>
-            <el-button plain round type="primary" @click="toViewAll">{{
+            <el-button plaintype="primary" @click="toViewAll">{{
               $l('View All')
             }}</el-button>
           </div>

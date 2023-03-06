@@ -80,7 +80,7 @@ const initChart = () => {
     yAxis: {},
     xAxis: {
       type: 'category',
-      data: window.$fakeData(30, (i) => `date${i}`),
+      data: window.$fakeData(30, (i) => window.$m().add(i-30,'d').format('MM-DD')),
     },
     series: window.$fakeData(len, (i) => {
       return {

@@ -119,5 +119,14 @@ export default {
     };
     window.$formatAmount = formatAmount;
     window.$fa = formatAmount;
+    // 异步
+    window.$promise = (cb = () => {}, time = 3) => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          cb();
+          resolve();
+        }, window.$rn(time * 1000, time * 100));
+      });
+    };
   },
 };

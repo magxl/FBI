@@ -1,9 +1,9 @@
 <template>
   <div class="OnloadContextMenu noselect" :style="position">
     <div
-      v-if="visible"
       v-click-outside="toHideMenu"
-      class="contextMenuArea minh160 minw120 bg-white9 radius4 backdrop box-shadow-dark1"
+      class="contextMenuArea bg-white9 radius4 backdrop box-shadow-dark1"
+      :class="{ visible }"
     >
       <div
         v-for="(it, i) in list"
@@ -69,7 +69,19 @@ const toClick = (it) => {
   z-index: 99;
   .contextMenuArea {
     position: relative;
+    width: 0;
+    height: 0;
+    overflow: hidden;
     padding: 4px 24px 4px 0;
+    opacity: 0;
+    transition: none;
+    // transition: $trans3;
+    &.visible {
+      min-width: 140px;
+      min-height: 160px;
+      transition: $trans3;
+      opacity: 1;
+    }
     &::after {
       content: '';
       position: absolute;

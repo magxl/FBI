@@ -16,7 +16,7 @@
       <div class="p10">
         <div class="fleMode vc p10">
           <span class="pr10 fs12 txt-dark9">格式化Lang</span>
-          <el-button size="small" @click="$copy(state.langFormat)"
+          <el-button @click="$copy(state.langFormat)"
             >复制</el-button
           >
         </div>
@@ -39,7 +39,7 @@
       <div class="p10">
         <div class="fleMode vc p10">
           <span class="pr10 fs12 txt-dark9">格式化国家地区数据</span>
-          <el-button size="small" @click="toCopy">复制</el-button>
+          <el-button @click="toCopy">复制</el-button>
         </div>
         <div
           v-for="(it, i) in state.result"

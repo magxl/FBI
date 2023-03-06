@@ -1,5 +1,9 @@
 <template>
-  <div class="MonitorsCreate DrawerBody">
+  <DrawerArea
+    :submiting="state.submiting"
+    @submit="toValidate"
+    class="MonitorsCreate DrawerBody"
+  >
     <el-form
       ref="form"
       :rules="state.rules"
@@ -236,7 +240,6 @@
                 plain
                 circle
                 type="danger"
-                size="mini"
                 @click="toConditionDel(it, i)"
               >
                 <template #icon>
@@ -248,7 +251,6 @@
                 plain
                 circle
                 type="success"
-                size="mini"
                 @click="toConditionAdd(it, i)"
               >
                 <template #icon>
@@ -287,7 +289,6 @@
                 plain
                 circle
                 type="danger"
-                size="mini"
                 @click="toOperationDel(it, i)"
               >
                 <template #icon>
@@ -299,7 +300,6 @@
                 plain
                 circle
                 type="success"
-                size="mini"
                 @click="toOperationAdd(it, i)"
               >
                 <template #icon>
@@ -313,16 +313,7 @@
       <!-- ↑ operation -->
     </el-form>
     <div class="h160"></div>
-  </div>
-  <div class="DrawerFooter">
-    <el-button
-      type="primary"
-      :loading="state.submiting"
-      round
-      @click="toValidate"
-      >Submit</el-button
-    >
-  </div>
+  </DrawerArea>
 </template>
 <script setup>
 defineOptions({
@@ -366,7 +357,11 @@ const toConditionAdd = (it, i) => {
   if (it.type) {
     state.form.condition.unshift({});
   } else {
-    proxy.$message.warning(window.$l('Please select the Metric type of the current item before adding'));
+    proxy.$message.warning(
+      window.$l(
+        'Please select the Metric type of the current item before adding',
+      ),
+    );
   }
 };
 const toConditionDel = (it, i) => {

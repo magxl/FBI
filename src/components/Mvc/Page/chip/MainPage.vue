@@ -13,7 +13,7 @@
         <slot v-else name="header" />
       </div>
       <slot v-if="prop.noscroll" />
-      <el-scrollbar v-else class="hp100">
+      <el-scrollbar v-else :style="scrollStyle">
         <slot />
       </el-scrollbar>
     </div>
@@ -44,6 +44,8 @@ const state = reactive({
     scroll: false,
   },
 });
+const store = inject('store');
+const launch = store.launch();
 
 // 计算属性
 const useHeader = computed(() => {
@@ -62,13 +64,19 @@ const headerStyle = computed(() => {
     height: pageConfig.value.header + 'px',
   };
 });
+const scrollStyle = computed(() => {
+  let height = launch.options.pageHeight;
+  if (!useHeader.value) {
+    height += pageConfig.value.header;
+  }
+  return {
+    height: height + 'px',
+  };
+});
 
 const pageStyle = computed(() => {
   return {
-    height: `calc(100vh - ${window.global.config.frame.header}px - ${
-      pageConfig.value.paddingTop + pageConfig.value.paddingBottom
-    }px)`,
-    borderRadius: pageConfig.value.paddingRight?'':'8px 0 0 8px',
+    borderRadius: pageConfig.value.paddingRight ? '' : '8px 0 0 8px',
   };
 });
 // 监听

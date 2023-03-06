@@ -16,7 +16,7 @@
         />
       </div>
       <div class="pr8">
-        <Country v-model="state.search.country" size="small" />
+        <Country v-model="state.search.country" />
       </div>
       <div class="pr8">
         <el-select
@@ -34,7 +34,7 @@
         </el-select>
       </div>
       <div class="pr8">
-        <el-button size="small" circle plain type="primary" @click="toSearch">
+        <el-button circle plain type="primary" @click="toSearch">
           <template #icon>
             <i class="adicon ad-search1"></i>
           </template>

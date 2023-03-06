@@ -52,9 +52,9 @@ onMounted(() => {
 });
 // 事件
 const router = useRouter();
-const toPage = ({ name, key, params }) => {
+const toPage = ({ name, key, params, query }) => {
   if (key !== currentPage.value.key) {
-    router.push({ name, params });
+    router.push({ name, params, query });
   }
 };
 const toClose = (i) => {

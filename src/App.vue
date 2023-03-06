@@ -33,13 +33,14 @@ const langModuleLoaded = computed(() => {
 // 监听
 
 // 挂载
+
 launch.getLocalTimezone();
 onMounted(async () => {
+
+  initOptions(); // 初始化配置项
   await initColorIcon(); // 初始化多色图标
   await initTabPages(); // 初始化缓存Tab
   await initLang(); // 初始化语言
-  await initOptions(); // 初始化配置项
-
   await initLoaded(); // 初始化载入完成
 });
 
@@ -58,13 +59,13 @@ const initColorIcon = () => {
 };
 // 初始化菜单
 const initTabPages = () => {
-  let tabPages = localStorage.getItem('tabPages') || '[]';
+  let tabPages = localStorage.getItem('tabPages');
   if (tabPages) {
-    tabPages = JSON.parse(tabPages).map((it) => {
-      it.meta.langLabel = proxy.$l(it.meta.label);
-      return it;
-    });
-    launch.saveData('tabPages', tabPages);
+    // tabPages = JSON.parse(tabPages).map((it) => {
+    //   it.meta.langLabel = proxy.$l(it.meta.label);
+    //   return it;
+    // });
+    launch.saveData('tabPages', JSON.parse(tabPages));
   }
 };
 
@@ -78,7 +79,7 @@ const initLang = () => {
 const initOptions = () => {
   // 页面宽高
   nextTick(() => {
-    const { page, frame, table } = window.global.config;
+    const { page, frame, table, drawer } = window.global.config;
     const { clientWidth, clientHeight } = document.body;
     const tableHeight =
       clientHeight -
@@ -93,20 +94,35 @@ const initOptions = () => {
       page.paddingBottom -
       page.header -
       frame.header;
-    console.info('config options', {
+    const drawerHeight = clientHeight - 56 - drawer.footer;
+    const collapseMenu = Number(localStorage.getItem('collapseMenu'))
+    const pageWidth = clientWidth - (collapseMenu ? 64 : 200);
+    // agent
+    // console.info(window.navigator);
+    let platform = '';
+    if (window.navigator.platform) {
+      if (window.navigator.platform.toLowerCase().indexOf('mac') > -1) {
+        platform = 'macOS';
+      }
+    } else if (window.navigator.userAgentData) {
+      platform = window.navigator.userAgentData.platform;
+    }
+    // const { platform = '' } = window.navigator?.userAgentData;
+    const options = {
       clientWidth,
       clientHeight,
       tableHeight,
       pageHeight,
-    });
-    launch.saveData('options', {
-      clientWidth,
-      clientHeight,
-      tableHeight,
-      pageHeight,
-    });
+      pageWidth,
+      drawerHeight,
+      platform,
+    };
+    console.table('config options', options);
+    launch.saveData('options', options);
   });
 };
+
+
 const initLoaded = () => {
   const loadingMsk = document.getElementsByClassName('loadingMask')[0];
   state.timer = setTimeout(() => {

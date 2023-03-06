@@ -11,7 +11,7 @@
       <slot name="footer" />
     </template>
     <template v-else>
-      <el-button size="small" round plain @click="toClose">
+      <el-button plain @click="toClose">
         <template #icon>
           <i class="adicon ad-arrow-right fs14 rotate180"></i>
         </template>

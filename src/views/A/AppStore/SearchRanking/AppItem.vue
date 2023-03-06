@@ -63,7 +63,7 @@
           <span class="pl8">{{ it.rating }}</span>
         </div>
         <div class="flexMode vc pr16">
-          <el-rate :model-value="it.score" size="small" disabled></el-rate>
+          <el-rate :model-value="it.score" disabled></el-rate>
           <span class="pl8">{{ it.score }}</span>
         </div>
       </div>

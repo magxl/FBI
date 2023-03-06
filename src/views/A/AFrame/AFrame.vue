@@ -32,9 +32,6 @@ state.menu = window.routes.filter((it) => it.name === 'A')[0].children;
 
 const store = inject('store');
 const launch = store.launch();
-const currentPage = computed(() => {
-  return launch.currentPage;
-});
 const collapseMenu = computed(() => {
   return launch.collapseMenu;
 });

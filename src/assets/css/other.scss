@@ -103,3 +103,22 @@ $radius: 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20;
   cursor: pointer;
   text-decoration: underline;
 }
+
+.hover-edit-txt {
+  cursor: pointer;
+  border: 1px transparent solid;
+  transform: translateX(-8px);
+  border-radius: 12px;
+  transition: $trans3;
+  &:hover {
+    border-color: $blue;
+    background-color: $white;
+  }
+}
+
+.hover-underline {
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}

@@ -54,7 +54,7 @@
                 ></el-tree>
               </div>
               <template #footer>
-                <el-button plain round @click="toReset('router')">{{
+                <el-button plain@click="toReset('router')">{{
                   $l('Reset')
                 }}</el-button>
                 <el-button
@@ -90,7 +90,7 @@
                 </el-tree>
               </div>
               <template #footer>
-                <el-button plain round @click="toReset('permission')">{{
+                <el-button plain@click="toReset('permission')">{{
                   $l('Reset')
                 }}</el-button>
                 <el-button
@@ -121,10 +121,10 @@
                 ></el-tree>
               </div>
               <template #footer>
-                <el-button plain round @click="toReset('user')">{{
+                <el-button plain@click="toReset('user')">{{
                   $l('Reset')
                 }}</el-button>
-                <el-button plain round type="primary" @click="toSubmitUser()">{{
+                <el-button plaintype="primary" @click="toSubmitUser()">{{
                   $l('Submit')
                 }}</el-button>
               </template>

@@ -7,9 +7,9 @@
           <span class="border-r-gray3"></span>
         </div>
         <div class="pr8">
-          <Org v-model="state.search.orgId" />
+          <Org v-model="state.search.orgId" :clearable="false" />
         </div>
-        <div class="pr8">
+        <div v-show="showTimezone" class="pr8">
           <el-select v-model="state.search.timezone" placeholder=" ">
             <template v-if="state.search.timezone" #prefix>
               <span v-if="state.search.timezone > 0">+</span>
@@ -36,7 +36,7 @@
         </div>
         <div class="pr8">
           <el-button
-            class="searchBtn"
+            class="hoverBtn"
             :txt="$l('Search')"
             plain
             circle
@@ -50,8 +50,8 @@
         </div>
       </div>
     </template>
-    <div class="p0-16">
-      <el-tabs v-model="state.active">
+    <div v-loading="state.loading" :style="loadingStyle">
+      <el-tabs v-model="state.active" class="pl16" @tab-change="tabChange">
         <el-tab-pane
           v-for="it in tabs"
           :key="it.value"
@@ -59,9 +59,14 @@
           :name="it.value"
         ></el-tab-pane>
       </el-tabs>
-      <div class="cptArea">
+      <div v-if="state.orginfo.id" class="cptArea">
         <keep-alive>
-          <component :is="cpt" />
+          <component
+            :is="cpt"
+            :search="state.search"
+            :orginfo="state.orginfo"
+            @set-tab="toSetTab"
+          />
         </keep-alive>
       </div>
     </div>
@@ -72,8 +77,10 @@ import TabCampaign from './CampaignGroupDetailTab/Campaign.vue';
 import TabAdGroup from './CampaignGroupDetailTab/AdGroup.vue';
 import TabKeyword from './CampaignGroupDetailTab/Keyword.vue';
 import TabSearchTerm from './CampaignGroupDetailTab/SearchTerm.vue';
+import TabNegative from './CampaignGroupDetailTab/Negative.vue';
 import TabAds from './CampaignGroupDetailTab/Ads.vue';
 import TabSov from './CampaignGroupDetailTab/Sov.vue';
+import { watchEffect } from 'vue';
 // 定义
 defineOptions({
   name: 'CampaignGroupDetailTab',
@@ -82,6 +89,7 @@ defineOptions({
     TabAdGroup,
     TabKeyword,
     TabSearchTerm,
+    TabNegative,
     TabAds,
     TabSov,
   },
@@ -95,21 +103,61 @@ const prop = defineProps({
 });
 // 数据
 const state = reactive({
+  loading: true,
   active: 'Campaign',
   search: {},
+  cptKey: 0,
+  orginfo: {},
 });
 const store = inject('store');
 const launch = store.launch();
-const route = useRoute();
+
 // 挂载
-onMounted(() => {});
+onMounted(() => {
+  getLocalTab();
+});
+onActivated(() => {
+  getLocalTab();
+});
 // 事件
-const getData = () => {
-  console.info(prop.orgId);
+const getLocalTab = () => {
+  // 激活，传参的tab
+  const tab = localStorage.getItem('CampaignGroupDetailTab');
+  if (tab) {
+    state.active = tab;
+    // 不保留缓存tab
+    // localStorage.removeItem('CampaignGroupDetailTab');
+  }
+};
+// org详情
+const getData = async () => {
+  state.loading = true;
+  window.$promise(() => {
+    state.orginfo = {
+      id: state.search.orgId,
+      name: 'Test Org Detail Tab',
+      currency: window.$rn(2) ? '$' : '¥',
+    };
+    state.loading = false;
+    console.info(state.orginfo);
+  });
+};
+const toSearch = () => {
+  console.table(state.search);
+  state.cptKey++;
+};
+const tabChange = (v) => {
+  console.info(v);
+  localStorage.setItem('CampaignGroupDetailTab', v);
+};
+const toSetTab = (v) => {
+  state.active = v;
 };
 // 计算属性
-const canInit = computed(() => {
-  return prop.orgId && route.query.tab ? +new Date() : '';
+const loadingStyle = computed(() => {
+  return {
+    height: launch.options.pageHeight + 'px',
+  };
 });
 const timezoneMap = computed(() => {
   return [{ label: 'UTC', value: 0 }, launch.localTimezone];
@@ -121,13 +169,18 @@ const timezoneLabel = computed(() => {
 const cpt = computed(() => {
   return `Tab${state.active}`;
 });
+const showTimezone = computed(() => {
+  return ['Campaign', 'AdGroup', 'Keyword'].indexOf(state.active) > -1;
+});
 // 监听
+watchEffect(() => {
+  state.search.timezone = timezoneMap.value[0].value;
+});
 watch(
-  () => canInit.value,
+  () => prop.orgId,
   (n) => {
     if (n) {
-      state.active = route.query.tab;
-      state.search.orgId = Number(prop.orgId);
+      state.search.orgId = Number(n);
       getData();
     }
   },
@@ -154,6 +207,10 @@ const tabs = [
   {
     label: $l('Search Term'),
     value: 'SearchTerm',
+  },
+  {
+    label: $l('Negative'),
+    value: 'Negative',
   },
   {
     label: $l('Ads'),

@@ -1,7 +1,7 @@
 <template>
   <div class="SuperStatus flexMode vc">
-    <i class="adicon" :class="status.class"></i>
-    <span class="pl4">{{ status[`label_${lang}`] }}</span>
+    <i class="adicon" :class="[status.class,fontClass]"></i>
+    <span v-if="label" class="pl4" :class="fontClass">{{ status[`label_${lang}`] }}</span>
   </div>
 </template>
 <script setup>
@@ -15,10 +15,17 @@ const prop = defineProps({
     type: String,
     default: '',
   },
+  label: {
+    type: Boolean,
+    default: true,
+  },
+  size: {
+    type: String,
+    default: 'small',
+  },
 });
 // 数据
-const store = inject('store');
-const launch = store.launch();
+
 // 挂载
 
 // 事件
@@ -34,7 +41,10 @@ const status = computed(() => {
   );
 });
 const lang = computed(() => {
-  return launch.lang;
+  return window.$getLang();
+});
+const fontClass = computed(() => {
+  return fontMap[prop.size] || 'fs12';
 });
 // 监听
 
@@ -80,6 +90,12 @@ const maps = {
     label_en_us: 'On Hold',
     label_zh_cn: '搁置',
   },
+};
+
+const fontMap = {
+  small: 'fs12',
+  normal: 'fs16',
+  large: 'fs24',
 };
 
 // 卸载

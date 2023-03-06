@@ -96,9 +96,10 @@
   background-size: 12px 12px;
 }
 
-// 搜索按钮
-.searchBtn {
+// el按钮hover提示
+.hoverBtn {
   position: relative;
+  z-index: 1;
   .el-icon {
     z-index: 2;
   }
@@ -111,9 +112,10 @@
     bottom: 0;
     transition: $trans3;
     overflow: hidden;
-    border-radius: 12px;
+    border-radius: 0 4px 4px 0;
     background-color: transparent;
     z-index: 0;
+    pointer-events: none;
   }
   &::before {
     content: attr(txt);
@@ -126,6 +128,7 @@
     transform: translateY(-50%);
     color: transparent;
     z-index: 1;
+    pointer-events: none;
   }
   &:hover {
     z-index: 2;
@@ -137,6 +140,16 @@
       left: 16px;
       right: -48px;
       color: $white;
+    }
+  }
+  &.width80 {
+    &:hover {
+      &::after {
+        right: -80px;
+      }
+      &::before {
+        right: -80px;
+      }
     }
   }
 }

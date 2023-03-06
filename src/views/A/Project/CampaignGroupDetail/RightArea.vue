@@ -24,6 +24,7 @@
         :page-offset="pageOffset"
         v-bind="$attrs"
         @loaded="cptLoaded"
+        @view-all="toViewAll"
       />
       <Keyword
         ref="KeywordRef"
@@ -113,6 +114,7 @@ const state = reactive({
 const { proxy } = getCurrentInstance();
 const store = inject('store');
 const launch = store.launch();
+const router = useRouter();
 // 挂载
 
 // 事件
@@ -152,6 +154,15 @@ const initOffsetTop = () => {
     Object.keys(proxy.$refs).forEach((it) => {
       proxy.$refs[it].getOffsetTop();
     });
+  });
+};
+const toViewAll = (tab) => {
+  localStorage.setItem('CampaignGroupDetailTab', tab);
+  router.push({
+    name: 'A_CampaignGroupDetailTab',
+    params: {
+      orgId: proxy.$attrs.info.id,
+    },
   });
 };
 // 计算属性

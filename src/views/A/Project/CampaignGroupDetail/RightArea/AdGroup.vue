@@ -48,7 +48,7 @@
                 <i class="adicon ad-search1"></i>
               </template>
             </el-button>
-            <el-button plain round type="primary" @click="toViewAll">{{
+            <el-button plaintype="primary" @click="toViewAll">{{
               $l('View All')
             }}</el-button>
           </div>
@@ -66,9 +66,11 @@
             @contextmenu="(e) => toShowMenu(e, it)"
           >
             <div>
-              <span v-if="it.unit==='currency'" class="txt-dark5">{{ currency }}</span>
+              <span v-if="it.unit === 'currency'" class="txt-dark5">{{
+                currency
+              }}</span>
               <span>{{ it.value }}</span>
-              <span v-if="it.unit==='%'" class="txt-dark5">%</span>
+              <span v-if="it.unit === '%'" class="txt-dark5">%</span>
             </div>
             <div class="pt8 fs12 txt-dark5 txt-c">
               {{ it.label }}
@@ -78,11 +80,7 @@
         <!-- statistics -->
         <!-- table top charts -->
         <div class="tableArea border-l">
-          <el-table
-            v-loading="state.loading"
-            :data="state.list"
-            height="296"
-          >
+          <el-table v-loading="state.loading" :data="state.list" height="296">
             <el-table-column
               :label="$l('Ad Group')"
               prop="adgroupName"
@@ -229,15 +227,7 @@ const getOffsetTop = () => {
 };
 const router = useRouter();
 const toViewAll = () => {
-  router.push({
-    name: 'A_CampaignGroupDetailTab',
-    params: {
-      orgId: prop.info.id,
-    },
-    query: {
-      tab: 'AdGroup',
-    },
-  });
+  emit('viewAll', 'AdGroup');
 };
 // 计算属性
 const lang = computed(() => {
@@ -284,7 +274,6 @@ const rankLimitOptions = [
     value: 100,
   },
 ];
-
 </script>
 <style lang="scss" scoped>
 .statisticsArea {

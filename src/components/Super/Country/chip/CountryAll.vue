@@ -6,12 +6,12 @@
       filterable
       :placeholder="$l('Country or Regions')"
     >
-      <template #prefix>
+      <template v-if="state.v.length" #prefix>
         <span
-          v-if="state.v"
+          v-if="prefix.length===1"
           class="areaicon"
-          :class="'area-' + state.v.toLowerCase()"
-        ></span>
+          :class="'area-' + prefix[0]"
+        />
       </template>
       <el-option-group
         v-for="(it, i) in options"
@@ -59,6 +59,13 @@ const options = computed(() => {
 const lang = computed(() => {
   return launch.lang;
 });
+const prefix = computed(() => {
+  if (window.$getType(state.v) === 'String') {
+    return [state.v.toLowerCase()];
+  } else {
+    return state.v.map((it) => it.toLowerCase());
+  }
+});
 // 监听
 
 watch(
@@ -70,7 +77,7 @@ watch(
   },
   {
     immediate: true,
-  }
+  },
 );
 // 挂载
 // 事件

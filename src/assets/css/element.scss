@@ -39,17 +39,21 @@
 .el-date-range-picker {
   --el-datepicker-inrange-bg-color: rgba(95, 99, 242, 0.1);
   --el-datepicker-inrange-hover-bg-color: rgba(95, 99, 242, 0.2);
-  &.has-sidebar{
+  &.has-sidebar {
     height: 329px;
   }
 }
 .today .el-date-table-cell__text {
   color: $green !important;
 }
+.el-date-table td.disabled .el-date-table-cell{
+  background-color: $gray1;
+}
 
 .el-input {
   --el-input-bg-color: rgba(255, 255, 255, 0.9);
   .el-input__wrapper {
+    background-color: $white7;
     &.is-focus {
       z-index: 2;
     }
@@ -71,7 +75,10 @@
 
 .el-menu {
   border-right: none;
-  transition: $trans3;
+  // transition: $trans3;
+  background-color: $white9;
+  @include backdrop();
+
 
   .el-menu-item-group__title {
     padding: 0;
@@ -115,6 +122,7 @@
   font-weight: normal;
   --el-table-header-bg-color: rgba(248, 248, 248, 0.7);
   --el-table-header-text-color: #222;
+  user-select: text;
 
   .el-table__header-wrapper,
   .el-table__fixed-header-wrapper {
@@ -147,28 +155,24 @@
 
     .cell {
       padding: 8px;
+      line-height: 21px;
     }
   }
   .caret-wrapper {
     width: 18px;
   }
 }
-.el-input--small {
-  .el-input__prefix {
-    height:22px;
-  }
-}
-.el-input-group__append {
-  background-color: var(--el-color-primary-light-9);
-  color: $primary;
-  transition: $trans3;
+// visiual table
+.el-table-v2 {
+  font-size: 12px;
+  color: #333;
+  .el-table-v2__header-row {
+    background-color: rgb(248, 248, 248);
 
-  &:hover {
-    background-color: $primary;
-    color: $white;
-  }
-  &:active {
-    background-color: var(--el-color-primary-dark-2);
+    .el-table-v2__header-cell {
+      background-color: rgb(248, 248, 248);
+      color: #333;
+    }
   }
 }
 
@@ -227,15 +231,6 @@
 
   .el-tag {
     max-width: 100px !important;
-  }
-}
-
-.el-input__suffix {
-  display: flex;
-  align-items: center;
-
-  .el-input__suffix-inner {
-    display: flex;
   }
 }
 
@@ -340,10 +335,16 @@
     left: 2px;
   }
 }
-
+.el-radio-group {
+  .el-radio-button:not(.is-active){
+    .el-radio-button__inner{
+      background-color: $white7;
+    }
+  }
+}
 .el-radio__input {
   .el-radio__inner {
-    // background-color: #fff !important;
+
     border-width: 2px;
     transition: $trans1;
 
@@ -490,11 +491,13 @@
     }
   }
 }
-
+.el-picker-panel__sidebar {
+  background-color: transparent;
+}
 .el-picker-panel,
 .el-notification {
-  background-color: rgba(255, 255, 255, 0.7) !important;
-  backdrop-filter: saturate(100%) blur(4px);
+  background-color: $white7 !important;
+  @include backdrop();
 
   .el-icon-info {
     color: $blue7 !important;
@@ -527,6 +530,11 @@
   background-color: transparent !important;
 }
 
+.el-dropdown-menu {
+  background-color: $white7;
+  @include backdrop();
+  min-width: 160px;
+}
 .el-select-dropdown__item,
 .el-dropdown-menu__item {
   transition: $trans1;
@@ -653,9 +661,28 @@
 }
 
 .el-popper {
-  &.is-light {
+  background-color: transparent !important;
+  &.is-dark {
+    background-color: $dark9 !important;
+  }
+  .el-select-dropdown {
+    position: relative;
     background-color: $white9;
     @include backdrop();
+    z-index: 2;
+  }
+}
+.el-select__tags {
+  z-index: 3;
+}
+.el-popover {
+  background-color: $white7 !important;
+  @include backdrop();
+  &.p0 {
+    padding: 0 !important;
+  }
+  .header {
+    border-radius: 4px 4px 0 0;
   }
 }
 
@@ -692,6 +719,7 @@
     &.is-controls-right {
       .el-input-number__decrease,
       .el-input-number__increase {
+        z-index: 3;
         margin-top: 1px;
       }
     }
@@ -703,6 +731,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        z-index: 3;
       }
     }
     // &.is-controls-right{
@@ -711,9 +740,50 @@
     // }
   }
 }
+// input
+.el-input__suffix {
+  display: flex;
+  align-items: center;
+
+  .el-input__suffix-inner {
+    display: flex;
+  }
+}
+.el-input--small {
+  .el-input__prefix {
+    height: 22px;
+  }
+  &.round {
+    .el-input__wrapper {
+      border-radius: 12px;
+    }
+  }
+}
+.el-input-group__append {
+  background-color: var(--el-color-primary-light-9);
+  color: $primary;
+  transition: $trans3;
+
+  &:hover {
+    background-color: $primary;
+    color: $white;
+  }
+  &:active {
+    background-color: var(--el-color-primary-dark-2);
+  }
+}
 
 .dark {
   &.el-progress {
     --el-fill-color-light: rgba(0, 0, 0, 0.3);
+  }
+}
+
+.el-button + .el-button {
+  margin-left: 8px;
+}
+.el-button {
+  &.is-circle {
+    border-radius: 4px;
   }
 }

@@ -1,39 +1,42 @@
 <template>
-  <Page class="Overview" type="Static">
-    <!-- <template v-if="state.mounted"> -->
-    <div class="pt16"></div>
-    <div class="wp100">
-      <Total :currency="state.currency" />
-    </div>
-    <div class="wp100">
-      <Statistics :currency="state.currency" />
-    </div>
-    <div class="flexMode wp100">
-      <div style="width: calc(100% - 400px)">
-        <Hourly :currency="state.currency" />
+  <Page v-loading="state.loading" class="Overview" type="Static">
+    <template v-if="state.currency.length">
+      <div class="pt16"></div>
+      <div class="wp100">
+        <Total :currency="state.currency" />
       </div>
-      <div class="w400">
-        <Recent :currency="state.currency" class="pr16" />
+      <div class="wp100">
+        <Statistics :currency="state.currency" />
       </div>
-    </div>
-    <div class="wp100">
-      <CampaignGroups :currency="state.currency" />
-    </div>
-    <div class="wp100">
-      <AdPlacement :currency="state.currency" />
-    </div>
-    <div class="flexMode">
-      <div class="wp33">
-        <Countrys :currency="state.currency" />
+      <div class="flexMode wp100">
+        <div style="width: calc(100% - 400px)">
+          <Hourly :currency="state.currency" />
+        </div>
+        <div class="w400">
+          <Recent :currency="state.currency" class="pr16" />
+        </div>
       </div>
-      <div class="wp33">
-        <Apps :currency="state.currency" />
+      <div class="wp100">
+        <CampaignGroups :currency="state.currency" />
       </div>
-      <div class="wp33">
-        <AdPlacementPie :currency="state.currency" />
+      <div class="wp100">
+        <AdPlacement :currency="state.currency" />
       </div>
+      <div class="flexMode">
+        <div class="wp33">
+          <Countrys :currency="state.currency" />
+        </div>
+        <div class="wp33">
+          <Apps :currency="state.currency" />
+        </div>
+        <div class="wp33">
+          <AdPlacementPie :currency="state.currency" />
+        </div>
+      </div>
+    </template>
+    <div v-else-if="state.loading === false" class="absCenter">
+      <Nodata />
     </div>
-    <!-- </template> -->
   </Page>
 </template>
 <script setup>
@@ -62,34 +65,41 @@ defineOptions({
 });
 // 数据
 const state = reactive({
+  loading: true,
   currency: [],
-  mounted: false,
 });
+// 挂载
+onMounted(() => {
+  initCurrency();
+});
+// 事件
+const initCurrency = () => {
+  window.$promise(() => {
+    state.currency = window.$fd(
+      window.$rn(currencyMap.length, 1),
+      (i) => currencyMap[i],
+    );
+    state.loading = false;
+    console.info(state.currency);
+  });
+};
 
 // 计算属性
 
 // 监听
 
-// 挂载
-onMounted(() => {
-  nextTick(() => {
-    state.mounted = true;
-  });
-});
-// 事件
-const initCurrency = () => {
-  state.currency = [
-    {
-      label: 'USD',
-      value: '$',
-    },
-    {
-      label: 'RMB',
-      value: '¥',
-    },
-  ];
-};
-initCurrency();
 // 卸载
+
+// Map
+const currencyMap = [
+  {
+    label: 'USD',
+    value: '$',
+  },
+  {
+    label: 'RMB',
+    value: '¥',
+  },
+];
 </script>
 <style lang="scss" scoped></style>

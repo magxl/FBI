@@ -10,12 +10,12 @@
             <Country v-model="state.search.country" type="aso" />
           </div>
           <div class="pr10">
-            <el-button plain round @click="toReset">
+            <el-button plain@click="toReset">
               <span>{{ $l('Reset') }}</span>
             </el-button>
           </div>
           <div class="pr10">
-            <el-button plain round type="primary" @click="toSearch">
+            <el-button plaintype="primary" @click="toSearch">
               <template #icon>
                 <i class="adicon ad-search1"></i>
               </template>

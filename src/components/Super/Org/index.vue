@@ -27,6 +27,8 @@
   </div>
 </template>
 <script setup>
+import { watchEffect } from 'vue';
+
 defineOptions({
   name: 'SuperOrg',
 });
@@ -46,7 +48,7 @@ const prop = defineProps({
   },
   placeholder: {
     type: String,
-    default: ' ',
+    default: 'Campaign Group',
   },
   permission: {
     type: [String, Number],
@@ -60,23 +62,8 @@ const state = reactive({
   v: null,
 });
 
-// 计算属性
-const campaignGroup = computed(() => {
-  const permission = parseInt(prop.permission);
-  if (permission > -1) {
-    return common.campaignGroup.filter((it) => it.permission > permission);
-  } else {
-    return common.campaignGroup;
-  }
-});
-// 监听
-
 // 挂载
-onMounted(async () => {
-  prop.modelValue && (state.v = prop.modelValue);
-  await common.getCampaignGroup();
-  state.loading = false;
-});
+
 // 事件
 const emit = defineEmits();
 const change = (v) => {
@@ -90,6 +77,29 @@ const clear = () => {
   // emit('update:modelValue', prop.multiple ? [] : '');
   emit('clear');
 };
+
+// 计算属性
+const campaignGroup = computed(() => {
+  const permission = parseInt(prop.permission);
+  if (permission > -1) {
+    return common.campaignGroup.filter((it) => it.permission > permission);
+  } else {
+    return common.campaignGroup;
+  }
+});
+const placeholder = computed(() => {
+  if(prop.placeholder===' '){
+    return ' ';
+  }else{
+    return window.$l(prop.placeholder)
+  }
+});
+// 监听
+watchEffect(async () => {
+  state.v = prop.modelValue;
+  await common.getCampaignGroup();
+  state.loading = false;
+});
 // 卸载
 </script>
 <style lang="scss" scoped></style>

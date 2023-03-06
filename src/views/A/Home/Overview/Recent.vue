@@ -2,7 +2,7 @@
   <div class="OverviewRecent">
     <Card>
       <template #header>
-        <span>{{$l('Recent')}}</span>
+        <span>{{ $l('Recent') }}</span>
         <div class="flexMode vc">
           <div
             v-for="(it, i) in state.tool"
@@ -16,7 +16,12 @@
         </div>
       </template>
       <div v-loading="state.loading">
-        <EChart v-if="!state.loading" :options="state.options[state.active]" height="300" width="384" />
+        <EChart
+          v-if="!state.loading"
+          :options="state.options[state.active]"
+          height="300"
+          width="384"
+        />
       </div>
     </Card>
   </div>
@@ -68,10 +73,42 @@ onMounted(() => {
 // 事件
 const initChart = () => {
   state.loading = true;
-  let grid, series;
+  let grid, series, x;
   switch (state.active) {
     case 'day':
+      x = window.$fd(7, (i) => {
+        return window
+          .$m()
+          .add(i - 7, 'd')
+          .format('MM-DD');
+      });
+      grid = {
+        top: 30,
+        left: 80,
+        right: 20,
+        bottom: 30,
+      };
+
+      series = window.$fakeData(prop.currency.length, (i) => {
+        return {
+          name: prop.currency[i].label,
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          stack: 'day',
+          areaStyle: {
+            color: window.$linearColor({ i }),
+          },
+          data: window.$fakeData(7, (j) =>
+            (window.$randomNumber(9999999) / 100).toFixed(2),
+          ),
+        };
+      });
+      break;
     case 'week':
+      x = window.$fd(10,(i) => {
+        return window.$m().add(i-10,'w').format('[W]WW');
+      })
       grid = {
         top: 30,
         left: 80,
@@ -81,20 +118,21 @@ const initChart = () => {
       series = window.$fakeData(prop.currency.length, (i) => {
         return {
           name: prop.currency[i].label,
-          type: 'line',
-          smooth: true,
-          symbol: 'none',
+          type: 'bar',
           stack: 'day',
           areaStyle: {
-            color: window.$linearColor({i}),
+            color: window.$linearColor({ i }),
           },
-          data: window.$fakeData(7, (j) =>
+          data: window.$fakeData(10, (j) =>
             (window.$randomNumber(9999999) / 100).toFixed(2),
           ),
         };
       });
       break;
     case 'month':
+      x = window.$fd(8,(i) => {
+        return window.$m().add(i-8,'M').format('MMM');
+      })
       grid = {
         top: 30,
         left: 80,
@@ -106,7 +144,7 @@ const initChart = () => {
           name: prop.currency[i].label,
           type: 'bar',
           stack: 'month',
-          data: window.$fakeData(7, (j) =>
+          data: window.$fakeData(8, (j) =>
             (window.$randomNumber(9999999) / 100).toFixed(2),
           ),
         };
@@ -118,7 +156,7 @@ const initChart = () => {
     yAxis: {},
     xAxis: {
       type: 'category',
-      data: window.$fakeData(7, (i) => i),
+      data: x,
     },
     series,
   };

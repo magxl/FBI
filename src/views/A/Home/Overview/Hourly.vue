@@ -40,10 +40,17 @@ const state = reactive({
   stamp: 0,
   chartKey: 0,
 });
-
+const store = inject('store');
+const launch = store.launch();
 // 计算属性
 const time = computed(() => {
-  return window.$moment(state.stamp).format('YYYY-MM-DD HH:mm:ss');
+  return window
+    .$m(state.stamp)
+    .add(-timezoneOffset.value, 'h')
+    .format('YYYY-MM-DD HH:mm:ss');
+});
+const timezoneOffset = computed(() => {
+  return launch.localTimezone.value;
 });
 // 监听
 
@@ -67,7 +74,10 @@ const initChart = () => {
     xAxis: {
       type: 'category',
       data: window.$fakeData(72, (i) => {
-        return i;
+        return window
+          .$m()
+          .add(i - 72 - timezoneOffset.value + 1, 'h')
+          .format('MM-DD HH');
       }),
     },
     series: window.$fakeData(prop.currency.length, (i) => {

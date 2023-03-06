@@ -28,6 +28,8 @@
   </div>
 </template>
 <script setup>
+import { watchEffect } from 'vue';
+
 defineOptions({
   name: 'SuperCampaign',
 });
@@ -51,7 +53,7 @@ const prop = defineProps({
   },
   placeholder: {
     type: String,
-    default: ' ',
+    default: 'Campaign',
   },
 });
 const store = inject('store');
@@ -63,31 +65,8 @@ const state = reactive({
   campaignOptions: [],
 });
 
-// 计算属性
-const loading = computed(() => {
-  return state.campaignOptions.length && state.loading;
-});
-// 监听
-watch(
-  () => prop.orgId,
-  async (n) => {
-    state.v = prop.multiple ? [] : '';
-    if (n) {
-      state.campaignOptions = await common.getCampaign(n);
-      state.loading = false;
-    } else {
-      state.loading = true;
-      state.campaignOptions = [];
-    }
-  },
-  {
-    immediate: true,
-  },
-);
 // 挂载
-onMounted(() => {
-  state.v = prop.modelValue;
-});
+
 // 事件
 const emit = defineEmits();
 const change = (v) => {
@@ -98,8 +77,12 @@ const change = (v) => {
       state.v = [v[1]];
     }
   } else {
-    const has = state.campaignOptions.filter((ft) => ft.id === v)[0];
-    emit('update:campaignName', has.name);
+    if (v) {
+      const has = state.campaignOptions.filter((ft) => ft.id === v)[0];
+      emit('update:campaignName', has.name);
+    } else {
+      emit('update:campaignName', '');
+    }
   }
   emit('update:modelValue', state.v);
   emit('change', v);
@@ -120,7 +103,7 @@ const getName = () => {
     const has = state.campaignOptions.filter((ft) => ft.id === v)[0];
     nameObj = has.name;
   }
-  emit('update:campaignName', nameObj);
+  // emit('update:campaignName', nameObj);
   return nameObj;
 };
 const getValue = () => {
@@ -134,6 +117,39 @@ const clear = () => {
   emit('update:modelValue', prop.multiple ? [] : '');
   emit('clear');
 };
+
+// 计算属性
+const loading = computed(() => {
+  return state.campaignOptions.length && state.loading;
+});
+const placeholder = computed(() => {
+  if(prop.placeholder===' '){
+    return ' ';
+  }else{
+    return window.$l(prop.placeholder)
+  }
+});
+// 监听
+watch(
+  () => prop.orgId,
+  async (n) => {
+    state.v = prop.multiple ? [] : '';
+
+    if (n) {
+      state.campaignOptions = await common.getCampaign(n);
+      state.loading = false;
+    } else {
+      state.loading = true;
+      state.campaignOptions = [];
+    }
+  },
+  {
+    immediate: true,
+  },
+);
+watchEffect(()=>{
+  state.v = prop.modelValue;
+})
 defineExpose({
   getValue,
   getName,

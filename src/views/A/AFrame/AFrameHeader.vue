@@ -21,7 +21,7 @@
     <div class="leftArea">
       <div class="flexMode vc h24 p0-10">
         <div class="dot6 bg-orange"></div>
-        <div class="pl4 fs12 lh11 txt-white7 hover-txt-orange">
+        <div class="pl4 fs12 lh11 txt-white7 hover-txt-white">
           notice here longlonglonglonglonglonglonglonglonglong
         </div>
       </div>

@@ -27,6 +27,8 @@ export default {
   'Negatives ID': '否定词 ID',
   Status: '状态',
   'Country or Regions': '国家或地区',
+  'Search Term': '搜索项',
+  'Search Terms': '搜索项',
 
   Create: '创建',
   Edit: '编辑',

@@ -96,7 +96,7 @@
                 </div>
               </div>
               <template #footer>
-                <el-button plain round @click="toReset('router')">
+                <el-button plain@click="toReset('router')">
                   {{ $l('Reset') }}
                 </el-button>
                 <el-button
@@ -126,7 +126,7 @@
                   </div>
                 </div>
 
-                <el-button plain round type="primary" @click="toSubmitOrg">
+                <el-button plaintype="primary" @click="toSubmitOrg">
                   {{ $l('Submit') }}
                 </el-button>
               </template>
@@ -217,7 +217,7 @@
                     </el-button>
                   </template>
                 </el-popconfirm>
-                <el-button plain round type="primary" @click="toSubmitOrg">
+                <el-button plaintype="primary" @click="toSubmitOrg">
                   {{ $l('Submit') }}
                 </el-button>
               </template>

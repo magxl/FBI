@@ -28,6 +28,8 @@
   </div>
 </template>
 <script setup>
+import { watchEffect } from 'vue';
+
 defineOptions({
   name: 'SuperAdGroup',
 });
@@ -55,7 +57,7 @@ const prop = defineProps({
   },
   placeholder: {
     type: String,
-    default: ' ',
+    default: 'Ad Group',
   },
 });
 const store = inject('store');
@@ -67,44 +69,8 @@ const state = reactive({
   adgroupOptions: [],
 });
 
-// 计算属性
-const loading = computed(() => {
-  return state.adgroupOptions.length && state.loading;
-});
-// 监听
-watch(
-  () => prop.orgId,
-  (n) => {
-    state.v = prop.multiple ? [] : '';
-    state.loading = true;
-  },
-  {
-    immediate: true,
-  },
-);
-watch(
-  () => prop.campaignId,
-  async (n) => {
-    state.v = prop.multiple ? [] : '';
-    if (n) {
-      state.adgroupOptions = await common.getAdgroup(
-        prop.orgId,
-        prop.campaignId,
-      );
-      state.loading = false;
-    } else {
-      state.loading = true;
-      state.adgroupOptions = [];
-    }
-  },
-  {
-    immediate: true,
-  },
-);
 // 挂载
-onMounted(() => {
-  state.v = prop.modelValue;
-});
+
 // 事件
 const emit = defineEmits();
 const change = (v) => {
@@ -116,7 +82,8 @@ const change = (v) => {
     }
   } else {
     const has = state.adgroupOptions.filter((ft) => ft.id === v)[0];
-    emit('update:adgroupName', has.name);
+
+    emit('update:adgroupName', has ? has.name : '');
   }
   emit('update:modelValue', v);
   emit('change', v);
@@ -135,9 +102,9 @@ const getName = () => {
     });
   } else {
     const has = state.adgroupOptions.filter((ft) => ft.id === v)[0];
-    nameObj = has.name;
+    nameObj = has ? has.name : '';
   }
-  emit('update:adgroupName', nameObj);
+  // emit('update:adgroupName', nameObj);
   return nameObj;
 };
 const getValue = () => {
@@ -151,6 +118,40 @@ const clear = () => {
   emit('update:modelValue', prop.multiple ? [] : '');
   emit('clear');
 };
+// 计算属性
+const loading = computed(() => {
+  return state.adgroupOptions.length && state.loading;
+});
+const placeholder = computed(() => {
+  if(prop.placeholder===' '){
+    return ' ';
+  }else{
+    return window.$l(prop.placeholder)
+  }
+});
+// 监听
+// watch(
+//   () => prop.orgId,
+//   (n) => {
+//     state.v = prop.multiple ? [] : '';
+//     state.loading = true;
+//   },
+//   {
+//     immediate: true,
+//   },
+// );
+watchEffect(async () => {
+  if (prop.campaignId) {
+    state.adgroupOptions = await common.getAdgroup(prop.orgId, prop.campaignId);
+    state.loading = false;
+  } else {
+    state.loading = true;
+    state.adgroupOptions = [];
+  }
+  if (prop.modelValue) {
+    state.v = prop.modelValue;
+  }
+});
 defineExpose({
   getValue,
   getName,

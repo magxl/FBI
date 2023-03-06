@@ -156,7 +156,7 @@
               placement="bottom-start"
               @command="statusCommand"
             >
-              <el-button plain round type="primary">
+              <el-button plaintype="primary">
                 <span class="pr4">{{ $l('Status') }}</span>
                 <i class="adicon ad-arrow-down"></i>
               </el-button>
@@ -180,7 +180,7 @@
               placement="bottom-start"
               @command="cptBidCommand"
             >
-              <el-button plain round type="primary">
+              <el-button plaintype="primary">
                 <span class="pr4">{{ $l('CPT Bid') }}</span>
                 <i class="adicon ad-arrow-down"></i>
               </el-button>

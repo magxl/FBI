@@ -67,6 +67,7 @@ router.beforeEach((to, from, next) => {
   // 普通页面，不需要登录
   const { normal } = to.meta;
   let nextPage = undefined;
+  // 调试模式
   const dev = window.global.config.dev;
   if (!dev) {
     if (!from.name && to.name && from.name === to.name) {
@@ -88,6 +89,7 @@ router.beforeEach((to, from, next) => {
   const module = to.fullPath.split('/')[1];
   const name404 = module + '404Page';
   const pageIgnore = ['Login'];
+
   if (pageIgnore.indexOf(to.name) === -1) {
     if (
       to.matched.length === 0 ||
@@ -121,8 +123,11 @@ router.afterEach((to, from) => {
     }
   } else {
     const params = JSON.stringify(to.params);
+    const query = JSON.stringify(to.query);
     const hasSameParams = hasHistory.filter(
-      (ft) => JSON.stringify(ft.params) === params,
+      (ft) =>
+        JSON.stringify(ft.params) === params ||
+        JSON.stringify(ft.query) === query,
     )[0];
     if (hasSameParams) {
       to.key = hasSameParams.key;

@@ -1,8 +1,11 @@
 <template>
-  <div class="OnloadHelp" :class="[visible && 'visible', size ? 'large' : '']">
+  <div
+    class="OnloadHelp"
+    :class="[visible && 'visible', size ? 'large' : '']"
+    :style="helpStyle"
+  >
     <div
       class="helpArea radius8 bg-white9 backdrop box-shadow-dark1 border-dark1"
-      :style="helpStyle"
     >
       <div class="flexMode vc h48 border-b bg-gray1 radius-t8">
         <div
@@ -11,8 +14,9 @@
         >
           <i class="adicon ad-arrow-right rotate180 transition3"></i>
         </div>
-        <div class="pl10 flexGrow">
+        <div class="relative pl10 flexGrow">
           <el-input
+            ref="input"
             v-model="state.v"
             clearable
             placeholder=" "
@@ -29,7 +33,7 @@
       </div>
       <!-- header -->
       <!-- body -->
-      <div class="helpBody">
+      <div class="helpBody" :style="helpBodyStyle">
         <el-scrollbar>
           <div v-for="(it, i) in state.list" :key="it.id">
             <div class="p8">
@@ -46,10 +50,29 @@
           </div>
         </el-scrollbar>
       </div>
+      <!-- body -->
+      <!-- foot -->
+      <div class="flexMode vc h36 p8 border-t">
+        <div class="flexMode vs">
+          <div class="flexMode vc">
+            <div class="fs10-l txt-dark5">{{ $l('Close') }}</div>
+            <div class="p4-8 fs10-l bg-dark1 txt-dark5 radius4">Esc</div>
+          </div>
+          <div class="border-r mr8"></div>
+          <div class="flexMode vc">
+            <div class="fs10-l txt-dark5">{{ $l('Toggle') }}</div>
+            <div class="p4-8 fs10-l bg-dark1 txt-dark5 radius4">
+              {{ keyboard }}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script setup>
+import { watchEffect } from 'vue';
+
 // 定义
 defineOptions({
   name: 'OnloadHelp',
@@ -60,19 +83,23 @@ const state = reactive({
   list: [],
   history: [],
   hot: [],
+  ctrl: false,
 });
+const { proxy } = getCurrentInstance();
 const store = inject('store');
 const launch = store.launch();
 // 挂载
 onMounted(() => {
   init();
 });
+
 // 事件
 const init = () => {
   const setting = JSON.parse(localStorage.getItem('helpSetting'));
   if (setting) {
     launch.saveData('help', setting);
   }
+  initKeybordListener();
 };
 const getData = () => {
   const { v } = state;
@@ -90,7 +117,10 @@ const toAddUseful = (it, i) => {
   state.list[i].useful++;
 };
 const toClose = () => {
-  launch.saveData('help', { visible: false, keyword: '' });
+  launch.saveData('help', { visible: false });
+};
+const toToggleShow = () => {
+  launch.saveData('help', { visible: !visible.value });
 };
 const toToggleSize = () => {
   saveHelp(!size.value);
@@ -98,6 +128,40 @@ const toToggleSize = () => {
 };
 const saveHelp = (size) => {
   localStorage.setItem('helpSetting', JSON.stringify({ size }));
+};
+const initKeybordListener = () => {
+  document.addEventListener('keydown', keydown);
+};
+const removeKeybordListener = () => {
+  document.removeEventListener('keydown', keydown);
+};
+const keydown = (e) => {
+  kListener(e);
+  if (visible.value) {
+    escListener(e);
+  }
+};
+const kListener = (e) => {
+  if (
+    e.which === 75 ||
+    e.code === 'MetaK' ||
+    e.key === 'k' ||
+    e.keyCode === 75
+  ) {
+    if (e.metaKey || e.ctrlKey) {
+      toToggleShow();
+    }
+  }
+};
+const escListener = (e) => {
+  if (
+    e.which === 27 ||
+    e.key === 'Escape' ||
+    e.code === 'Escape' ||
+    e.keyCode === 27
+  ) {
+    toClose();
+  }
 };
 // 计算属性
 const visible = computed(() => {
@@ -122,19 +186,34 @@ const helpStyle = computed(() => {
     return '';
   }
 });
+const helpBodyStyle = computed(() => {
+  if (size.value) {
+    return {
+      height: pageHeight.value - 32 - 84 + 'px',
+    };
+  } else {
+    return '';
+  }
+});
+
+const keyboard = computed(() => {
+  return launch.options.platform === 'macOS' ? '⌘ + K' : 'Ctrl + K';
+});
 // 监听
-watch(
-  () => keyword.value,
-  (n) => {
-    if (n) {
-      state.v = n;
-      getData();
-    }
-  },
-  {
-    immediate: true,
-  },
-);
+watchEffect(() => {
+  if (state.v || !keyword.value) {
+    return;
+  }
+  state.v = keyword.value;
+  getData();
+});
+watchEffect(() => {
+  if (visible.value) {
+    nextTick(() => {
+      proxy.$refs.input.focus();
+    });
+  }
+});
 // 卸载
 
 // Map
@@ -146,30 +225,24 @@ watch(
   right: 16px;
   transition: $trans3;
   z-index: 19910608;
+  width: 300px;
+  height: 480px;
+  transform: translate(332px, 0);
   &.visible {
-    .helpArea {
-      transform: translate(0, 0) !important;
-    }
+    transform: translate(0, 0) !important;
   }
   .helpArea {
-    width: 300px;
-    height: 480px;
     transition: $trans3;
-    transform: translate(332px, 0);
-
     .helpBody {
-      height: 432px;
+      height: 396px;
     }
   }
   &.large {
-    .helpArea {
-      transform: translate(662px, 0);
+    transform: translate(662px, 0);
 
+    .helpArea {
       .ad-arrow-right {
         transform: rotateZ(0);
-      }
-      .helpBody {
-        height: 772px;
       }
     }
   }
