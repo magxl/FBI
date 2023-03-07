@@ -59,7 +59,6 @@
           >
             <el-button
               plain
-              round
               type="primary"
               @click="toValidateAddToTable"
               class="wp100"
@@ -92,7 +91,7 @@
     >
       <template #actions>
         <div class="flexMode vc p0-16">
-          <el-button plaintype="primary" @click="toSubmit">
+          <el-button plain type="primary" @click="toSubmit">
             <template #icon>
               <i class="adicon ad-sourceimport fs14"></i>
             </template>

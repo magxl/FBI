@@ -5,9 +5,8 @@
         <div class="flexMode vc p0-16">
           <div class="btns">
             <el-button
-              size="small"
-              circle
               plain
+              circle
               type="primary"
               @click="toCreate"
             >
@@ -16,16 +15,12 @@
               </template>
             </el-button>
             <el-button
-              size="small"
-              round
               plain
               type="primary"
               @click="toExportKeyword"
               >Export Keyword</el-button
             >
             <el-button
-              size="small"
-              round
               plain
               type="primary"
               @click="toExportAdSetting"
@@ -46,7 +41,7 @@
                 <i class="adicon ad-filter1"></i>
               </template>
               <template #append>
-                <el-button size="small">
+                <el-button @click="toSearch">
                   <template #icon>
                     <i class="adicon ad-search1"></i>
                   </template>
@@ -108,12 +103,12 @@ const state = reactive({
     {
       title: '',
       size: 800,
-      cpt: Chart,
+      cpt: markRaw(Chart),
     },
     {
       title: '',
       size: 600,
-      cpt: Create,
+      cpt: markRaw(Create),
     },
   ],
 });

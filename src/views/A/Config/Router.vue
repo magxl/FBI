@@ -29,12 +29,12 @@ const state = reactive({
     {
       title: '',
       size: 600,
-      cpt: Create,
+      cpt: markRaw(Create),
     },
     {
       title: '',
       size: 600,
-      cpt: Permission,
+      cpt: markRaw(Permission),
     },
   ],
   currentDrawer: '',

@@ -1,6 +1,6 @@
 <template>
   <Page title="Charts" class="AppStoreCharts" noscroll>
-    <div class="flexMode vc p16 border-b">
+    <div class="flexMode vc h56 p16 border-b">
       <div class="pr8">
         <el-cascader
           v-model="state.search.type"
@@ -19,12 +19,12 @@
       </div>
 
       <div class="pr8">
-        <el-button plain@click="toReset">
+        <el-button plain @click="toReset">
           <span>{{ $l('Reset') }}</span>
         </el-button>
       </div>
       <div class="pr8">
-        <el-buttonplain type="primary" @click="toSearch">
+        <el-button plain type="primary" @click="toSearch">
           <template #icon>
             <i class="adicon ad-search1"></i>
           </template>
@@ -34,8 +34,8 @@
     </div>
     <!-- ↑ Search ↑ -->
     <!-- ↓ app ↓ -->
-    <div class="appArea relative">
-      <el-scrollbar class="hp100">
+    <div class="appArea relative" :style="scrollStyle">
+      <el-scrollbar>
         <div class="flexMode">
           <div v-for="(it, i) in state.types" :key="i" class="wp33 p8">
             <div class="Card">
@@ -115,7 +115,7 @@ const state = reactive({
     {
       title: '',
       size: 1000,
-      cpt: Detail,
+      cpt: markRaw(Detail),
     },
   ],
 });
@@ -165,6 +165,11 @@ const toDetail = (info) => {
   state.currentDrawer = 0;
 };
 // 计算属性
+const scrollStyle = computed(() => {
+  return {
+    height: launch.options.pageHeight - 56 + 'px',
+  };
+});
 const typeMap = computed(() => {
   return window.$map.category;
 });
@@ -202,7 +207,6 @@ const columnMap = {
 </script>
 <style lang="scss" scoped>
 .appArea {
-  height: calc(100% - 58px - 56px);
   .appItem {
     &:hover {
       .hoverImg {

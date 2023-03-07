@@ -23,7 +23,7 @@
                 <template #icon>
                   <i class="adicon ad-search1"></i>
                 </template>
-                <span>{{ $l('搜索') }}</span>
+                <span>{{ $l('Search') }}</span>
               </el-button>
             </div>
           </div>

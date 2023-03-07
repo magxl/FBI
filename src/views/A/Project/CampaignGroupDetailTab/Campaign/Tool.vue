@@ -2,8 +2,8 @@
   <div class="DetailTabCampaignTableTool flexMode vc p0-16">
     <el-button
       plain
-      type="primary"
       circle
+      type="primary"
       @click="toCreate"
       class="hoverBtn"
       :txt="$l('Create')"
@@ -34,7 +34,7 @@
       @command="statusCommand"
       @visible-change="statusChange"
     >
-      <el-button plaintype="primary" class="ml8">
+      <el-button plain type="primary" class="ml8">
         <span class="pr4">{{ $l('Status') }}</span>
         <i class="adicon ad-arrow-down fs14"></i>
       </el-button>
@@ -59,7 +59,7 @@
       @command="updateCommand"
       @visible-change="updateChange"
     >
-      <el-button plaintype="primary" class="ml8">
+      <el-button plain type="primary" class="ml8">
         <span class="pr4">{{ $l('Update') }}</span>
         <i class="adicon ad-arrow-down fs14"></i>
       </el-button>
@@ -83,7 +83,7 @@
       @command="downloadCommand"
       @visible-change="downloadChange"
     >
-      <el-button plaintype="primary" class="ml8">
+      <el-button plain type="primary" class="ml8">
         <span class="pr4">{{ $l('Download') }}</span>
         <i class="adicon ad-arrow-down fs14"></i>
       </el-button>

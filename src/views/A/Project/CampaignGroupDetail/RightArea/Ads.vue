@@ -7,7 +7,7 @@
           <div class="flexMode vs h36 p0-16">
             <span class="border-r-gray3"></span>
           </div>
-          <el-button plain type="primary" circle @click="toCreate">
+          <el-button plain circle type="primary" @click="toCreate">
             <template #icon>
               <i class="adicon ad-plus"></i>
             </template>
@@ -43,12 +43,12 @@
             </el-select>
           </div>
           <div>
-            <el-button plain circle type="primary" @click="toSearch">
+            <el-button plain type="primary" @click="toSearch">
               <template #icon>
                 <i class="adicon ad-search1"></i>
               </template>
             </el-button>
-            <el-button plaintype="primary" @click="toViewAll">{{
+            <el-button plain type="primary" @click="toViewAll">{{
               $l('View All')
             }}</el-button>
           </div>

@@ -119,6 +119,7 @@ export default {
     };
     window.$formatAmount = formatAmount;
     window.$fa = formatAmount;
+    app.config.globalProperties.$fa = formatAmount;
     // 异步
     window.$promise = (cb = () => {}, time = 3) => {
       return new Promise((resolve) => {

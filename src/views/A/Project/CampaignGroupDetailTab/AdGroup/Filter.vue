@@ -54,7 +54,6 @@
     <div class="flexMode">
       <el-button
         plain
-        circle
         type="primary"
         @click="toSearch"
         class="hoverBtn"

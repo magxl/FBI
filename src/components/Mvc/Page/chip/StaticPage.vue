@@ -22,7 +22,6 @@ const prop = defineProps({
     default: false,
   },
 });
-import { reactive } from 'vue';
 // 数据
 const state = reactive({
   defaultOptions: {

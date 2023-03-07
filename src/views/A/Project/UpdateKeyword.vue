@@ -102,7 +102,6 @@
           <div class="w200 pb4">
             <el-button
               plain
-              round
               type="primary"
               class="wp100"
               @click="toSearch"
@@ -156,7 +155,7 @@
               placement="bottom-start"
               @command="statusCommand"
             >
-              <el-button plaintype="primary">
+              <el-button plain type="primary">
                 <span class="pr4">{{ $l('Status') }}</span>
                 <i class="adicon ad-arrow-down"></i>
               </el-button>
@@ -180,7 +179,7 @@
               placement="bottom-start"
               @command="cptBidCommand"
             >
-              <el-button plaintype="primary">
+              <el-button plain type="primary">
                 <span class="pr4">{{ $l('CPT Bid') }}</span>
                 <i class="adicon ad-arrow-down"></i>
               </el-button>
@@ -296,7 +295,7 @@ const state = reactive({
   dialog: [
     {
       title: 'Update CPT Bid',
-      cpt: UpdateCptBid,
+      cpt: markRaw(UpdateCptBid),
     },
   ],
 });

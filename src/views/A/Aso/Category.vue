@@ -26,12 +26,12 @@
             <Country v-model="state.search.country" type="aso" />
           </div>
           <div class="pr10">
-            <el-button plain@click="toReset">
+            <el-button plain @click="toReset">
               <span>{{ $l('Reset') }}</span>
             </el-button>
           </div>
           <div class="pr10">
-            <el-button plaintype="primary" @click="toSearch">
+            <el-button plain type="primary" @click="toSearch">
               <template #icon>
                 <i class="adicon ad-search1"></i>
               </template>
@@ -108,5 +108,8 @@ const loadData = (v) => {
   };
 };
 // 卸载
+
+// Map
+const categoryMap = [];
 </script>
 <style lang="scss" scoped></style>

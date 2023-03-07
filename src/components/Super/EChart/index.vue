@@ -1,6 +1,6 @@
 <template>
   <div class="EChart">
-    <div ref="chart" :style="style" :id="chartID"></div>
+    <div ref="chart" :style="style" :id="state.chartID"></div>
   </div>
 </template>
 <script setup>

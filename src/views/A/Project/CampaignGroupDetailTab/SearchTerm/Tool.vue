@@ -52,7 +52,7 @@ const state = reactive({
     {
       title: '',
       size: 500,
-      cpt: Add,
+      cpt: markRaw(Add),
     },
   ],
 });

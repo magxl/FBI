@@ -1,12 +1,12 @@
 <template>
   <div class="SearchRankingAppItem">
     <div
-      class="border-dark1 hover-box-shadow-dark1 mb16 radius8"
+      class="border-gray1 hover-box-shadow-dark1 mb16 radius8"
       :class="it.isad && 'bg-blue1'"
     >
       <div class="p16 border-b">
         <div class="flexMode vs hb">
-          <div class="flexMode vs">
+          <div class="flexMode vs point hover-txt-primary" @click="toDetail">
             <div class="w64 h64 radius8" :class="'bg-' + it.color"></div>
             <div class="pl16">
               <div class="pb8 fs14">{{ it.name }}</div>
@@ -22,7 +22,7 @@
               <span>{{ it.campaignId }}</span>
             </div>
             <div
-              class="flexMode vc fs12 hover-a"
+              class="flexMode vc fs12 hover-a pt4"
               @click="state.appsToggle = !state.appsToggle"
             >
               <i class="adicon ad-apps txt-dark5"></i>
@@ -105,14 +105,13 @@ const state = reactive({
   appsToggle: false,
 });
 
-// 计算属性
-
-// 监听
-
 // 挂载
 
 // 事件
-
+const emit = defineEmits();
+const toDetail = () => {
+  emit('toDetail', prop.it);
+};
 // 卸载
 </script>
 <style lang="scss" scoped></style>

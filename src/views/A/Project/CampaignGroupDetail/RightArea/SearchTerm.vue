@@ -33,12 +33,12 @@
             </el-select>
           </div>
           <div>
-            <el-button plain circle type="primary" @click="toSearch">
+            <el-button plain type="primary" @click="toSearch">
               <template #icon>
                 <i class="adicon ad-search1"></i>
               </template>
             </el-button>
-            <el-button plaintype="primary" @click="toViewAll">{{
+            <el-button plain type="primary" @click="toViewAll">{{
               $l('View All')
             }}</el-button>
           </div>

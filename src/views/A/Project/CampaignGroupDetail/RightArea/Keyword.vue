@@ -18,7 +18,7 @@
               </el-radio-button>
             </el-radio-group>
           </div>
-          <el-button plaintype="primary" @click="toViewAll">{{
+          <el-button plain type="primary" @click="toViewAll">{{
             $l('View All')
           }}</el-button>
         </div>

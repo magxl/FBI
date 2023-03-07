@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="Frame AFrame"
-    :class="{ collapseMenu }"
-    :key="lang"
-  >
+  <div class="Frame AFrame" :class="{ collapseMenu }">
     <AFrameHeader />
     <div class="AFrameMain flexMode">
       <AFrameMenu :menu="state.menu" />

@@ -96,12 +96,11 @@
                 </div>
               </div>
               <template #footer>
-                <el-button plain@click="toReset('router')">
+                <el-button plain @click="toReset('router')">
                   {{ $l('Reset') }}
                 </el-button>
                 <el-button
                   plain
-                  round
                   type="primary"
                   @click="toSubmitRouter()"
                   >{{ $l('Submit') }}</el-button
@@ -126,7 +125,7 @@
                   </div>
                 </div>
 
-                <el-button plaintype="primary" @click="toSubmitOrg">
+                <el-button plain type="primary" @click="toSubmitOrg">
                   {{ $l('Submit') }}
                 </el-button>
               </template>
@@ -212,12 +211,12 @@
                   @confirm="toClearOrg"
                 >
                   <template #reference>
-                    <el-button plain round>
+                    <el-button plain @click="toReset">
                       {{ $l('Reset') }}
                     </el-button>
                   </template>
                 </el-popconfirm>
-                <el-button plaintype="primary" @click="toSubmitOrg">
+                <el-button plain type="primary" @click="toSubmitOrg">
                   {{ $l('Submit') }}
                 </el-button>
               </template>
@@ -250,7 +249,7 @@ const state = reactive({
     {
       title: 'Create User',
       size: 600,
-      cpt: Create,
+      cpt: markRaw(Create),
     },
   ],
   currentDrawer: '',

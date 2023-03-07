@@ -9,14 +9,14 @@
         class="round"
       />
       <div class="pl2">
-        <el-button :loading="state.loading" plain circle @click="toSubmit">
+        <el-button :loading="state.loading" plain @click="toSubmit">
           <template #icon>
             <i class="adicon ad-select"></i>
           </template>
         </el-button>
       </div>
       <div class="pl2">
-        <el-button plain circle @click="toCancel">
+        <el-button plain @click="toCancel">
           <template #icon>
             <i class="adicon ad-close"></i>
           </template>

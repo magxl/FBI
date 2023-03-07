@@ -92,7 +92,7 @@
           <div
             v-for="(it, i) in state.form.condition"
             :key="i"
-            class="relative p16 pl40 mb16 border-dark3-dashed radius12 hover-box-shadow-dark1"
+            class="relative p16 pl40 mb16 border-dark3-dashed radius4 hover-box-shadow-dark1"
           >
             <div class="indexArea">{{ i + 1 }}</div>
             <el-form-item :label="$l('Metric')" prop="">
@@ -269,7 +269,7 @@
           <div
             v-for="(it, i) in state.form.operation"
             :key="i"
-            class="relative p16 pl40 mb16 border-dark3-dashed radius12 hover-box-shadow-dark1"
+            class="relative p16 pl40 mb16 border-dark3-dashed radius4 hover-box-shadow-dark1"
           >
             <div class="indexArea">{{ i + 1 }}</div>
             <el-form-item :label="$l('Type')" prop="">
@@ -545,10 +545,12 @@ const operationMethodMap = computed(() => {
 .indexArea {
   position: absolute;
   top: 0;
-  left: 0%;
+  left: 0;
+  width: 32px;
+  height: 32px;
   padding: 6px 12px;
   font-size: 12px;
-  border-radius: 12px 0 12px 0;
+  border-radius: 4px 0 24px 0;
   border-right: 1px $dark3 dashed;
   border-bottom: 1px $dark3 dashed;
 }

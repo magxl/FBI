@@ -20,8 +20,6 @@
         </span>
       </el-button>
       <el-button
-        size="small"
-        round
         plain
         type="primary"
         :loading="prop.submiting"

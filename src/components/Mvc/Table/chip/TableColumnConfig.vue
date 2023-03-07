@@ -21,6 +21,7 @@
             group="columnFilter"
             class="dragBody p5-0"
             :style="bodyStyle"
+            :item-key="(k) => k"
             @start="onStart"
             @end="onEnd"
           >
@@ -32,9 +33,7 @@
                 <div class="flexMode vc flexGrow">
                   <el-switch
                     v-model="it.visible"
-                    size="small"
                     :disabled="it.ding"
-                    @change="switchChange"
                   ></el-switch>
                   <span class="pl10 fs14">{{ it.label || it.type }}</span>
                 </div>
@@ -71,6 +70,7 @@
             group="columnFilter"
             class="dragBody p5-0"
             :style="bodyStyle"
+            :item-key="(k) => k"
             @start="onStart"
             @end="onEnd"
           >
@@ -88,9 +88,7 @@
                 <div class="dragCenter flexMode vc flexGrow">
                   <el-switch
                     v-model="it.visible"
-                    size="small"
                     :disabled="it.ding"
-                    @change="switchChange"
                   ></el-switch>
                   <span class="pl10 fs14">{{ it.label || it.type }}</span>
                 </div>
@@ -127,6 +125,7 @@
             group="columnFilter"
             class="dragBody p5-0"
             :style="bodyStyle"
+            :item-key="(k) => k"
             @start="onStart"
             @end="onEnd"
           >
@@ -144,9 +143,7 @@
                 <div class="dragCenter flexMode vc flexGrow">
                   <el-switch
                     v-model="it.visible"
-                    size="small"
                     :disabled="it.ding"
-                    @change="switchChange"
                   ></el-switch>
                   <span class="pl10 fs14">{{ it.label || it.type }}</span>
                 </div>
@@ -159,14 +156,13 @@
       <!-- ↑ fixed right ↑ -->
     </div>
     <template #footer>
-      <el-button @click="toReset" :loading="reseting" round>
+      <el-button @click="toReset" :loading="state.reseting">
         {{ $l('Reset') }}
       </el-button>
       <el-button
         @click="toSubmit"
-        size="small"
-        :loading="submiting"
-        round
+        :loading="state.submiting"
+        plain
         type="primary"
       >
         {{ $l('Submit') }}

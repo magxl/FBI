@@ -8,7 +8,7 @@
       @tool-event="toolEvent"
     >
       <slot name="actions" />
-      <template #filter>
+      <template v-if="slots.filter" #filter>
         <slot name="filter" />
       </template>
     </TableTool>
@@ -29,7 +29,10 @@
         <slot />
       </TableColumnFilter>
     </el-table>
-    <div class="relative h48 p10 bg-white backdrop z2 border-t">
+    <div
+      v-if="!nofooter"
+      class="relative flexMode vc h48 p10 bg-white backdrop z2 border-t"
+    >
       <el-pagination
         background
         small
@@ -41,6 +44,7 @@
         :current-page.sync="state.pageNum"
         @size-change="sizeChange"
         @current-change="currentChange"
+        class="wp100"
       >
         <div class="flexMode vc fs14">
           <div class="txt-dark3 pr5">Total</div>
@@ -63,7 +67,7 @@
     <Drawer
       v-model:current="state.currentDrawer"
       :drawer="state.drawer"
-      @config-submit="configSubmit"
+      @configSubmit="configSubmit"
     />
   </div>
 </template>
@@ -127,6 +131,10 @@ const prop = defineProps({
       return [20, 50, 100, 200, 300, 500];
     },
   },
+  nofooter: {
+    type: Boolean,
+    default: false,
+  },
 });
 const state = reactive({
   height: 0,
@@ -144,7 +152,7 @@ const state = reactive({
   drawer: [
     {
       title: 'Tabel Column Customization',
-      cpt: TableColumnConfig,
+      cpt: markRaw(TableColumnConfig),
       size: 800,
       params: {
         tableName: prop.tableName,
@@ -153,6 +161,8 @@ const state = reactive({
   ],
   currentDrawer: '',
 });
+
+// const drawer = shallowRef();
 
 // 挂载
 // 事件
@@ -271,6 +281,7 @@ const toSetTable = () => {
   state.currentDrawer = 0;
 };
 const configSubmit = (v) => {
+  console.info('configSubmit');
   // proxy.$refs.tableColumnFilter.initColumns();
   refreshTable();
 };
@@ -462,7 +473,9 @@ const height = computed(() => {
   if (topShow.value) {
     r -= window.global.config.table.tool;
   }
-  r -= window.global.config.table.pagination;
+  if (!prop.nofooter) {
+    r -= 48;
+  }
   return r;
 });
 const tableHeight = computed(() => {

@@ -62,7 +62,6 @@
     <div class="w400">
       <el-button
         plain
-        circle
         type="primary"
         @click="toSearch"
         class="hoverBtn"

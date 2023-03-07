@@ -3,7 +3,7 @@
     <Table ref="table" :load-data="loadData" table-name="MMPSetting">
       <template #actions>
         <div class="flexMode vc p0-16">
-          <el-button circle plain type="primary" @click="toCreate">
+          <el-button plain circle type="primary" @click="toCreate">
             <template #icon>
               <i class="adicon ad-plus"></i>
             </template>

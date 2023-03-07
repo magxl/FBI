@@ -90,7 +90,6 @@
           >
             <el-button
               plain
-              round
               type="primary"
               @click="toValidateAddToTable"
               class="wp100"
@@ -123,16 +122,16 @@
     >
       <template #actions>
         <div class="flexMode vc p0-16">
-          <el-button plaintype="primary" @click="toSubmit">
+          <el-button plain type="primary" @click="toSubmit">
             <template #icon>
               <i class="adicon ad-sourceimport fs14"></i>
             </template>
             <span class="pl4">{{ $l('Submit') }}</span>
           </el-button>
-          <el-button plaintype="primary" @click="toEditCptBid">{{
+          <el-button plain type="primary" @click="toEditCptBid">{{
             $l('Edit CPT Bid')
           }}</el-button>
-          <el-button plaintype="primary" @click="toRemoveSelection">{{
+          <el-button plain type="primary" @click="toRemoveSelection">{{
             $l('Remove Selection')
           }}</el-button>
         </div>

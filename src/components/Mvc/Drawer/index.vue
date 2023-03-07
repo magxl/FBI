@@ -5,7 +5,7 @@
       v-model="state.drawerInfo.visible"
       v-bind="$attrs"
       :title="state.drawerInfo.title"
-      :with-header="widthHeader"
+      :with-header="withHeader"
       append-to-body
       :size="state.drawerInfo.size"
       :direction="state.drawerInfo.direction"

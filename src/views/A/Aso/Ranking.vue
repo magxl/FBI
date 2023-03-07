@@ -3,57 +3,26 @@
     <Table ref="table" :load-data="loadData" table-name="Ranking">
       <template #actions>
         <div class="flexMode vc p0-16">
-          <div class="flexMode vc w240 pr10">
-            <el-select
-              ref="appidSelector"
+          <div class="flexMode vc w240 pr8">
+            <SelectInput
+              v-model="state.search.app_id"
               class="wp100"
-              v-model="state.search.app_id"
-              multiple
-              clearable
-              filterable
-              allow-create
-              collapse-tags
-              :multiple-limit="5"
-              :placeholder="$l('APP ID: up to 5')"
-              @visible-change="appidVisibleChange"
-              @change="appidChange"
-            >
-              <el-option
-                v-for="(it, i) in appidMap"
-                :key="i"
-                :label="it.label"
-                :value="it.value"
-              />
-            </el-select>
-            <!-- <el-input
-              v-model="state.search.app_id"
-              size="small"
-              clearable
-              :placeholder="$l('APP ID: up to 5')"
-              @input="appidInput"
-              @clear="appidClear"
-            >
-              <template #suffix>
-                <div class="fs12 lh22">
-                  <span :class="appidClass">{{ state.appidCount }}</span>
-                  <span>/{{ state.appidMax }}</span>
-                </div>
-              </template>
-            </el-input> -->
+              :placeholder="$l('App ID: up to 5')"
+            />
           </div>
-          <div class="w120 pr10">
+          <div class="w120 pr8">
             <Device v-model="state.search.device" :placeholder="$l('Device')" />
           </div>
-          <div class="pr10">
+          <div class="pr8">
             <Country v-model="state.search.country" type="aso" />
           </div>
-          <div class="pr10">
-            <el-button plain@click="toReset">
+          <div class="pr8">
+            <el-button plain @click="toReset">
               <span>{{ $l('Reset') }}</span>
             </el-button>
           </div>
-          <div class="pr10">
-            <el-button plaintype="primary" @click="toSearch">
+          <div class="pr8">
+            <el-button plain type="primary" @click="toSearch">
               <template #icon>
                 <i class="adicon ad-search1"></i>
               </template>
@@ -138,32 +107,6 @@ const loadData = (v) => {
     list,
     total: state.table.total,
   };
-};
-const appidChange = (v) => {
-  console.info(proxy.$refs.appidSelector.input);
-
-  nextTick(() => {
-    proxy.$refs.appidSelector.blur();
-    // proxy.$refs.appidSelector.focus();
-    // proxy.$refs.appidSelector.input.focus();
-  });
-};
-const appidVisibleChange = (v) => {
-  if (proxy.$refs.appidSelector) {
-    if (!v) {
-      nextTick(() => {
-        proxy.$refs.appidSelector.blur();
-        proxy.$refs.appidSelector.input.blur();
-      });
-      // nextTick(() => {
-      // proxy.$refs.appidSelector.selectWrapper.blur();
-      //   // proxy.$refs.appidSelector.focus();
-      //   // proxy.$refs.appidSelector.input.focus()
-      // });
-    } else {
-      // proxy.$refs.appidSelector.focus();
-    }
-  }
 };
 // 卸载
 

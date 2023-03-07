@@ -107,9 +107,7 @@
               </span>
             </div>
             <el-button
-              size="small"
               plain
-              round
               type="primary"
               class="wp100"
               @click="toAddToTable"
@@ -158,9 +156,7 @@
       <template #actions>
         <div class="flexMode vc p0-16">
           <el-button
-            size="small"
             :disabled="disabled"
-            round
             plain
             type="primary"
             @click="toSubmit"
@@ -171,9 +167,7 @@
             <span>{{ $l('Submit') }}</span>
           </el-button>
           <el-button
-            size="small"
             :disabled="disabled"
-            round
             plain
             type="primary"
             @click="toEditBid"
@@ -187,9 +181,7 @@
           >
             <template #reference>
               <el-button
-                size="small"
                 :disabled="disabled"
-                round
                 plain
                 type="primary"
               >
@@ -288,7 +280,7 @@ const state = reactive({
     {
       title: 'Update Bid',
       size: 500,
-      cpt: EditBid,
+      cpt: markRaw(EditBid),
     },
   ],
 });

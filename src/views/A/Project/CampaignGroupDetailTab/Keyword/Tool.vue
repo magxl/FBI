@@ -2,8 +2,8 @@
   <div class="DetailTabKeywordTableTool flexMode vc p0-16">
     <el-button
       plain
-      type="primary"
       circle
+      type="primary"
       @click="toCreate"
       class="hoverBtn"
       :txt="$l('Create')"
@@ -13,20 +13,6 @@
       </template>
     </el-button>
     <!-- create -->
-    <!-- aggregation -->
-    <el-button
-      plain
-      circle
-      type="primary"
-      @click="toAggregation"
-      class="hoverBtn width80"
-      :txt="$l('Aggregation')"
-    >
-      <template #icon>
-        <i class="adicon ad-aggregation"></i>
-      </template>
-    </el-button>
-    <!-- aggregation -->
     <!-- status -->
     <el-dropdown
       trigger="click"
@@ -34,7 +20,7 @@
       @command="statusCommand"
       @visible-change="statusChange"
     >
-      <el-button plaintype="primary" class="ml8">
+      <el-button plain type="primary" class="ml8">
         <span class="pr4">{{ $l('Status') }}</span>
         <i class="adicon ad-arrow-down fs14"></i>
       </el-button>
@@ -59,7 +45,7 @@
       @command="updateCommand"
       @visible-change="updateChange"
     >
-      <el-button plaintype="primary" class="ml8">
+      <el-button plain type="primary" class="ml8">
         <span class="pr4">{{ $l('Update') }}</span>
         <i class="adicon ad-arrow-down fs14"></i>
       </el-button>
@@ -100,7 +86,7 @@ const state = reactive({
     {
       title: '',
       size: 1000,
-      cpt: Create,
+      cpt: markRaw(Create),
     },
   ],
 });

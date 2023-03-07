@@ -39,7 +39,6 @@
             class="hoverBtn"
             :txt="$l('Search')"
             plain
-            circle
             type="primary"
             @click="toSearch"
           >

@@ -53,7 +53,7 @@
         </el-form>
       </div>
       <div class="flexMode hr">
-        <el-button plaintype="primary" @click="toSubmit">{{
+        <el-button plain type="primary" @click="toSubmit">{{
           $l('Update Password')
         }}</el-button>
       </div>

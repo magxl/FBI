@@ -1,21 +1,23 @@
 <template>
   <div class="AFrameBody" :class="{ collapseMenu }" :style="style">
-    <!-- <transition name="fade" :key="$route.meta.key"> -->
     <router-view v-slot="{ Component }">
       <keep-alive>
-        <component
-          v-if="$route.meta.keepalive"
-          :is="Component"
-          :key="$route.meta.key"
-        />
+        <transition>
+          <component
+            v-if="$route.meta.keepalive"
+            :is="Component"
+            :key="$route.meta.key"
+          />
+        </transition>
       </keep-alive>
-      <component
-        v-if="!$route.meta.keepalive"
-        :key="$route.meta.key"
-        :is="Component"
-      />
+      <transition>
+        <component
+          v-if="!$route.meta.keepalive"
+          :key="$route.meta.key"
+          :is="Component"
+        />
+      </transition>
     </router-view>
-    <!-- </transition> -->
   </div>
 </template>
 <script setup>

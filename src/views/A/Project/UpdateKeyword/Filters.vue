@@ -26,8 +26,8 @@
       </el-descriptions-item>
     </el-descriptions>
     <div class="flexMode hr pt16">
-      <el-button plain@click="toReset">{{ $l('Reset') }}</el-button>
-      <el-button plaintype="primary" @click="toConfirm">
+      <el-button plain @click="toReset">{{ $l('Reset') }}</el-button>
+      <el-button plain type="primary" @click="toConfirm">
         {{ $l('Confirm') }}
       </el-button>
     </div>

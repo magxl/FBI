@@ -35,7 +35,7 @@
       <div class="p8 border-r">
         <div class="flexMode h24 txt-dark3">
           <span>APP ID</span>
-          <div class="flexMode vc pl16 hover-a" @click="$copy(prop.info.appid)">
+          <div class="flexMode vc pl16 hover-a" @click="$copy(prop.info.appid, true)">
             <i class="adicon ad-copy fs14"></i>
             <span class="">Copy</span>
           </div>

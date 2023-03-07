@@ -2,8 +2,8 @@
   <div class="DetailTabNegativeTableTool flexMode vc p0-16">
     <el-button
       plain
-      type="primary"
       circle
+      type="primary"
       @click="toCreate"
       class="hoverBtn"
       :txt="$l('Create')"
@@ -51,7 +51,7 @@ const state = reactive({
     {
       title: '',
       size: 1000,
-      cpt: Add,
+      cpt: markRaw(Add),
     },
   ],
 });

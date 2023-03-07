@@ -7,8 +7,8 @@
     </div>
     <div class="flexMode hb p10">
       <el-button @click="toCancel">取消</el-button>
-      <el-button type="danger" @click="toClear">清空</el-button>
-      <el-button type="primary" @click="toSave">保存</el-button>
+      <el-button plain type="danger" @click="toClear">清空</el-button>
+      <el-button plain type="primary" @click="toSave">保存</el-button>
     </div>
   </div>
 </template>

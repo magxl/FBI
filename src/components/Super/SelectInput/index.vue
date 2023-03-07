@@ -9,6 +9,8 @@
       filterable
       allow-create
       collapse-tags
+      default-first-option
+      collapse-tags-tooltip
       :multiple-limit="prop.limit"
       :placeholder="prop.placeholder"
       @visible-change="visibleChange"

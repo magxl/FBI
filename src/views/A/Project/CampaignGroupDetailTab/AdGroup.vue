@@ -94,7 +94,7 @@ const state = reactive({
     {
       title: '',
       size: 500,
-      cpt: Edit,
+      cpt: markRaw(Edit),
     },
   ],
   selection: [],

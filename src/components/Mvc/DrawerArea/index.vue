@@ -21,7 +21,6 @@
       </el-button>
       <el-button
         size="small"
-        round
         plain
         type="primary"
         :loading="prop.submiting"
@@ -73,7 +72,7 @@ const bodyStyle = computed(() => {
 // 挂载
 
 // 事件
-const emit = defineEmits();
+const emit = defineEmits(['close', 'submit']);
 const toClose = () => {
   emit('close');
 };

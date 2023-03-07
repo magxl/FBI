@@ -5,9 +5,9 @@
         <Country v-model="state.search.country" type="ASO" />
       </div>
       <div class="flexMode vc pr10">
-        <el-select v-model="state.search.date">
+        <el-select v-model="state.search.days">
           <el-option
-            v-for="(it, i) in dateMap"
+            v-for="(it, i) in daysMap"
             :key="i"
             :label="it[`label_${lang}`]"
             :value="it.value"
@@ -22,12 +22,12 @@
         />
       </div>
       <div class="pr10">
-        <el-button plain@click="toReset">
+        <el-button plain @click="toReset">
           <span>{{ $l('Reset') }}</span>
         </el-button>
       </div>
       <div class="pr10">
-        <el-button plaintype="primary" @click="toSearch">
+        <el-button plain type="primary" @click="toSearch">
           <template #icon>
             <i class="adicon ad-search1"></i>
           </template>
@@ -36,22 +36,35 @@
       </div>
     </div>
     <div v-loading="state.loading" class="chartArea">
-      <div v-if="state.prevLoad" class="emptyBg">
-        <span class="fs64 txt-dark1">Chart Area</span>
+      <History
+        ref="history"
+        :search="state.search"
+        @search="(v) => toSearch(v, 'nosave')"
+      />
+      <div class="h400 border-t">
+        <div v-if="state.prevLoad" class="emptyBg">
+          <span class="fs64 txt-dark1">Chart Area</span>
+        </div>
+        <EChart
+          v-else="!state.prevLoad"
+          :options="state.options"
+          height="400"
+        />
       </div>
-      <EChart v-else="!state.prevLoad" :options="state.options" />
     </div>
   </Page>
 </template>
 <script setup>
+import History from './Volume/History.vue';
 defineOptions({
   name: 'Volume',
+  components: { History },
 });
 // 数据
 const state = reactive({
   loading: false,
   search: {
-    date: 30,
+    days: 30,
     country: 'US',
     keywords: '',
   },
@@ -67,10 +80,12 @@ const launch = store.launch();
 // 挂载
 
 onMounted(() => {
-  state.osearch = JSON.parse(JSON.stringify(state.search));
+  init();
 });
 // 事件
-
+const init = () => {
+  state.osearch = JSON.parse(JSON.stringify(state.search));
+};
 const toReset = () => {
   state.search = JSON.parse(JSON.stringify(state.osearch));
 };
@@ -87,15 +102,20 @@ const keywordsInput = (v) => {
   }
 };
 
-const toSearch = () => {
-  fakeChart();
+const toSearch = (v, type) => {
+  if (type === 'nosave') {
+    state.search = v;
+  }
+  fakeChart(type);
 };
-const fakeChart = () => {
-  const { keywords, date } = state.search;
-  console.info(keywords);
+const fakeChart = (type) => {
+  const { keywords, days } = state.search;
   if (!keywords) {
     proxy.$message.warning(window.$l('请输入关键词'));
     return;
+  }
+  if (type !== 'nosave') {
+    saveHistory();
   }
   state.loading = true;
   state.prevLoad = false;
@@ -112,10 +132,10 @@ const fakeChart = () => {
     },
     xAxis: {
       type: 'category',
-      data: window.$fakeData(date, (i) =>
+      data: window.$fd(days, (i) =>
         window
           .$moment()
-          .add(i - date, 'day')
+          .add(i - days, 'day')
           .format('YYYY-MM-DD'),
       ),
     },
@@ -126,11 +146,14 @@ const fakeChart = () => {
         type: 'line',
         smooth: true,
         symbol: 'none',
-        data: window.$fakeData(30, (j) => window.$randomNumber(1000)),
+        data: window.$fakeData(days, (j) => window.$randomNumber(1000)),
       };
     }),
   };
   state.loading = false;
+};
+const saveHistory = () => {
+  proxy.$refs.history.toAdd();
 };
 // 计算属性
 
@@ -142,7 +165,7 @@ const lang = computed(() => {
 // 卸载
 
 // map
-const dateMap = [
+const daysMap = [
   {
     label_en_us: 'Last 30 Days',
     label_zh_cn: '最近30天',

@@ -34,7 +34,7 @@
         </el-select>
       </div>
       <div class="pr8">
-        <el-button circle plain type="primary" @click="toSearch">
+        <el-button plain type="primary" @click="toSearch">
           <template #icon>
             <i class="adicon ad-search1"></i>
           </template>

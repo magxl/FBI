@@ -1,16 +1,11 @@
 <template>
   <Page title="Search Ranking" class="SearchRanking" noscroll>
-    <div class="inputGroup flexMode vc hb p16 border-b">
+    <div class="inputGroup flexMode vc h56 hb p16 border-b">
       <div class="flexMode vc">
-        <Country
-          v-model="state.search.country"
-          size="small"
-          class="inputGroupLeft w160"
-        />
+        <Country v-model="state.search.country" class="inputGroupLeft w160" />
         <div class="inputGroupCenter w320">
           <el-input
             v-model="state.search.keyword"
-            size="small"
             clearable
             :placeholder="$l('Search: Keyword/App ID')"
             @keydown.enter="toSearch"
@@ -21,7 +16,7 @@
             <template #icon>
               <i class="adicon ad-search1"></i>
             </template>
-            <span>{{ $l('搜索') }}</span>
+            <span>{{ $l('Search') }}</span>
           </el-button>
         </div>
       </div>
@@ -42,7 +37,7 @@
       </div>
     </div>
     <!-- ↑ search ↑ -->
-    <div class="relative" style="height: calc(100% - 58px - 56px)">
+    <div class="relative" :style="scrollStyle">
       <el-scrollbar class="hp100">
         <div class="flexMode">
           <div v-if="state.total === null" class="emptyBg absFull">
@@ -52,10 +47,10 @@
           <div v-else class="appsArea p16">
             <template v-if="state.list.length">
               <template v-for="(it, i) in state.list">
-                <AppItem :it="it" />
+                <AppItem :it="it" @toDetail="toDetail" />
               </template>
+              <div class="p16 txt-c fs12 txt-dark3">... THE END ...</div>
             </template>
-
             <div v-else class="absCenter">
               <el-empty :image-size="80"></el-empty>
             </div>
@@ -69,11 +64,13 @@
         </div>
       </el-scrollbar>
     </div>
+    <Drawer v-model:current="state.currentDrawer" :drawer="state.drawer" />
   </Page>
 </template>
 <script setup>
 import AppItem from './SearchRanking/AppItem.vue';
 import Keyword from './SearchRanking/Keyword.vue';
+import AppDetail from './Charts/Detail.vue';
 defineOptions({
   name: 'SearchRanking',
   components: { AppItem, Keyword },
@@ -87,12 +84,18 @@ const state = reactive({
   total: null,
   keywords: [],
   localKeyword: [],
+  currentDrawer: '',
+  drawer: [
+    {
+      title: '',
+      size: 1000,
+      cpt: markRaw(AppDetail),
+    },
+  ],
 });
 const { proxy } = getCurrentInstance();
-// 计算属性
-
-// 监听
-
+const store = inject('store');
+const launch = store.launch();
 // 挂载
 onMounted(() => {
   let localKeyword = localStorage.getItem('SearchRankingKeyword');
@@ -172,6 +175,18 @@ const toRemoveKeyword = (v, i) => {
 
   localStorage.setItem('SearchRankingKeyword', state.localKeyword.join(','));
 };
+const toDetail = (info) => {
+  state.drawer[0].title = window.$l('App Detail');
+  state.drawer[0].params = { info };
+  state.currentDrawer = 0;
+};
+// 计算属性
+const scrollStyle = computed(() => {
+  return {
+    height: launch.options.pageHeight - 56 + 'px',
+  };
+});
+// 监听
 // 卸载
 </script>
 <style lang="scss" scoped>

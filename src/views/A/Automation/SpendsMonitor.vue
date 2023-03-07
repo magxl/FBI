@@ -8,11 +8,10 @@
     >
       <template #actions>
         <div class="p0-20">
-          <el-button size="mini" @click="toAdd" type="primary" round>
+          <el-button @click="toAdd" plain circle type="primary">
             <template #icon>
               <i class="adicon ad-plus"></i>
             </template>
-            <span>{{$l('创建')}}</span>
           </el-button>
         </div>
       </template>

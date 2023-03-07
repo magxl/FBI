@@ -5,6 +5,8 @@
       table-name="CampaignGroup"
       :loading="state.loading"
       :list="state.list"
+      show-summary
+      :summary-method="toSummary"
     >
       <template #actions>
         <div class="flexMode vc pl8">
@@ -86,7 +88,7 @@
         width="120"
         align="right"
         sortable
-        :formatter="(row) => row.currency + row.spends"
+        :formatter="(row) => row.currency + $fa(row.spends)"
       />
       <el-table-column
         :label="$l('Installs')"
@@ -94,6 +96,7 @@
         width="120"
         align="right"
         sortable
+        :formatter="(row) => $fa(row.installs, 0)"
       />
       <el-table-column
         :label="$l('Impressions')"
@@ -101,6 +104,7 @@
         width="120"
         align="right"
         sortable
+        :formatter="(row) => $fa(row.impressions, 0)"
       />
       <el-table-column
         :label="$l('Taps')"
@@ -108,6 +112,7 @@
         width="120"
         align="right"
         sortable
+        :formatter="(row) => $fa(row.taps, 0)"
       />
       <el-table-column
         :label="$l('AVG CPA')"
@@ -115,7 +120,7 @@
         width="120"
         align="right"
         sortable
-        :formatter="(row) => row.currency + row.avgCpa"
+        :formatter="(row) => row.currency + $fa(row.avgCpa)"
       />
       <el-table-column
         :label="$l('AVG CPT')"
@@ -123,7 +128,7 @@
         width="120"
         align="right"
         sortable
-        :formatter="(row) => row.currency + row.avgCpt"
+        :formatter="(row) => row.currency + $fa(row.avgCpt)"
       />
       <el-table-column
         :label="$l('CR')"
@@ -131,7 +136,7 @@
         width="100"
         align="right"
         sortable
-        :formatter="(row) => row.CR + '%'"
+        :formatter="(row) => row.cr + '%'"
       />
       <el-table-column
         :label="$l('TTR')"
@@ -139,7 +144,7 @@
         width="100"
         align="right"
         sortable
-        :formatter="(row) => row.TTR + '%'"
+        :formatter="(row) => row.ttr + '%'"
       />
       <el-table-column
         :label="$l('Modify Date')"
@@ -171,7 +176,7 @@ const state = reactive({
     {
       title: '',
       size: 1000,
-      cpt: AppDetail,
+      cpt: markRaw(AppDetail),
     },
   ],
 });
@@ -206,23 +211,21 @@ const loadData = async () => {
   const list = window.$fd(total, (i) => {
     const index = i + 1;
     return {
-      id: window.$randomNumber(9999999, 10000000),
+      id: window.$rn(9999999, 10000000),
       name: 'Name' + index,
-      apps: window.$fd(window.$randomNumber(10), (a) => window.$rc()).join(','),
-      currency: window.$rn(2) ? '$' : '￥',
+      apps: window.$fd(window.$rn(10), (a) => window.$rc()).join(','),
+      currency: window.$rn(2) ? '$' : '¥',
       country: window.$fd(window.$rn(61), (i) => {
         return countryMap.value[window.$rn(countryLen)];
       }),
-      spends: window.$fa(
-        (window.$randomNumber(999999999, 100) / 100).toFixed(2),
-      ),
-      installs: window.$fa(window.$randomNumber(9999999), 0),
-      impressions: window.$fa(window.$randomNumber(9999999), 0),
-      taps: window.$fa(window.$randomNumber(9999999), 0),
-      avgCpa: window.$fa((window.$randomNumber(999999, 100) / 100).toFixed(2)),
-      avgCpt: window.$fa((window.$randomNumber(999999, 100) / 100).toFixed(2)),
-      cr: (window.$randomNumber(10000, 100) / 100).toFixed(2),
-      ttr: (window.$randomNumber(10000, 100) / 100).toFixed(2),
+      spends: (window.$rn(999999999, 100) / 100).toFixed(2),
+      installs: window.$rn(9999999),
+      impressions: window.$rn(9999999),
+      taps: window.$rn(9999999),
+      avgCpa: (window.$rn(999999, 100) / 100).toFixed(2),
+      avgCpt: (window.$rn(999999, 100) / 100).toFixed(2),
+      cr: (window.$rn(9900, 100) / 100).toFixed(2),
+      ttr: (window.$rn(9900, 100) / 100).toFixed(2),
       modifyDate: window
         .$moment()
         .add(window.$rn(100, -100), 'day')
@@ -241,36 +244,29 @@ const toSummary = ({ columns, data }) => {
     return [];
   }
   const keys = [
-    { key: 'avgCpa', value: 'avg', unit_prev: currency },
-    { key: 'avgCpt', value: 'avg', unit_prev: currency },
-    { key: 'avgCpm', value: 'avg', unit_prev: currency },
-    { key: 'ttr', value: 'avg', unit_append: '%' },
-    { key: 'cr', value: 'avg', unit_append: '%' },
-    { key: 'installs', vlaue: 'sum' },
+    { key: 'installs', value: 'sum' },
     { key: 'taps', value: 'sum' },
     { key: 'impressions', value: 'sum' },
-    { key: 'spends', value: 'sum', unit_prev: currency },
-    // { key: 'NewDownloads', value: 'sum' },
-    // { key: 'Redownloads', value: 'sum' },
-    // { key: 'LatOnInstalls', value: 'sum' },
-    // { key: 'LatOffInstalls', value: 'sum' },
-    // { key: 'MMPInstalls', value: 'sum' },
-    // { key: 'MMPCpi', value: 'sum' },
+    { key: 'spends', value: 'sum' },
+    { key: 'avgCpa' },
+    { key: 'avgCpt' },
+    { key: 'avgCpm' },
+    { key: 'ttr' },
+    { key: 'cr' },
   ];
   const valueMap = {};
   const summaries = columns.map((it, i) => {
     const has = keys.filter((ft) => ft.key === it.property)[0];
     if (has) {
       let summary = '';
-      if (has.value !== 'avg') {
+
+      if (has.value) {
         const value = data.map((vt) => vt[it.property]);
         let sum = window.$bigNumber(0);
         value.forEach((p) => {
           sum = sum.plus(p);
         });
         summary = sum.toNumber();
-        summary = has.unit_prev ? has.unit_prev + summary : summary;
-        summary = has.unit_append ? summary + has.unit_append : summary;
       }
       valueMap[it.property] = {
         value: summary,
@@ -281,16 +277,17 @@ const toSummary = ({ columns, data }) => {
       return '';
     }
   });
-  const Taps = valueMap.Taps?.value;
-  const Spend = Number(valueMap.Spend?.value.replace(currency, ''));
-  const Installs = valueMap.Installs?.value;
-  const Impressions = valueMap.Impressions?.value;
 
-  const CR = valueMap.CR;
-  const TTR = valueMap.TTR;
-  const AvgCPA = valueMap.AvgCPA;
-  const AvgCPT = valueMap.AvgCPT;
-  const AvgCPM = valueMap.AvgCPM;
+  const Taps = valueMap.taps?.value;
+  const Spend = valueMap.spends?.value;
+  const Installs = valueMap.installs?.value;
+  const Impressions = valueMap.impressions?.value;
+
+  const CR = valueMap.cr;
+  const TTR = valueMap.ttr;
+  const AvgCPT = valueMap.avgCpt;
+  const AvgCPA = valueMap.avgCpa;
+  const AvgCPM = valueMap.avgCpm;
 
   if (CR && Taps && Installs) {
     summaries[CR.i] = ((Installs / Taps) * 100).toFixed(2) + '%';
@@ -298,7 +295,7 @@ const toSummary = ({ columns, data }) => {
     summaries[CR.i] = '0.00%';
   }
   if (AvgCPT && Taps && Spend) {
-    summaries[AvgCPT.i] = currency + (Spend / Taps).toFixed(2);
+    summaries[AvgCPT.i] = `${currency} ${window.$fa((Spend / Taps).toFixed(2))}`;
   } else if (AvgCPT && Taps === 0) {
     summaries[AvgCPT.i] = currency + '0.00';
   }
@@ -308,16 +305,28 @@ const toSummary = ({ columns, data }) => {
     summaries[TTR.i] = '0.00%';
   }
   if (AvgCPA && Installs && Spend) {
-    summaries[AvgCPA.i] = currency + (Spend / Installs).toFixed(2);
+    summaries[AvgCPA.i] = `${currency} ${window.$fa((Spend / Installs).toFixed(2))}`;
   } else if (AvgCPA && Installs === 0) {
-    summaries[AvgCPA.i] = currency + '0.00';
+    summaries[AvgCPA.i] = currency + ' 0.00';
   }
   if (AvgCPM && Spend && Impressions) {
-    summaries[AvgCPM.i] = currency + (Spend / Impressions / 1000).toFixed(2);
+    summaries[AvgCPM.i] =
+      `${currency} ${window.$fa((Spend / Impressions / 1000).toFixed(2))}`;
   } else if (AvgCPM && Impressions === 0) {
-    summaries[AvgCPM.i] = currency + '0.00';
+    summaries[AvgCPM.i] = currency + ' 0.00';
   }
-
+  if (Taps) {
+    summaries[valueMap.taps.i] = window.$fa(Taps, 0);
+  }
+  if (Spend) {
+    summaries[valueMap.spends.i] = `${currency} ${window.$fa(Spend, 0)}`;
+  }
+  if (Installs) {
+    summaries[valueMap.installs.i] = window.$fa(Installs, 0);
+  }
+  if (Impressions) {
+    summaries[valueMap.impressions.i] = window.$fa(Impressions, 0);
+  }
   return summaries;
 };
 const toFilter = (initLoad) => {

@@ -1,7 +1,7 @@
 <template>
   <div :style="mainStyle">
     <div
-      class="MvcMainPage PageAfter bg-white radius radius8 box-shadow-dark1"
+      class="MvcMainPage PageAfter bg-white radius box-shadow-dark1"
       :style="pageStyle"
     >
       <div
@@ -9,7 +9,7 @@
         class="flexMode vc hb p0-16 border-b-dark1"
         :style="headerStyle"
       >
-        <bold v-if="prop.title">{{ $l(prop.title) }}</bold>
+        <b v-if="prop.title">{{ $l(prop.title) }}</b>
         <slot v-else name="header" />
       </div>
       <slot v-if="prop.noscroll" />
