@@ -1,7 +1,7 @@
 export default {
   install(app) {
-    app.config.globalProperties.$getImg = (url, base = '/src/assets/img/') => {
-      return new URL(`${base}${url}`, import.meta.url).href;
+    app.config.globalProperties.$getImg = (url) => {
+      return new URL(`/src/assets/img/${url}`, import.meta.url).href;
     };
   },
 };

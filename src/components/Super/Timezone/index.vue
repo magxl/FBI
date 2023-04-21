@@ -6,6 +6,7 @@
       placeholder=" "
       @change="change"
     >
+      <template v-if="timezone" #prefix> [{{ timezone }}] </template>
       <el-option
         v-for="(it, i) in timezoneOptions"
         :key="i"
@@ -13,8 +14,8 @@
         :value="it.label"
       >
         <div class="flexMode vc hb">
-          <span>{{it[labelName]}}</span>
-          <span>[{{it.value>0?'+'+it.value:it.value}}]</span>
+          <span>{{ it[labelName] }}</span>
+          <span>[{{ it.value > 0 ? '+' + it.value : it.value }}]</span>
         </div>
       </el-option>
     </el-select>
@@ -29,37 +30,44 @@ const prop = defineProps({
   timezoneName: {
     type: String,
     default: 'Etc/GMT',
+    validate: (v) => {
+      return window.$map.common.timezoneOptions[v];
+    },
   },
   defaultLocal: {
     type: Boolean,
     default: false,
   },
 });
-import { reactive } from 'vue';
 // 数据
 const state = reactive({
   timezone: 0,
   timezone_name: '',
 });
 const store = inject('store');
-const launch = store.launch();
 // 计算属性
-
-const timezoneOptions = computed(() => {
-  return window.$map.common.timezoneOptions;
+const timezone = computed(() => {
+  if (state.timezone > 0) {
+    return `+${state.timezone}`;
+  } else {
+    return state.timezone;
+  }
 });
+
 const labelName = computed(() => {
-  return `label_${launch.lang}`;
+  return `label_${window.$getLang()}`;
 });
 // 监听
 
 // 挂载
 onMounted(() => {
-  if(prop.defaultLocal){
+  if (prop.defaultLocal) {
     state.timezone_name = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    // state.timezone = new Date().getTimezoneOffset() / -60;
-  }else{
+    state.timezone = new Date().getTimezoneOffset() / -60;
+  } else {
+    const timezone = timezoneOptions[prop.timezoneName].value;
     state.timezone_name = prop.timezoneName;
+    state.timezone = timezone;
   }
 });
 // 事件
@@ -73,5 +81,8 @@ const change = (timezone_name) => {
   emit('change', { timezone, timezone_name });
 };
 // 卸载
+
+// Maps
+const timezoneOptions = window.$map.common.timezoneOptions;
 </script>
 <style lang="scss" scoped></style>

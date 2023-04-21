@@ -1,3 +1,3 @@
 export default {
-  noselection: '请至少选一行内容',
+  'No Selection': '没有选择项'
 };

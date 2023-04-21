@@ -1,5 +1,5 @@
 <template>
-  <div class="AccountInfo">
+  <div class="AFrameHeaderAccountInfo">
     <div class="p16">
       <el-descriptions border :column="1" width="140px">
         <el-descriptions-item :label="$l('User Name')" width="140px"
@@ -62,7 +62,7 @@
 </template>
 <script setup>
 defineOptions({
-  name: 'AccountInfo',
+  name: 'AFrameHeaderAccountInfo',
 });
 // 数据
 const state = reactive({

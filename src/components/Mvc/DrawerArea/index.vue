@@ -1,6 +1,11 @@
 <template>
   <div class="DrawerBody" :class="bodyClass" :style="bodyStyle">
-    <Submiting v-if="prop.submiting" />
+    <Submiting
+      v-if="prop.loading"
+      :type="prop.loadingType"
+      :ani="prop.loadingAni"
+      :txt="prop.loadingTxt"
+    />
     <slot v-if="prop.noscroll" />
     <el-scrollbar v-else class="hp100">
       <slot />
@@ -23,7 +28,7 @@
         size="small"
         plain
         type="primary"
-        :loading="prop.submiting"
+        :loading="prop.loading"
         @click="toSubmit"
       >
         <template #icon>
@@ -47,9 +52,25 @@ const prop = defineProps({
     type: Boolean,
     default: false,
   },
-  submiting: {
+  nofooter: {
     type: Boolean,
     default: false,
+  },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+  loadingTxt: {
+    type: String,
+    default: undefined,
+  },
+  loadingAni: {
+    type: String,
+    default: undefined,
+  },
+  loadingType: {
+    type: String,
+    default: undefined,
   },
 });
 // 数据
@@ -60,12 +81,18 @@ const slots = computed(() => {
   return proxy.$slots;
 });
 const bodyClass = computed(() => {
-  return [prop.submiting && 'noevent'];
+  return [prop.loading && 'noevent'];
 });
 const bodyStyle = computed(() => {
-  return {
-    height: `calc(100vh - 56px - ${window.global.config.drawer.footer})`,
-  };
+  if (prop.nofooter) {
+    return {
+      height: `calc(100vh - 56px)`,
+    };
+  } else {
+    return {
+      height: `calc(100vh - 56px - ${window.global.config.drawer.footer})`,
+    };
+  }
 });
 // 监听
 

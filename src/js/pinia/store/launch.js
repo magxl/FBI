@@ -66,20 +66,26 @@ const actions = {
     // 存储页面标题
     let label = '';
     const { meta, params } = this.currentPage;
-    // if (meta.multiple) {
-    //   label += params.nameLabel + '-';
-    // }
-    label += meta[`label_${this.lang}`];
-    label += '-';
-    document.title = `${label}${window.global.config.title}`;
+    if (meta) {
+      // if (meta.multiple) {
+      //   label += params.nameLabel + '-';
+      // }
+      label += meta[`label_${this.lang}`];
+      label += '-';
+      document.title = `${label}${window.global.config.title}`;
+    }
   },
   savePage(v) {
     // 存储页面信息
+    let page = {
+      ...v,
+    };
+    delete page.matched;
     this.historyPages.unshift(v);
-    if (v.meta.multiple) {
+    if (page.meta.multiple) {
       // 页面可缓存多个
-      this.currentPage = v;
-      this.tabPages.push(v);
+      this.currentPage = page;
+      this.tabPages.push(page);
     } else {
       // 页面唯一存在
       let index = -1;
@@ -90,9 +96,9 @@ const actions = {
         }
       }
       if (index > -1) {
-        this.tabPages[index] = v;
+        this.tabPages[index] = page;
       } else {
-        this.tabPages.push(v);
+        this.tabPages.push(page);
       }
     }
     if (this.tabPages.length > 50) {
@@ -100,6 +106,13 @@ const actions = {
       console.info('缓存页面超过50，自动删除最早的缓存');
     }
     this.saveTabPages();
+  },
+  gotoPage(newCurrentPage) {
+    router.push({
+      name: newCurrentPage.name,
+      params: newCurrentPage.params,
+      query: newCurrentPage.query,
+    });
   },
   closePage(index, mode = 'close') {
     // 当前页面索引
@@ -114,22 +127,14 @@ const actions = {
     } catch (error) {}
     // 单个关闭
     const close = () => {
-      const aimPage = this.tabPages[index];
+      // const aimPage = this.tabPages[index];
       this.tabPages.splice(index, 1);
       // 关闭的是当前页面时
       if (cindex === index) {
         // 判断新回显页面索引
         const newPageIndex = index === 0 ? 0 : index - 1;
         const newCurrentPage = this.tabPages[newPageIndex];
-        if (newCurrentPage.meta.multiple) {
-          router.push({
-            name: newCurrentPage.name,
-            params: newCurrentPage.params,
-            query: newCurrentPage.query,
-          });
-        } else {
-          router.push({ name: newCurrentPage.name });
-        }
+        this.gotoPage(newCurrentPage);
       }
     };
     // 关闭其它
@@ -137,15 +142,7 @@ const actions = {
       const aimPage = this.tabPages[index];
       // 关闭的页面有当前回显页面时，将目标页面变成当前页面
       if (cindex !== index) {
-        if (aimPage.meta.multiple) {
-          router.push({
-            name: aimPage.name,
-            params: aimPage.params,
-            query: aimPage.query,
-          });
-        } else {
-          router.push({ name: aimPage.name });
-        }
+        this.gotoPage(aimPage);
       }
       this.tabPages = [aimPage];
     };
@@ -160,15 +157,7 @@ const actions = {
       }
       if (cindex > index) {
         // 当前页面在关闭的页面中时，将目标页面变为当前页面
-        if (aimPage.meta.multiple) {
-          router.push({
-            name: aimPage.name,
-            params: aimPage.params,
-            query: aimPage.query,
-          });
-        } else {
-          router.push({ name: aimPage.name });
-        }
+        this.gotoPage(aimPage);
       }
     };
     // 关闭左侧
@@ -182,15 +171,7 @@ const actions = {
       }
       if (cindex < index) {
         // 当前页面在关闭的页面中时，将目标页面变为当前页面
-        if (aimPage.meta.multiple) {
-          router.push({
-            name: aimPage.name,
-            params: aimPage.params,
-            query: aimPage.query,
-          });
-        } else {
-          router.push({ name: aimPage.name });
-        }
+        this.gotoPage(aimPage);
       }
     };
     const closeType = {
@@ -201,6 +182,12 @@ const actions = {
     };
     closeType[mode]();
     this.saveTabPages();
+  },
+  refreshPage() {
+    const key = `${+new Date()}${parseInt(Math.random() * 10000)}`;
+    const { index } = this.tabPages.filter1((ft) => ft.meta.key === this.currentPage.meta.key);
+    this.currentPage.meta.key = key;
+    this.tabPages[index].meta.key = key;
   },
   saveTabPages() {
     localStorage.setItem('tabPages', JSON.stringify(this.tabPages));
@@ -216,10 +203,15 @@ const actions = {
   },
   registRouter() {},
   getLocalTimezone() {
-    this.localTimezone = {
-      value: new Date().getTimezoneOffset() / -60,
-      label: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    };
+    if (this.localTimezone.label) {
+      return this.localTimezone;
+    } else {
+      this.localTimezone = {
+        value: new Date().getTimezoneOffset() / -60,
+        label: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      };
+      return this.localTimezone;
+    }
   },
 };
 const getters = {};

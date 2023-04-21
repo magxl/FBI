@@ -1,7 +1,6 @@
 <template>
   <div class="MvcDialog">
     <el-dialog
-      ref="dialog"
       v-model="state.info.visible"
       v-bind="$attrs"
       :title="state.info.title"
@@ -92,8 +91,9 @@ const closed = () => {
 // 主动关闭
 const { proxy } = getCurrentInstance();
 const close = () => {
-  console.info('close');
-  proxy.$refs.dialog.visible = false;
+  // console.info('close');
+  state.info.visible = false;
+  // proxy.$refs.dialog.visible = false;
 };
 </script>
 <style lang="scss" scoped></style>

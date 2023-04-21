@@ -17,6 +17,12 @@ export default {
     label_zh_cn: '激活',
     sort: 0,
   },
+  ON_HOLD: {
+    class: 'adicon ad-dot txt-orange',
+    label_en_us: 'On Hold',
+    label_zh_cn: '搁置',
+    sort: 10,
+  },
   NOT_RUNNING: {
     class: 'adicon ad-pause txt-dark7',
     label_en_us: 'Not Running',
@@ -41,10 +47,10 @@ export default {
     label_zh_cn: '删除',
     sort: 30,
   },
-  ON_HOLD: {
-    class: 'adicon ad-dot txt-orange',
-    label_en_us: 'On Hold',
-    label_zh_cn: '搁置',
-    sort: 10,
+  REJECT: {
+    class: 'adicon ad-close-circle txt-red',
+    label_en_us: 'Reject',
+    label_zh_cn: '拒绝',
+    sort: 40,
   },
 };

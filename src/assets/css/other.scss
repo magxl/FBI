@@ -10,9 +10,15 @@ $radius: 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20;
   .radius-b#{$var} {
     border-radius: 0 0 #{$var}px #{$var}px;
   }
+  .radius-13-#{$var} {
+    border-radius: #{$var}px 0 #{$var}px 0;
+  }
+  .radius-24-#{$var} {
+    border-radius: 0 #{$var}px 0 #{$var}px;
+  }
 }
 
-@for $var from 1 through 9 {
+@for $var from 0 through 9 {
   .z#{$var} {
     z-index: #{$var};
   }
@@ -45,22 +51,6 @@ $radius: 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20;
     transform: translateY(-30px);
     z-index: 1;
   }
-}
-
-.dot4 {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-}
-.dot6 {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-}
-.dot8 {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
 }
 
 // cursor
@@ -97,6 +87,12 @@ $radius: 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20;
 
 .yscroll {
   overflow-y: auto;
+}
+.xscroll {
+  overflow-x: auto;
+}
+.noscroll {
+  overflow-anchor: none;
 }
 
 .alink {

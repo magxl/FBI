@@ -1,26 +1,24 @@
 <template>
-  <div class="SuperCampaign">
+  <div class="SuperCampaign relative">
+    <div v-if="loading" class="selectLoadingIcon">
+      <i class="adicon ad-loading el-icon is-loading"></i>
+    </div>
     <el-select
       v-model="state.v"
-      :multiple="multiple"
-      clearable
-      v-bind="$attrs"
-      :filterable="filterable"
-      collapse-tags
-      collapse-tags-tooltip
-      :placeholder="placeholder"
       @change="change"
       @clear="clear"
       class="wp100"
+      filterable
+      v-bind="$attrs"
+      :placeholder="placeholder"
+      :multiple="multiple"
       :loading="loading"
     >
-      <el-option v-if="prop.multiple" label="All" value="all"></el-option>
-      <el-option
-        v-for="(it, i) in state.campaignOptions"
-        :key="i"
-        :label="it.name"
-        :value="it.id"
-      >
+      <template v-if="current.icon" #prefix>
+        <i :class="current.icon" :title="current.status"></i>
+      </template>
+      <el-option v-if="multiple" label="All" value="all"></el-option>
+      <el-option v-for="(it, i) in state.campaignOptions" :key="i" :label="it.name" :value="it.id">
         <i :class="it.icon" :title="it.status"></i>
         <span class="pl4">{{ it.name }}</span>
       </el-option>
@@ -28,8 +26,6 @@
   </div>
 </template>
 <script setup>
-import { watchEffect } from 'vue';
-
 defineOptions({
   name: 'SuperCampaign',
 });
@@ -39,21 +35,13 @@ const prop = defineProps({
     type: [Array, String, Number],
     default: '',
   },
-  orgId: {
-    type: [Number, String],
+  defaultValue: {
+    type: [Array, String, Number],
     default: '',
   },
-  multiple: {
-    type: Boolean,
-    default: false,
-  },
-  filterable: {
-    type: Boolean,
-    default: false,
-  },
-  placeholder: {
-    type: String,
-    default: 'Campaign',
+  orgId: {
+    type: [Number, String, Array],
+    default: '',
   },
 });
 const store = inject('store');
@@ -63,14 +51,25 @@ const state = reactive({
   v: null,
   loading: true,
   campaignOptions: [],
+  orgId: '',
+  current: {},
+  useModelValue: true,
 });
-
+const { proxy } = getCurrentInstance();
 // 挂载
 
 // 事件
 const emit = defineEmits();
+const initOptions = async () => {
+  state.loading = true;
+  state.v = prop.modelValue;
+  state.current = {};
+  state.campaignOptions = [];
+  state.campaignOptions = await common.getCampaign(orgId.value);
+  state.loading = false;
+};
 const change = (v) => {
-  if (prop.multiple) {
+  if (multiple.value) {
     if (v[v.length - 1] === 'all') {
       state.v = ['all'];
     } else if (v[0] === 'all') {
@@ -78,78 +77,109 @@ const change = (v) => {
     }
   } else {
     if (v) {
-      const has = state.campaignOptions.filter((ft) => ft.id === v)[0];
-      emit('update:campaignName', has.name);
-    } else {
-      emit('update:campaignName', '');
+      const { data } = state.campaignOptions.filter1((ft) => ft.id === v);
+      if (data) {
+        emit('update:campaignName', data.name);
+      } else {
+        emit('update:campaignName', '');
+      }
     }
   }
-  emit('update:modelValue', state.v);
-  emit('change', v);
+  emit('update:modelValue', v);
+};
+const toClear = () => {
+  const v = multiple.value ? [] : '';
+  state.v = v;
+  emit('update:modelValue', v);
 };
 const getName = () => {
-  const { v } = state;
-  const nameObj = {};
+  let v = multiple.value ? state.v : [state.v];
+  const obj = {};
+  const arr = [];
   if (v[0] === 'all') {
     state.campaignOptions.forEach((it) => {
-      nameObj[it.id] = it.name;
-    });
-  } else if (prop.multiple) {
-    state.v.forEach((it) => {
-      const has = state.campaignOptions.filter((ft) => ft.id === it)[0];
-      nameObj[it] = has.name;
+      obj[it.id] = it.name;
+      arr.push(it.name);
     });
   } else {
-    const has = state.campaignOptions.filter((ft) => ft.id === v)[0];
-    nameObj = has.name;
+    v.forEach((it) => {
+      const { data } = state.campaignOptions.filter1((ft) => ft.id === it);
+      if (data) {
+        obj[data.id] = data.name;
+        arr.push(data.name);
+      } else {
+        obj[data.id] = '';
+        arr.push('');
+      }
+    });
   }
-  // emit('update:campaignName', nameObj);
-  return nameObj;
+  return {
+    obj,
+    arr,
+  };
 };
 const getValue = () => {
-  if (state.v[0] === 'all') {
-    return state.campaignOptions.map((it) => it.id);
-  } else {
+  let v = multiple.value ? state.v : [state.v];
+  // 为all时，一定是多选
+  if (v[0] !== 'all') {
     return state.v;
+  } else {
+    return state.campaignOptions.map((it) => it.id);
   }
 };
-const clear = () => {
-  emit('update:modelValue', prop.multiple ? [] : '');
-  emit('clear');
-};
-
 // 计算属性
 const loading = computed(() => {
-  return state.campaignOptions.length && state.loading;
+  return !state.campaignOptions?.length && state.loading && Boolean(prop.orgId);
+});
+const multiple = computed(() => {
+  return window.$getType(prop.modelValue) === 'Array';
+});
+const current = computed(() => {
+  if (multiple.value) {
+    return {};
+  } else {
+    const { data } = state.campaignOptions.filter1((ft) => ft.id === state.v);
+    return data || {};
+  }
 });
 const placeholder = computed(() => {
-  if(prop.placeholder===' '){
+  if (proxy.$attrs.placeholder === ' ') {
     return ' ';
-  }else{
-    return window.$l(prop.placeholder)
+  } else if (!proxy.$attrs.placeholder) {
+    return window.$l('Campaign');
+  } else {
+    return window.$l(proxy.$attrs.placeholder);
+  }
+});
+const orgId = computed(() => {
+  if (window.$getType(prop.orgId) === 'Array') {
+    return prop.orgId.join(',');
+  } else {
+    return prop.orgId;
   }
 });
 // 监听
 watch(
-  () => prop.orgId,
-  async (n) => {
-    state.v = prop.multiple ? [] : '';
-
-    if (n) {
-      state.campaignOptions = await common.getCampaign(n);
-      state.loading = false;
-    } else {
-      state.loading = true;
-      state.campaignOptions = [];
+  () => orgId.value,
+  (n, o) => {
+    if (n && n !== o) {
+      initOptions();
+    } else if (!n && o) {
+      toClear();
     }
   },
   {
     immediate: true,
   },
 );
-watchEffect(()=>{
-  state.v = prop.modelValue;
-})
+watch(
+  () => prop.modelValue,
+  (n, o) => {
+    if (!n && o) {
+      toClear();
+    }
+  },
+);
 defineExpose({
   getValue,
   getName,

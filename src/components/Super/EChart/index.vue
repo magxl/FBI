@@ -4,6 +4,8 @@
   </div>
 </template>
 <script setup>
+import { markRaw } from 'vue';
+
 defineOptions({
   name: 'EChart',
 });
@@ -33,6 +35,7 @@ const { proxy } = getCurrentInstance();
 const store = inject('store');
 const launch = store.launch();
 const state = reactive({
+  chart: {},
   chartID: '',
   defaultOptions: {
     grid: {
@@ -73,48 +76,13 @@ const state = reactive({
   },
 });
 
-// 计算属性
-const pageWidth = computed(() => {
-  return launch.pageWidth;
-});
-const style = computed(() => {
-  let width = prop.width;
-  let minusWidth = parseInt(prop.minusWidth) || 0;
-  if (width.indexOf('%') > -1) {
-    width = parseInt((pageWidth.value * parseInt(width)) / 100) - minusWidth - 32;
-  } else {
-    width = parseInt(width) - minusWidth;
-  }
-
-  return {
-    height: parseInt(prop.height) + 'px',
-    width: width + 'px',
-  };
-});
-let chart = null;
 onBeforeMount(() => {
   state.chartID = `chart${+new Date()}${parseInt(Math.random() * 10000)}`;
 });
 onMounted(() => {
   state.mounted = true;
-  chart = window.$echarts.init(proxy.$refs.chart);
+  state.chart = markRaw(window.$echarts.init(proxy.$refs.chart));
 });
-const canInit = computed(() => {
-  return state.mounted && prop.options && Object.keys(prop.options).length;
-});
-watch(
-  () => canInit.value,
-  (n) => {
-    if (n) {
-      setOptions();
-    }
-  },
-  {
-    immediate: true,
-    deep: true,
-  },
-);
-
 const initChart = async () => {
   setOptions();
 };
@@ -126,7 +94,7 @@ const setOptions = () => {
     } else {
       options = combineObject(state.defaultOptions, options);
     }
-    chart.setOption(options);
+    state.chart.setOption(options);
   });
 };
 const combineObject = (aim, source) => {
@@ -165,8 +133,49 @@ const combineArray = (aim, source) => {
 // 调用chart实例
 
 const getChart = () => {
-  return chart;
+  return state.chart;
 };
+// 计算属性
+const pageWidth = computed(() => {
+  return launch.pageWidth;
+});
+const style = computed(() => {
+  let width = prop.width;
+  let minusWidth = parseInt(prop.minusWidth) || 0;
+  if (width.indexOf('%') > -1) {
+    width =
+      parseInt((pageWidth.value * parseInt(width)) / 100) - minusWidth - 32;
+  } else {
+    width = parseInt(width) - minusWidth;
+  }
+
+  return {
+    height: parseInt(prop.height) + 'px',
+    width: width + 'px',
+  };
+});
+const canInit = computed(() => {
+  if (state.mounted && prop.options && Object.keys(prop.options).length) {
+    return +new Date();
+  } else {
+    return false;
+  }
+});
+
+// watch
+watch(
+  () => canInit.value,
+  (n) => {
+    if (n) {
+      setOptions();
+    }
+  },
+  {
+    immediate: true,
+    deep: true,
+  },
+);
+
 defineExpose({
   getChart,
   initChart,

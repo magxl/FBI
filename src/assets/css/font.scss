@@ -2,6 +2,9 @@
   .fs#{$var * 2} {
     font-size: #{$var * 2}px;
   }
+  .fs#{$var * 2}-i {
+    font-size: #{$var * 2}px !important;
+  }
 
   .lh#{$var * 2} {
     line-height: #{$var * 2}px;
@@ -11,7 +14,9 @@
 .indent2 {
   text-indent: 2em;
 }
-
+.txt-number {
+  font-family: 'Consolas';
+}
 .txt-nowrap {
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -22,6 +27,15 @@
 .txt-wrap {
   word-break: break-all;
   white-space: wrap;
+}
+.txt-cap {
+  text-transform: capitalize;
+}
+.txt-upper {
+  text-transform: uppercase;
+}
+.txt-lower {
+  text-transform: lowercase;
 }
 
 .fs10 {
@@ -37,4 +51,47 @@
   font-size: 16px;
   transform: scale(0.625, 0.625);
   transform-origin: right center;
+}
+
+// colorful
+.colorfulFont {
+  color: transparent;
+
+  -webkit-background-clip: text !important;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  &.primary {
+    background: linear-gradient(120deg, #5f63f2 30%, #777bfd);
+  }
+  &.orange {
+    background: linear-gradient(120deg, #fa8b0c 30%, #ffbb01);
+  }
+  &.blue {
+    background: linear-gradient(120deg, #2c99ff 30%, #61b0f9);
+  }
+  &.green {
+    background: linear-gradient(120deg, #20c997 30%, #41f4bf);
+  }
+  &.red {
+    background: linear-gradient(120deg, #ff4d4f 30%, #ff7678);
+  }
+  &.purple {
+    background: linear-gradient(120deg, #8632f4 30%, #9e57fb);
+  }
+}
+
+@each $var in 400, 500, 600 {
+  .fw#{$var} {
+    font-weight: #{$var};
+  }
+}
+
+@for $var from 2 to 5 {
+  .txt-line#{$var}{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: #{$var};
+    word-break: break-all;
+    overflow: hidden;
+  }
 }

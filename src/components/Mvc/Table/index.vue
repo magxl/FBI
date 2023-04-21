@@ -1,10 +1,12 @@
 <template>
-  <div class="MvcTable" v-loading="loading">
+  <div class="MvcTable relative">
+    <Loading v-show="loading" />
     <TableTool
       ref="tableTool"
       :table-name="prop.tableName"
       :tool="prop.tool"
       :top-show="topShow"
+      v-bind="$attrs"
       @tool-event="toolEvent"
     >
       <slot name="actions" />
@@ -47,7 +49,7 @@
         class="wp100"
       >
         <div class="flexMode vc fs14">
-          <div class="txt-dark3 pr5">Total</div>
+          <div class="txt-dark3 pl8 pr4">Total</div>
           <div
             v-show="state.filter.total !== state.dt.total"
             class="txt-primary5"
@@ -67,7 +69,7 @@
     <Drawer
       v-model:current="state.currentDrawer"
       :drawer="state.drawer"
-      @configSubmit="configSubmit"
+      @config-submit="configSubmit"
     />
   </div>
 </template>
@@ -83,6 +85,7 @@ defineOptions({
 const { proxy } = getCurrentInstance();
 const store = inject('store');
 const launch = store.launch();
+
 // 传参
 const prop = defineProps({
   loading: {
@@ -274,6 +277,9 @@ const toDownload = () => {
   } else {
     navigator.msSaveBlob(blob, filename);
   }
+  if(selection.length){
+    proxy.$message.success(window.$l('Selection Downloaded'))
+  }
 };
 // 配置表格显隐列
 const toSetTable = () => {
@@ -281,7 +287,6 @@ const toSetTable = () => {
   state.currentDrawer = 0;
 };
 const configSubmit = (v) => {
-  console.info('configSubmit');
   // proxy.$refs.tableColumnFilter.initColumns();
   refreshTable();
 };
@@ -327,8 +332,9 @@ const exactFilter = (filterKeys, v) => {
   state.filter.list.forEach((it) => {
     let need = false;
     filterKeys.forEach((fk) => {
-      const filterValue = v[fk];
-      if (filterValue === it[fk] || filterValue.indexOf(it[fk]) > -1) {
+      const filterValue = v[fk].toLowerCase();
+      const itValue = it[fk].toLowerCase();
+      if (filterValue === itValue || filterValue.indexOf(itValue) > -1) {
         need = true;
       }
     });
@@ -345,7 +351,7 @@ const AndFuzzyFilter = (filterKeys, v) => {
   state.filter.list.forEach((it) => {
     let need = true;
     filterKeys.forEach((fk) => {
-      const itValue = String(it[fk]);
+      const itValue = String(it[fk]).toLowerCase();
       let filterValue = v[fk];
       const fvType = window.$getType(filterValue);
       if (fvType === 'Array') {
@@ -358,7 +364,7 @@ const AndFuzzyFilter = (filterKeys, v) => {
         //     need = false;
         //   }
         // });
-      } else if (!itValue.includes(filterValue)) {
+      } else if (!itValue.includes(filterValue.toLowerCase())) {
         need = false;
       }
     });
@@ -375,12 +381,12 @@ const OrFuzzyFilter = (filterKeys, v) => {
   state.filter.list.forEach((it) => {
     let need = false;
     filterKeys.forEach((fk) => {
-      const itValue = String(it[fk]);
+      const itValue = String(it[fk]).toLowerCase();
       const filterValue = v[fk];
       const fkType = window.$getType(filterValue);
       if (fkType === 'Array') {
         filterValue.forEach((fkt) => {
-          if (itValue.includes(fkt)) {
+          if (itValue.includes(fkt.toLowerCase())) {
             need = true;
           }
         });
@@ -513,6 +519,7 @@ defineExpose({
   initTable,
   toFilter,
   toCloseFilter,
+  toDownload,
 });
 // 卸载
 </script>

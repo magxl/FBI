@@ -6,8 +6,8 @@
       filterable
       :placeholder="$l('Country or Regions')"
     >
-      <template v-if="state.v.length" #prefix>
-        <span class="areaicon" :class="'area-' + state.v.toLowerCase()" />
+      <template v-if="state.v.length && !arrayType" #prefix>
+        <span class="radius4 areaicon" :class="'area-' + state.v.toLowerCase()" />
       </template>
       <el-option
         v-for="(it, i) in options"
@@ -16,7 +16,7 @@
         :value="it.value"
       >
         <div class="flexMode vc">
-          <span class="areaicon" :class="'area-' + it.value_lower"></span>
+          <span class="radius4 areaicon" :class="'area-' + it.value_lower"></span>
           <span class="pl8 fs12">{{ it[`label_${lang}`] }}</span>
         </div>
       </el-option>
@@ -31,7 +31,7 @@ defineOptions({
 // 传参
 const prop = defineProps({
   modelValue: {
-    type: String,
+    type: [String, Array],
     default: '',
   },
 });
@@ -48,6 +48,9 @@ const options = computed(() => {
 });
 const lang = computed(() => {
   return launch.lang;
+});
+const arrayType = computed(() => {
+  return window.$getType(prop.modelValue) === 'Array';
 });
 // 监听
 

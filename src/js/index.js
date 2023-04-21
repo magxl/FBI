@@ -6,7 +6,7 @@ import plugin from './plugin/index.js';
 import config from './config/index.js';
 import api from './api/index.js';
 
-// element多语言
+// element 多语言
 const keys = import.meta.glob('/node_modules/element-plus/dist/locale/*.min.mjs', {eager: true});
 let lang = {};
 Object.keys(keys).forEach(it => {
@@ -14,6 +14,8 @@ Object.keys(keys).forEach(it => {
   lang[name] = keys[it].default;
 });
 const locale = lang[localStorage.getItem('lang')];
+
+// element 组件配置
 
 export default async (app) => {
   app

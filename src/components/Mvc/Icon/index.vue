@@ -13,9 +13,8 @@ const prop = defineProps({
     default: 'box2',
   },
 });
-import { reactive } from 'vue';
+
 // 数据
-const state = reactive({});
 
 // 计算属性
 

@@ -1,21 +1,14 @@
 <template>
   <div class="AFrameBody" :class="{ collapseMenu }" :style="style">
     <router-view v-slot="{ Component }">
-      <keep-alive>
-        <transition>
-          <component
-            v-if="$route.meta.keepalive"
-            :is="Component"
-            :key="$route.meta.key"
-          />
-        </transition>
-      </keep-alive>
-      <transition>
-        <component
-          v-if="!$route.meta.keepalive"
-          :key="$route.meta.key"
-          :is="Component"
-        />
+      <transition name="mg">
+        <keep-alive>
+          <component v-if="keepalive" :is="Component" :key="pageKey" />
+        </keep-alive>
+      </transition>
+
+      <transition name="mg">
+        <component v-if="!keepalive" :key="pageKey" :is="Component" />
       </transition>
     </router-view>
   </div>
@@ -28,6 +21,7 @@ defineOptions({
 const state = reactive({});
 const store = inject('store');
 const launch = store.launch();
+const route = useRoute();
 // 计算属性
 
 const collapseMenu = computed(() => {
@@ -37,6 +31,16 @@ const style = computed(() => {
   return {
     width: launch.pageWidth + 'px',
   };
+});
+const currentPage = computed(() => {
+  return launch.currentPage || {}
+ });
+const keepalive = computed(() => {
+  return currentPage.value.meta.keepalive
+  // return route.meta.keepalive;
+});
+const pageKey = computed(() => {
+  return currentPage.value.meta.key;
 });
 // 监听
 

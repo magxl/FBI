@@ -1,10 +1,8 @@
 <template>
-  <DrawerArea noscroll>
+  <DrawerArea :loading="state.submiting" noscroll>
     <div class="relative flexMode vs p10 hp100">
       <!-- fixed left -->
-      <div
-        class="relative dragArea wp33 mr5 border-dark3-dashed radius8 hover-box-shadow-dark1"
-      >
+      <div class="relative dragArea wp33 mr5 border-dark3-dashed radius8 hover-box-shadow-dark1">
         <div class="flexMode hb vc h40 p10 bg-f5 radius-t8 border-b">
           <span class="fs14">{{ $l('Fixed Left') }}</span>
           <div v-if="leftVisible">
@@ -26,34 +24,20 @@
             @end="onEnd"
           >
             <template #item="{ element: it, index }">
-              <div
-                class="dragItem flexMode vc p5"
-                :class="it.ding ? 'ding' : 'cursor-grab hover-bg-primary1'"
-              >
-                <div class="flexMode vc flexGrow">
-                  <el-switch
-                    v-model="it.visible"
-                    :disabled="it.ding"
-                  ></el-switch>
-                  <span class="pl10 fs14">{{ it.label || it.type }}</span>
-                </div>
-                <span class="pb5 fs12 txt-primary3">{{ it.tips }}</span>
-                <div
-                  class="arrowRight mgbtn circle24"
-                  @click.stop="leftToCenter(it, index)"
-                >
-                  <i class="adicon ad-arrow-right"></i>
-                </div>
-              </div>
+              <DragItem
+                :it="it"
+                :index="index"
+                type="left"
+                :lang="lang"
+                @add-right="leftToCenter"
+              />
             </template>
           </Draggable>
         </el-scrollbar>
       </div>
       <!-- ↑ fixed left ↑ -->
       <!-- fixed center -->
-      <div
-        class="relative dragArea wp33 m0-5 border-dark3-dashed radius8 hover-box-shadow-dark1"
-      >
+      <div class="relative dragArea wp33 m0-5 border-dark3-dashed radius8 hover-box-shadow-dark1">
         <div class="flexMode hb vc h40 p10 bg-f5 border-b radius-t8">
           <span class="fs14">{{ $l('Center') }}</span>
           <div v-if="centerVisible">
@@ -75,40 +59,21 @@
             @end="onEnd"
           >
             <template #item="{ element: it, index }">
-              <div
-                class="dragItem flexMode vc p5"
-                :class="it.ding ? 'ding' : 'cursor-grab hover-bg-primary1'"
-              >
-                <div
-                  class="arrowLeft mgbtn ml4 mr8 circle24 rotate180"
-                  @click.stop="toAddLeft(it, index)"
-                >
-                  <i class="adicon ad-arrow-right"></i>
-                </div>
-                <div class="dragCenter flexMode vc flexGrow">
-                  <el-switch
-                    v-model="it.visible"
-                    :disabled="it.ding"
-                  ></el-switch>
-                  <span class="pl10 fs14">{{ it.label || it.type }}</span>
-                </div>
-                <span class="pb5 fs12 txt-primary3">{{ it.tips }}</span>
-                <div
-                  class="arrowRight mgbtn circle24"
-                  @click.stop="toAddRight(it, index)"
-                >
-                  <i class="adicon ad-arrow-right"></i>
-                </div>
-              </div>
+              <DragItem
+                :it="it"
+                :index="index"
+                @add-left="toAddLeft"
+                :lang="lang"
+                @add-right="toAddRight"
+                @change="toEdit"
+              />
             </template>
           </Draggable>
         </el-scrollbar>
       </div>
       <!-- ↑ fixed center ↑ -->
       <!-- fixed right -->
-      <div
-        class="relative dragArea wp33 ml5 border-dark3-dashed radius8 hover-box-shadow-dark1"
-      >
+      <div class="relative dragArea wp33 ml5 border-dark3-dashed radius8 hover-box-shadow-dark1">
         <div class="flexMode hb vc h40 p10 bg-f5 border-b radius-t8">
           <span class="fs14">{{ $l('Fixed Right') }}</span>
           <div v-if="rightVisible">
@@ -130,25 +95,13 @@
             @end="onEnd"
           >
             <template #item="{ element: it, index }">
-              <div
-                class="dragItem flexMode vc p5"
-                :class="it.ding ? 'ding' : 'cursor-grab hover-bg-primary1'"
-              >
-                <div
-                  class="arrowLeft mgbtn m0-4 circle24 rotate180"
-                  @click.stop="rightToCenter(it, index)"
-                >
-                  <i class="adicon ad-arrow-right"></i>
-                </div>
-                <div class="dragCenter flexMode vc flexGrow">
-                  <el-switch
-                    v-model="it.visible"
-                    :disabled="it.ding"
-                  ></el-switch>
-                  <span class="pl10 fs14">{{ it.label || it.type }}</span>
-                </div>
-                <span class="pb5 fs12 txt-primary3">{{ it.tips }}</span>
-              </div>
+              <DragItem
+                :it="it"
+                :index="index"
+                type="right"
+                :lang="lang"
+                @add-left="rightToCenter"
+              />
             </template>
           </Draggable>
         </el-scrollbar>
@@ -157,15 +110,16 @@
     </div>
     <template #footer>
       <el-button @click="toReset" :loading="state.reseting">
-        {{ $l('Reset') }}
+        <template #icon>
+          <i class="adicon ad-refresh"></i>
+        </template>
+        <span>{{ $l('Reset') }}</span>
       </el-button>
-      <el-button
-        @click="toSubmit"
-        :loading="state.submiting"
-        plain
-        type="primary"
-      >
-        {{ $l('Submit') }}
+      <el-button @click="toSubmit" :loading="state.submiting" plain type="primary">
+        <template #icon>
+          <i class="adicon ad-upload"></i>
+        </template>
+        <span>{{ $l('Submit') }}</span>
       </el-button>
     </template>
   </DrawerArea>
@@ -173,9 +127,10 @@
 </template>
 <script setup>
 import Draggable from 'vuedraggable';
+import DragItem from './DragItem.vue';
 defineOptions({
   name: 'TableColumnConfig',
-  components: { Draggable },
+  components: { Draggable, DragItem },
 });
 // 传参
 const prop = defineProps({
@@ -256,7 +211,7 @@ const createColumn = ({ left, center, right }) => {
 const toReset = () => {
   state.reseting = true;
   localStorage.removeItem(columnName.value);
-  emit('configSubmit');
+  emit('config-submit');
   getLocalColumn();
   state.reseting = false;
   emit('close');
@@ -265,7 +220,7 @@ const toSubmit = () => {
   state.submiting = true;
   const { column } = createColumn(state.columns);
   localStorage.setItem(columnName.value, JSON.stringify(column));
-  emit('configSubmit');
+  emit('config-submit');
   state.submiting = false;
   emit('close');
 };
@@ -279,22 +234,24 @@ const getLocalColumn = () => {
     }
   }, 500);
 };
-const toAddLeft = (it, i) => {
+const toAddLeft = ({ it, index, type }) => {
   state.columns.left.push(it);
-  state.columns.center.splice(i, 1);
+  state.columns.center.splice(index, 1);
 };
-const toAddRight = (it, i) => {
+const toAddRight = ({ it, index, type }) => {
   state.columns.right.push(it);
-  state.columns.center.splice(i, 1);
+  state.columns.center.splice(index, 1);
 };
-const leftToCenter = (it, i) => {
-  console.info(it, i);
+const leftToCenter = ({ it, index, type }) => {
   state.columns.center.push(it);
-  state.columns.left.splice(i, 1);
+  state.columns.left.splice(index, 1);
 };
-const rightToCenter = (it, i) => {
+const rightToCenter = ({ it, index, type }) => {
   state.columns.center.push(it);
-  state.columns.right.splice(i, 1);
+  state.columns.right.splice(index, 1);
+};
+const toEdit = ({ it, index, type }) => {
+  state.columns[type][index] = it;
 };
 const onStart = (e) => {
   // e.preventDefault();
@@ -329,30 +286,14 @@ const bodyStyle = computed(() => {
     height: launch.options.drawerHeight - 16 - 40 - 10 + 'px',
   };
 });
+const lang = computed(() => {
+  return window.$getLang();
+});
 // 监听
 // 卸载
 </script>
 <style lang="scss" scoped>
 .dragBody {
   height: 100%;
-}
-.dragItem {
-  .arrowLeft,
-  .arrowRight {
-    opacity: 0;
-  }
-  .dragCenter {
-    transition: $trans1;
-    transform: translateX(-30px);
-  }
-  &:hover {
-    .arrowLeft,
-    .arrowRight {
-      opacity: 1;
-    }
-    .dragCenter {
-      transform: translateX(0px);
-    }
-  }
 }
 </style>

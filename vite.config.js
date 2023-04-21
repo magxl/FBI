@@ -2,28 +2,34 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import defineOptions from 'unplugin-vue-define-options/vite';
-// import eslintPlugin from 'vite-plugin-eslint';
-import compressPlugin from 'vite-plugin-compression';
-import autoImport from 'unplugin-auto-import/vite';
+import eslintPlugin from 'vite-plugin-eslint';
+import CompressPlugin from 'vite-plugin-compression';
+import AutoImport from 'unplugin-auto-import/vite';
+// import Components from 'unplugin-vue-components/vite';
+// import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+
 export default defineConfig({
   lintOnSave: true,
+  base: './',
+  publicDir: './public',
+  assetsInclude: 'src/assets',
   server: {
     port: 8100,
     open: true,
     host: '0.0.0.0',
-    // proxy: {
-    //   '/': {
-    //     target: 'http://localhost:9099/',
-    //     changeOrigin: true,
-    //     // rewrite: (path) => path.replace(/^\/api/, '')
-    //   }
-    // }
+    proxy: {
+      '/ann9': {
+        target: 'https://www.ann9.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/\/ann9/, 'https://www.ann9.com/'),
+      },
+    },
   },
   build: {
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true,
+        // drop_console: true,
         drop_debugger: false,
       },
     },
@@ -40,17 +46,27 @@ export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
-    autoImport({
-      include:[/\.vue$/,/\.vue\?vue/],
-      imports: [
-        'vue',
-        'vue-router'
-      ]
+    AutoImport({
+      include: [/\.vue$/, /\.vue\?vue/],
+      imports: ['vue', 'vue-router'],
+      // resolvers: [
+      //   ElementPlusResolver({
+      //     importStyle: 'scss',
+      //   }),
+      // ],
     }),
-    defineOptions(),
-    // ElementPlus({
+    // eslintPlugin({
+    //   include:['src/**/*.js', 'src/**/*.vue', 'src/*.js', 'src/*.vue'],
     // }),
-    compressPlugin({
+    // Components({
+    //   resolvers: [
+    //     ElementPlusResolver({
+    //       importStyle: 'scss',
+    //     }),
+    //   ],
+    // }),
+    defineOptions(),
+    CompressPlugin({
       //gzip
       verbose: true,
       disable: false,
@@ -67,7 +83,7 @@ export default defineConfig({
       '@views': '/src/views/',
       '@js': '/src/js/',
       '@img': '/src/assets/img/',
-      '@com': '/src/js/composition/',
+      '@cps': '/src/js/composition/',
     },
     dedupe: ['vue'],
   },

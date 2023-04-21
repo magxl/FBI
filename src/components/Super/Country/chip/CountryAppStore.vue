@@ -7,7 +7,7 @@
       :placeholder="$l('Country or Regions')"
     >
       <template v-if="state.v.length" #prefix>
-        <span class="areaicon" :class="'area-' + state.v.toLowerCase()" />
+        <span class="radius4 areaicon" :class="'area-' + state.v.toLowerCase()" />
       </template>
       <el-option
         v-for="(it, i) in options"
@@ -16,7 +16,7 @@
         :value="it.value"
       >
         <div class="flexMode vc">
-          <span class="areaicon" :class="'area-' + it.value_lower"></span>
+          <span class="radius4 areaicon" :class="'area-' + it.value_lower"></span>
           <span class="pl8 fs12">{{ it[`label_${lang}`] }}</span>
         </div>
       </el-option>

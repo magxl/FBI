@@ -1,6 +1,10 @@
 <template>
   <div class="SuperLang">
-    <el-dropdown placement="bottom-end" @command="changeLang">
+    <el-dropdown
+      placement="bottom-end"
+      popper-class="w100"
+      @command="changeLang"
+    >
       <Hover>
         <div class="flexMode hc vc">
           <el-image
@@ -13,15 +17,14 @@
       </Hover>
       <template #dropdown>
         <el-dropdown-menu>
-          <el-dropdown-item disabled class="cursor-default">
+          <!-- <el-dropdown-item disabled class="cursor-default">
             <span class="txt-dark5">{{ $l('Language') }}</span>
-          </el-dropdown-item>
+          </el-dropdown-item> -->
           <el-dropdown-item
             v-for="(it, i) in langOptions"
             :key="i"
             :command="it"
             class="fs12"
-            :divided="i === 0"
           >
             <Hover>
               <div class="flexMode vc" :class="lang === it && 'txt-primary'">
@@ -30,7 +33,7 @@
                   class="w16 h16"
                   fit="cover"
                 />
-                <span class="pl8">{{ it }}</span>
+                <span class="pl8">{{ langMap[it] }}</span>
               </div>
             </Hover>
           </el-dropdown-item>
@@ -75,5 +78,11 @@ const changeLang = (v) => {
 };
 
 // 卸载
+
+// Maps
+const langMap = {
+  zh_cn: '中文',
+  en_us: 'English',
+};
 </script>
 <style lang="scss" scoped></style>

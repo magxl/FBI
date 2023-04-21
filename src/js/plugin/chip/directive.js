@@ -100,5 +100,32 @@ export default {
         el.removeEventListener('wheel', wheelEvent);
       },
     });
+    const checkParentDom = ({ dom, check, end }) => {
+      if (dom.parentNode.className.includes(end)) {
+        return false;
+      }
+      if (dom.parentNode.className.includes(check)) {
+        return true;
+      } else {
+        checkParentDom(dom.parentNode);
+      }
+    };
+    app.directive('focus', {
+      mounted(el, binding, vnode) {
+        const { value = 0, arg = 'time' } = binding;
+        let time = 100;
+        let index = 0;
+        if (arg !== 'time') {
+          index = value;
+        }else{
+          time = value;
+        }
+        const timer = setTimeout(() => {
+          const doms = el.querySelectorAll('input');
+          doms[index].focus();
+          clearTimeout(timer);
+        }, time);
+      },
+    });
   },
 };

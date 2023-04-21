@@ -77,6 +77,7 @@ const scrollStyle = computed(() => {
 const pageStyle = computed(() => {
   return {
     borderRadius: pageConfig.value.paddingRight ? '' : '8px 0 0 8px',
+    height: launch.options.pageHeight + pageConfig.value.header + 'px',
   };
 });
 // 监听

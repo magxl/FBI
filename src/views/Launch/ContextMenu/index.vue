@@ -15,11 +15,11 @@
         <div class="flexMode vc hc w24">
           <i
             v-if="it.icon"
-            class="adicon fs12"
+            class="adicon fs12 nowrap"
             :class="[`ad-${it.icon}`, it.iconColor && `txt-${it.iconColor}`]"
           ></i>
         </div>
-        <span class="pl8 fs12">{{ it.label }}</span>
+        <span class="contextTxt pl8 fs12">{{ it.label }}</span>
       </div>
     </div>
   </div>
@@ -71,14 +71,19 @@ const toClick = (it) => {
     position: relative;
     width: 0;
     height: 0;
-    overflow: hidden;
     padding: 4px 24px 4px 0;
     opacity: 0;
+    overflow-x: hidden;
     transition: none;
     // transition: $trans3;
     &.visible {
+      width: auto;
+      height: auto;
       min-width: 140px;
+      max-width: 240px;
       min-height: 160px;
+      max-height: 360px;
+      overflow-y: auto;
       transition: $trans3;
       opacity: 1;
     }
@@ -101,6 +106,10 @@ const toClick = (it) => {
           bottom: 0;
           border-bottom: 1px solid $border;
         }
+      }
+      .contextTxt {
+        word-break: keep-all;
+        white-space: nowrap;
       }
     }
   }

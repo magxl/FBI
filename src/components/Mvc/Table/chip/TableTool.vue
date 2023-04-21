@@ -12,10 +12,7 @@
         <template #reference>
           <el-badge :value="filterCount" :hidden="!filterCount">
             <div v-if="slots.filter" class="mgbtn circle30" @click="toToggleFilter">
-              <i
-                class="adicon ad-filter2 fs20"
-                :class="state.filterVisible && 'txt-primary'"
-              ></i>
+              <i class="adicon ad-filter2 fs20" :class="state.filterVisible && 'txt-primary'"></i>
             </div>
           </el-badge>
         </template>
@@ -33,12 +30,7 @@
         </div>
       </el-popover>
       <template v-for="it in toolBtn">
-        <div
-          v-if="!it.hide"
-          :key="it.action"
-          class="mgbtn circle30"
-          @click="toolEvent(it)"
-        >
+        <div v-if="!it.hide" :key="it.action" class="mgbtn circle30" @click="toolEvent(it)">
           <i :class="it.icon" class="fs20"></i>
         </div>
       </template>
@@ -71,7 +63,7 @@ const prop = defineProps({
   },
   filterWidth: {
     type: [String, Number],
-    default: 400,
+    default: 418,
   },
   filter: {
     type: Object,
@@ -85,9 +77,9 @@ const { proxy } = getCurrentInstance();
 
 const emit = defineEmits();
 // 挂载
-onDeactivated(()=>{
+onDeactivated(() => {
   toCloseFilter();
-})
+});
 // 事件
 const toToggleFilter = () => {
   state.filterVisible = !state.filterVisible;
@@ -146,22 +138,8 @@ const toolBtn = computed(() => {
   ];
 });
 const filterCount = computed(() => {
-  let r = 0;
-  Object.keys(prop.filter).forEach((it) => {
-    let len = 0;
-    const v = prop.filter[it];
-    try {
-      len = v.length || 0;
-    } catch (error) {}
-    if (len === 0) {
-      if (!(v === null || v === undefined || v === '')) {
-        r++;
-      }
-    } else {
-      r++;
-    }
-  });
-  return r;
+  const params = window.$rep(prop.filter);  
+  return Object.keys(params).length;
 });
 // 监听
 

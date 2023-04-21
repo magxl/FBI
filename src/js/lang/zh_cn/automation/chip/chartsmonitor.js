@@ -1,4 +1,5 @@
 export default {
+  'Charts Monitor': '排行监控',
   'New App Found': '找到新应用',
   'Start Run': '开始执行',
   'Last Run': '最后执行',

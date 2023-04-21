@@ -65,8 +65,8 @@ const mainClass = computed(() => {
 <style lang="scss" scoped>
 .MvcCard {
   border-radius: 8px;
-  background-color: $white;
   box-shadow: 0 5px 20px $dark1;
+  background-color: $white7;
   &::after {
     border-radius: 8px;
     top: -1px;
@@ -85,6 +85,7 @@ const mainClass = computed(() => {
     padding: 0 16px;
     border-radius: 8px 8px 0 0;
     border-bottom: 1px solid $dark1;
+    background-color: $white;
     color: $dark7;
   }
   .cardFooter {
@@ -97,6 +98,7 @@ const mainClass = computed(() => {
     background-color: $primary;
     .cardHeader {
       border-bottom-color: $white1;
+      background-color: $gray1;
       color: $white9;
     }
     .cardFooter {
@@ -108,6 +110,7 @@ const mainClass = computed(() => {
     background-color: $green;
     .cardHeader {
       border-bottom-color: $white1;
+      background-color: $gray1;
       color: $white9;
     }
     .cardFooter {
@@ -119,6 +122,7 @@ const mainClass = computed(() => {
     background-color: $orange;
     .cardHeader {
       border-bottom-color: $white1;
+      background-color: $gray1;
       color: $white9;
     }
     .cardFooter {
@@ -130,6 +134,7 @@ const mainClass = computed(() => {
     background-color: $blue;
     .cardHeader {
       border-bottom-color: $white1;
+      background-color: $gray1;
       color: $white9;
     }
     .cardFooter {
@@ -141,6 +146,7 @@ const mainClass = computed(() => {
     background-color: $red;
     .cardHeader {
       border-bottom-color: $white1;
+      background-color: $gray1;
       color: $white9;
     }
     .cardFooter {
@@ -152,6 +158,7 @@ const mainClass = computed(() => {
     background-color: $pink;
     .cardHeader {
       border-bottom-color: $white1;
+      background-color: $gray1;
       color: $white9;
     }
     .cardFooter {
@@ -163,6 +170,7 @@ const mainClass = computed(() => {
     background-color: $purple;
     .cardHeader {
       border-bottom-color: $white3;
+      background-color: $gray1;
       color: $white9;
     }
     .cardFooter {

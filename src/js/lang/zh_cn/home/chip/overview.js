@@ -5,6 +5,7 @@ export default {
   Countrys: '国家',
   App: '应用',
   Apps: '应用',
+  'App Name': '应用名称',
   Day: '天',
   Days: '天',
   Week: '周',

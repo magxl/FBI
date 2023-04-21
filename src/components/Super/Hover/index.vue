@@ -1,6 +1,8 @@
 <template>
   <div class="SuperHover">
-    <slot />
+    <div class="relative z1">
+      <slot />
+    </div>
     <div class="hoverBg">
       <slot />
     </div>
@@ -10,7 +12,6 @@
 defineOptions({
   name: 'SuperHover',
 });
-import { reactive } from 'vue';
 // 数据
 const state = reactive({});
 

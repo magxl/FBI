@@ -1,5 +1,6 @@
 <template>
-  <div v-loading="loading" class="VsTable" :style="tableHeight">
+  <div class="VsTable relative" :class="prop.borderTop && 'border-t'" :style="tableStyle">
+    <Loading v-show="loading" />
     <TableTool
       ref="tableTool"
       :table-name="prop.tableName"
@@ -19,16 +20,23 @@
       :data="state.list"
       :height="height"
       v-bind="$attrs"
-      :class="[prop.borderTop && 'border-t']"
+      class="border-t"
     >
-      <TableColumnFilter
-        ref="tableColumnFilter"
-        :table-name="prop.tableName"
-        :deep="prop.deep"
-      >
+      <TableColumnFilter ref="tableColumnFilter" :table-name="prop.tableName" :deep="prop.deep">
         <slot />
       </TableColumnFilter>
     </el-table>
+    <div class="flexMode vc h40 p0-16 border-t fs12">
+      <span class="pr8 txt-dark3">{{ $l('Total') }}</span>
+      <span>{{ prop.list.length }}</span>
+    </div>
+    <div
+      v-show="scrollTopVisible"
+      class="scrollTopArea hover-txt-primary hover-bg-littleBlue radius8"
+      @click="toTableTop"
+    >
+      <i class="adicon ad-arrow-down rotate180"></i>
+    </div>
     <Drawer
       v-model:current="state.currentDrawer"
       :drawer="state.drawer"
@@ -40,6 +48,7 @@
 import TableTool from '../Table/chip/TableTool.vue';
 import TableColumnFilter from '../Table/chip/TableColumnFilter.js';
 import TableColumnConfig from '../Table/chip/TableColumnConfig.vue';
+import { nextTick } from 'vue';
 
 // 定义
 defineOptions({
@@ -94,7 +103,7 @@ const state = reactive({
   list: [],
   start: 0, // 显示区域索引
   end: 0, // 显示区域索引
-  offsetPage: null,
+  offsetPage: 0,
   drawer: [
     {
       title: 'Tabel Column Customization',
@@ -107,6 +116,7 @@ const state = reactive({
   ],
   currentDrawer: '',
   tableKey: 0,
+  scrollTop: 0,
 });
 const store = inject('store');
 const launch = store.launch();
@@ -120,47 +130,53 @@ onMounted(() => {
 const emit = defineEmits();
 const tableScrollListener = () => {
   nextTick(() => {
-    proxy.$refs.table.$refs.scrollBarRef.wrap$.addEventListener(
-      'scroll',
-      scrolling,
-    );
+    proxy.$refs.table.$refs.scrollBarRef.wrapRef.addEventListener('scroll', scrolling);
   });
 };
 const scrolling = (e) => {
-  const { scrollTop, clientHeight } = e.target;
-  const offsetRow = parseInt(scrollTop / rowHeight.value);
+  const { scrollTop } = e.target;
+  state.scrollTop = scrollTop;
+  const offsetRow = parseInt(scrollTop / rowHeight.value) ;
   // 滚动后页码
   const offsetPage = Math.ceil(offsetRow / limit.value);
-  if (offsetPage > state.offsetPage) {
-    state.offsetPage = offsetPage;
-    // 显示下方
-    if (
-      scrollTop + clientHeight < totalHeight.value &&
-      offsetRow > state.start + limit.value
-    ) {
-      // 没有触底时, 翻页
-      let minus = limit.value;
-      if (total.value - state.end < limit.value) {
-        // 不足一页
-        minus = total.value - state.end;
+  if (!scrollTop) {
+    state.start = 0;
+    state.end = rows.value;
+    state.offsetPage = 0;
+  } else {
+    if (offsetPage > state.offsetPage) {
+      state.offsetPage = offsetPage;
+      // 显示下方
+      if (scrollTop < totalHeight.value && offsetRow > state.start + limit.value) {
+        // 没有触底时, 翻页
+        let minus = limit.value;
+        // console.info(total.value, state.end, limit.value);
+        if (total.value - state.end < limit.value) {
+          // 不足一页
+          minus = total.value - state.end;
+        }
+        state.start += minus;
+        state.end += minus;
       }
-      state.start += minus;
-      state.end += minus;
-    }
-  } else if (offsetPage < state.offsetPage) {
-    // 显示上方
-    state.offsetPage = offsetPage;
+    } else if (offsetPage < state.offsetPage) {
+      // 显示上方
+      state.offsetPage = offsetPage;
 
-    if (scrollTop > 0 && offsetRow < state.start + limit.value) {
-      let minus = limit.value;
-      if (state.start < limit.value) {
-        // 不足一页
-        minus = state.start;
+      if (scrollTop > 0 && offsetRow < state.start + limit.value) {
+        let minus = limit.value;
+        if (state.start < limit.value) {
+          // 不足一页
+          minus = state.start;
+        }
+        state.start -= minus;
+        state.end -= minus;
       }
-      state.start -= minus;
-      state.end -= minus;
     }
   }
+};
+const toTableTop = () => {
+  proxy.$refs.table.setScrollTop(0);
+  nextTick(() => {});
 };
 
 const toolEvent = (v) => {
@@ -186,9 +202,7 @@ const toolEvent = (v) => {
 // 下载
 const toDownload = () => {
   // 过滤可导出列
-  const columns = proxy.$refs.tableColumnFilter
-    .getColumns()
-    .filter((it) => it.visible && it.prop);
+  const columns = proxy.$refs.tableColumnFilter.getColumns().filter((it) => it.visible && it.prop);
   // 列标题
   const thead = columns.map((it) => it.label);
   // 列主体
@@ -208,11 +222,7 @@ const toDownload = () => {
   const blob = new Blob(['\ufeff' + dt], { type: 'text/csv,charset=UTF-8' });
   if ('download' in document.createElement('a')) {
     const elink = document.createElement('a');
-    elink.download =
-      prop.tableName +
-      '_' +
-      window.$moment().format('YYYY-MM-DD_hh:mm:ss') +
-      '.csv';
+    elink.download = prop.tableName + '_' + window.$moment().format('YYYY-MM-DD_hh:mm:ss') + '.csv';
     elink.style.display = 'none';
     elink.href = URL.createObjectURL(blob);
     document.body.appendChild(elink);
@@ -221,6 +231,9 @@ const toDownload = () => {
     document.body.removeChild(elink);
   } else {
     navigator.msSaveBlob(blob, filename);
+  }
+  if (selection.length) {
+    proxy.$message.success(window.$l('Selection Downloaded'));
   }
 };
 // 配置表格显隐列
@@ -238,10 +251,9 @@ const refreshTable = () => {
   tableScrollListener();
 };
 const unlisterner = () => {
-  proxy.$refs.table?.$refs.scrollBarRef.wrap$.removeEventListener(
-    'scroll',
-    scrolling,
-  );
+  nextTick(() => {
+    proxy.$refs.table?.$refs.scrollBarRef.wrapRef.removeEventListener('scroll', scrolling);
+  });
 };
 
 // 关闭filter面板
@@ -268,8 +280,14 @@ const totalHeight = computed(() => {
 const rowHeight = computed(() => {
   return Number(prop.rowHeight) || 40;
 });
+const rows = computed(() => {
+  return Math.ceil(height.value / rowHeight.value) + limit.value;
+});
 const limit = computed(() => {
   return Number(prop.limit) || 10;
+});
+const pageSize = computed(() => {
+  return parseInt(height.value / limit.value);
 });
 const height = computed(() => {
   let r;
@@ -284,20 +302,24 @@ const height = computed(() => {
   if (topShow.value) {
     r -= window.global.config.table.tool;
   }
+  // footer
+  r -= 40;
   return r;
 });
-const tableHeight = computed(() => {
+const tableStyle = computed(() => {
   return {
-    height: height.value + 'px',
+    height: height.value + 40 + 'px',
   };
+});
+const scrollTopVisible = computed(() => {
+  return state.scrollTop > window.global.config.options.pageHeight;
 });
 // 监听
 watchEffect(() => {
   // 初始
   state.tableKey++;
-  const rows = Math.ceil(height.value / rowHeight.value) + limit.value;
   state.start = 0;
-  state.end = rows;
+  state.end = rows.value;
   state.offsetPage = 0;
 });
 watchEffect(() => {
@@ -316,21 +338,38 @@ watchEffect(() => {
     //   list: prop.list,
     // });
   }
-  if (proxy.$refs.table) {
-    proxy.$refs.table.$refs.tableBody.style.paddingTop =
-      state.start * rowHeight.value + 'px';
-    proxy.$refs.table.$refs.tableBody.style.paddingBottom =
-      (total.value - state.end) * rowHeight.value + 'px';
-  }
+  nextTick(() => {
+    if (proxy.$refs.table) {
+      proxy.$refs.table.$refs.tableBody.style.paddingTop = state.start * rowHeight.value + 'px';
+      proxy.$refs.table.$refs.tableBody.style.paddingBottom =
+        (total.value - state.end) * rowHeight.value + 'px';
+    }
+  });
 });
 // 卸载
 defineExpose({
   toCloseFilter,
   refreshTable,
+  toDownload,
 });
 onUnmounted(() => {
   unlisterner();
 });
 // Map
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.scrollTopArea {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 16px;
+  bottom: 16px;
+  width: 36px;
+  height: 36px;
+  z-index: 9;
+  background-color: $white7;
+  box-shadow: 0 0 16px $dark1;
+  @include backdrop();
+}
+</style>

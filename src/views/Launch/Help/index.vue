@@ -71,8 +71,6 @@
   </div>
 </template>
 <script setup>
-import { watchEffect } from 'vue';
-
 // 定义
 defineOptions({
   name: 'OnloadHelp',

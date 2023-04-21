@@ -1,6 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import { store } from '@js/pinia';
-import { $l } from '@js/lang';
 
 const login = {
   path: '/',
@@ -12,6 +11,7 @@ const login = {
     position: '',
     normal: true,
     sort: 0,
+    unsave: true,
   },
   component: () => import('@views/Launch/Login.vue'),
 };
@@ -34,16 +34,6 @@ routes = routes.map((it) => {
 });
 
 // 初始化语言模版
-const initRoutes = (v) => {
-  return v.map((it) => {
-    // it.meta.langLabel = $l(it.meta.label);
-    if (it.children) {
-      it.children = initRoutes(it.children);
-    }
-    return it;
-  });
-};
-routes = initRoutes(routes);
 window.routes = routes;
 // 路由实例
 const router = createRouter({
@@ -54,13 +44,10 @@ const router = createRouter({
 // 全局字典
 
 // 全局守卫
-let timer = null;
 let time = 0;
-// console.info(store.launch);
-// console.info(launch);
+
 router.beforeEach((to, from, next) => {
   // console.info('before', to);
-  // clearTimeout(timer);
   const launch = store.launch();
   launch.saveData('loading', { ...launch.loading, visible: true });
   time = new Date();
@@ -78,8 +65,8 @@ router.beforeEach((to, from, next) => {
     }
     if (from.name || to.name) {
       if (!normal) {
-        const { authID } = launch.login;
-        if (!authID) {
+        const { token } = launch.login;
+        if (!token) {
           nextPage = '/';
         }
       }
@@ -88,13 +75,10 @@ router.beforeEach((to, from, next) => {
   // 404
   const module = to.fullPath.split('/')[1];
   const name404 = module + '404Page';
-  const pageIgnore = ['Login'];
+  const pageIgnore = ['Login', 'SOP'];
 
   if (pageIgnore.indexOf(to.name) === -1) {
-    if (
-      to.matched.length === 0 ||
-      (to.matched.length === 1 && !to.matched.children)
-    ) {
+    if (to.matched.length === 0) {
       next({ name: name404 });
     } else {
       next(nextPage);
@@ -112,11 +96,11 @@ router.afterEach((to, from) => {
     `TIME %c┆${now - time}ms┆`,
     'background-color:#f1f7ff; color:#0085FF;',
   );
-  const unsavePage = ['Login', 'A_404']; // 不存储的页面
   const hasHistory = launch.tabPages.filter((ft) => ft.name === to.name);
   // 存在历史且参数不相同
   if (!hasHistory[0]) {
-    if (unsavePage.indexOf(to.name) === -1) {
+    // 不存储的路由
+    if (!to.meta.unsave) {
       to.key = `page${now}${parseInt(Math.random() * 10000)}`;
       launch.saveData('currentPage', to);
       launch.savePage(to);

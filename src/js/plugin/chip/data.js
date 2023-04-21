@@ -5,7 +5,25 @@ export default {
   install(app) {
     window.$l = $l;
     app.config.globalProperties.$l = $l;
-
+    Array.prototype.filter1 = function (cb) {
+      if (!cb || typeof cb !== 'function') {
+        throw new TypeErrpr(cb + ' is not a function');
+      }
+      const len = this.length;
+      let data;
+      let index;
+      for (let i = 0; i < len; i++) {
+        if (cb(this[i], i, this)) {
+          index = i;
+          data = this[i];
+          break;
+        }
+      }
+      return {
+        index,
+        data,
+      };
+    };
     window.$getType = (v) => {
       return Object.prototype.toString.call(v).slice(8, -1);
     };
@@ -31,6 +49,7 @@ export default {
     };
     window.$copy = copy;
     app.config.globalProperties.$copy = copy;
+
     window.$deepClone = function (dt) {
       //递归深拷贝
       const type = window.$getType(dt);
@@ -45,8 +64,8 @@ export default {
       for (let k in dt) {
         if (Object.prototype.hasOwnProperty.call(dt, k)) {
           if (
-            (window.$getType(dt[k]) === 'Object' ||
-              (window.$getType(dt[k]) && dt[k] !== null)) === 'Array'
+            (window.$getType(dt[k]) === 'Object' || (window.$getType(dt[k]) && dt[k] !== null)) ===
+            'Array'
           ) {
             r[k] = this.$deepClone(dt[k]);
           } else {
@@ -56,5 +75,28 @@ export default {
       }
       return r;
     };
+
+    const removeEmptyParams = (v) => {
+      if (v) {
+        const type = window.$getType(v);
+        if (type === 'Object') {
+          const r = {};
+          Object.keys(v).forEach((it) => {
+            const itv = v[it];
+            const itt = window.$getType(itv);
+            if (itt === 'Object' && Object.keys(itv) !== 0) {
+              r[it] = itv;
+            } else if (itt === 'Array' && itv.length !== 0) {
+              r[it] = itv;
+            } else if (['Number', 'String'].indexOf(itt) > -1 && itv) {
+              r[it] = itv;
+            }
+          });
+          return r;
+        }
+      }
+    };
+    window.$removeEmptyParams = removeEmptyParams;
+    window.$rep = removeEmptyParams;
   },
 };

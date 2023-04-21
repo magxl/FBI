@@ -1,36 +1,15 @@
 <template>
-  <div class="SuperCountryAll">
-    <el-select
+  <div class="SuperCountryAll relative">
+    <el-cascader
       v-model="state.v"
-      v-bind="$attrs"
+      :options="options"
+      :props="cascaderProps"
+      clearable
       filterable
       :placeholder="$l('Country or Regions')"
-    >
-      <template v-if="state.v.length" #prefix>
-        <span
-          v-if="prefix.length===1"
-          class="areaicon"
-          :class="'area-' + prefix[0]"
-        />
-      </template>
-      <el-option-group
-        v-for="(it, i) in options"
-        :label="it[`label_${lang}`]"
-        :key="it.value"
-      >
-        <el-option
-          v-for="(ot, o) in it.children"
-          :key="ot.value"
-          :label="ot[`label_${lang}`]"
-          :value="ot.value"
-        >
-          <div class="flexMode vc">
-            <span class="areaicon" :class="ot.icon"></span>
-            <span class="pl8 fs12">{{ ot[`label_${lang}`] }}</span>
-          </div>
-        </el-option>
-      </el-option-group>
-    </el-select>
+      class="wp100"
+      v-bind="$attrs"
+    />
   </div>
 </template>
 <script setup>
@@ -41,46 +20,67 @@ defineOptions({
 // 传参
 const prop = defineProps({
   modelValue: {
-    type: String,
+    type: [String, Array],
     default: '',
   },
 });
-const store = inject('store');
-const launch = store.launch();
+
 // 数据
 const state = reactive({
+  mounted: false,
   v: '',
+  seted: false,
 });
+const { proxy } = getCurrentInstance();
 
+// 挂载
+onMounted(() => {
+  state.mounted = true;
+});
+// 事件
+
+const getValue = (v) => {
+  return v.map((it) => {
+    if (it.children?.length) {
+      return getValue(it.children);
+    }
+    return it.value;
+  });
+};
 // 计算属性
+const cascaderProps = computed(() => {
+  return {
+    multiple: multiple.value,
+    emitPath: false,
+    checkStrictly: false
+  }
+ });
 const options = computed(() => {
   return window.$map.country.countryAll;
 });
-const lang = computed(() => {
-  return launch.lang;
-});
-const prefix = computed(() => {
-  if (window.$getType(state.v) === 'String') {
-    return [state.v.toLowerCase()];
-  } else {
-    return state.v.map((it) => it.toLowerCase());
-  }
+
+const multiple = computed(() => {
+  return proxy.$attrs.multiple !== undefined;
 });
 // 监听
 
 watch(
   () => prop.modelValue,
   (n, o) => {
-    if (n !== o) {
-      state.v = n;
+    if (!state.seted) {
+      if (n) {
+        state.v = n;
+        state.seted = true;
+      } else {
+        if (multiple.value) {
+          state.v = [];
+        }
+      }
     }
   },
   {
     immediate: true,
   },
 );
-// 挂载
-// 事件
-
 // 卸载
 </script>

@@ -1,5 +1,5 @@
 {
-  "name": "vite-vue",
+  "name": "SV",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.9",
+    "@tweenjs/tween.js": "^18",
     "axios": "^0.27.2",
     "bignumber.js": "^9.1.1",
     "dayjs": "^1.11.7",

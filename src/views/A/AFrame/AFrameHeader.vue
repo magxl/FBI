@@ -36,18 +36,19 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item
-              v-for="(it, i) in state.avatarOptions"
+              v-for="(it, i) in avatarOptions"
               :key="i"
               :command="it"
               :divided="it.divided"
-              :class="[it.color, it.hover]"
             >
-              <div class="w24">
-                <i class="adicon" :class="it.icon" />
+              <div class="flexMode vc" :class="[it.color, it.hover]">
+                <div class="w24">
+                  <i class="adicon" :class="it.icon" />
+                </div>
+                <span>
+                  {{ $l(it.label) }}
+                </span>
               </div>
-              <span>
-                {{ $l(it.label) }}
-              </span>
             </el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -59,7 +60,7 @@
       </div>
       <!-- ↓ help ↓ -->
       <div class="mgbtn circle30 white mr8" @click="toHelp">
-        <i class="adicon ad-help fs24" :class="helpVisible?'txt-littleGreen':'txt-white'" />
+        <i class="adicon ad-help fs24" :class="helpVisible ? 'txt-littleGreen' : 'txt-white'" />
       </div>
       <!-- language -->
       <div class="p0-8">
@@ -73,38 +74,12 @@
 import AccountInfo from './AFrameHeader/AccountInfo.vue';
 import Setting from './AFrameHeader/Setting.vue';
 import TabPages from './AFrameHeader/TabPages.vue';
+import WorkMode from './AFrameHeader/WorkMode.vue';
 defineOptions({
   name: 'AFrameHeader',
 });
 // 数据
 const state = reactive({
-  avatarOptions: [
-    {
-      label: 'User Center',
-      key: 'account',
-      command: 0,
-      color: 'txt-dark5',
-      hover: '',
-      icon: 'ad-userinfo',
-    },
-    {
-      label: 'Setting',
-      key: 'setting',
-      command: 1,
-      color: 'txt-dark5',
-      hover: '',
-      icon: 'ad-nav-system-set',
-    },
-    {
-      label: 'Logout',
-      color: 'txt-dark5',
-      hover: 'hover-txt-red',
-      key: 'logout',
-      command: 99,
-      icon: 'ad-logout',
-      divided: true,
-    },
-  ],
   drawer: [
     {
       title: '',
@@ -112,29 +87,34 @@ const state = reactive({
       cpt: markRaw(AccountInfo),
     },
     {
-      title: 'Setting',
-      size: 500,
+      title: '',
+      size: 720,
       cpt: markRaw(Setting),
+    },
+    {
+      title: '',
+      size: 720,
+      cpt: markRaw(WorkMode),
     },
   ],
   currentDrawer: '',
 });
 const store = inject('store');
 const launch = store.launch();
-const { proxy } = getCurrentInstance();
+
 const router = useRouter();
 
 const avatarCommand = ({ command, label }) => {
   if (command === 99) {
     router.push({ name: 'Login' });
   } else {
-    state.drawer[command].title = proxy.$l(label);
+    state.drawer[command].title = window.$l(label);
     state.currentDrawer = command;
   }
 };
 
 const toSetting = () => {
-  state.drawer[1].title = proxy.$l(state.drawer[1].title);
+  state.drawer[1].title = window.$l('Setting');
   state.currentDrawer = 1;
 };
 
@@ -144,14 +124,51 @@ const toHelp = () => {
 
 const gotoBoard = () => {
   router.push({
-    name: 'ABoard_Main',
+    name: window.global.config.defaultPage,
   });
 };
 // 计算属性
 const helpVisible = computed(() => {
   return launch.help.visible;
- });
+});
 // 卸载
+
+// Map
+const avatarOptions = [
+  {
+    label: 'User Center',
+    key: 'account',
+    command: 0,
+    color: 'txt-dark7',
+    hover: '',
+    icon: 'ad-userinfo',
+  },
+  {
+    label: 'Setting',
+    key: 'setting',
+    command: 1,
+    color: 'txt-dark7',
+    hover: '',
+    icon: 'ad-nav-system-set',
+  },
+  {
+    label: 'Worker Mode',
+    key: 'workMode',
+    command: 2,
+    color: 'txt-purple7',
+    hover: '',
+    icon: 'ad-mac',
+  },
+  {
+    label: 'Logout',
+    color: 'txt-dark7',
+    hover: 'hover-txt-red',
+    key: 'logout',
+    command: 99,
+    icon: 'ad-logout',
+    divided: true,
+  },
+];
 </script>
 <style lang="scss" scoped>
 .AFrameHeader {
@@ -160,8 +177,8 @@ const helpVisible = computed(() => {
   align-items: stretch;
   height: 56px;
   background-color: $primary;
-  box-shadow: 0 5px 20px $dark1;
-  z-index: 2;
+  box-shadow: 0 5px 20px $gray5;
+  z-index: 9;
   .logoArea {
     width: 200px;
     &:hover {

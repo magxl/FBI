@@ -3,17 +3,17 @@
     <el-input
       ref="input"
       v-model="state.v"
-      clearable
       :rows="prop.rows"
       resize="none"
       type="textarea"
-      placeholder=" "
+      :placeholder="prop.placeholder"
       @input="toInput"
+      class="fullTextArea"
     />
     <div class="countArea abs fs12">
       <span :class="color">{{ state.total }}</span>
       <span class="txt-dark3">/</span>
-      <span class="txt-primary">{{ prop.max }}</span>
+      <span class="txt-primary">{{ max }}</span>
     </div>
     <div
       class="clearArea abs txt-dark3 hover-txt-red5"
@@ -45,13 +45,23 @@ const prop = defineProps({
     type: [String, Number],
     default: 10,
   },
+  placeholder: {
+    type: String,
+    default: ' ',
+  },
+  focus: {
+    type: Boolean,
+    default: false,
+  },
 });
 // 数据
 const state = reactive({ v: '', total: 0, mounted: false });
 const { proxy } = getCurrentInstance();
 // 挂载
 onMounted(() => {
-  toFocus();
+  if (prop.focus) {
+    toFocus();
+  }
 });
 // 事件
 const emit = defineEmits();
@@ -91,19 +101,25 @@ const toClear = () => {
 };
 // 计算属性
 const max = computed(() => {
-  return Number(prop.max) || 10;
+  return Number(prop.max) || 0;
 });
 const color = computed(() => {
   return state.total === max.value ? 'txt-red' : 'txt-blue';
 });
 // 监听
-watchEffect(() => {
-  // if (state.mounted) {
-  //   return;
-  // }
-  state.v = prop.modelValue;
-  // state.mounted = true;
-});
+watch(
+  () => prop.modelValue,
+  (n) => {
+    if (n) {
+      state.v = prop.modelValue;
+    } else {
+      state.v = '';
+    }
+  },
+  {
+    immediate: true,
+  },
+);
 // 卸载
 defineExpose({
   toFocus,
@@ -113,8 +129,8 @@ defineExpose({
 <style lang="scss" scoped>
 .SuperTextarea {
   .countArea {
-    right: 4px;
-    bottom: 0px;
+    right: 6px;
+    bottom: 2px;
   }
   .clearArea {
     display: none;

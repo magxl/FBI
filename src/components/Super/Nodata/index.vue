@@ -3,6 +3,12 @@
     <el-empty :image-size="imageSize" :description="description"></el-empty>
   </div>
 </template>
+<script>
+const emptyMap = {
+  data: 'No Data',
+  selection: 'Unselected',
+};
+</script>
 <script setup>
 // 定义
 defineOptions({
@@ -14,21 +20,24 @@ const prop = defineProps({
     type: [String, Number],
     default: '48',
   },
+  type: {
+    type: String,
+    default: 'data',
+    validate: (v) => {
+      return emptyMap[v];
+    },
+  },
 });
-const store = inject('store');
-const launch = store.launch();
 // 数据
 const state = reactive({});
 
 // 计算属性
-const emptyMap = computed(() => {
-  return window.$map.common.emptyMap;
-});
+
 const imageSize = computed(() => {
   return Number(prop.size);
 });
 const description = computed(() => {
-  return emptyMap.value[launch.lang];
+  return window.$l(emptyMap[prop.type]);
 });
 // 监听
 
@@ -37,5 +46,15 @@ const description = computed(() => {
 // 事件
 
 // 卸载
+
+// Maps
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.SuperNodata {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+</style>

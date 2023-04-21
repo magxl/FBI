@@ -1,0 +1,16 @@
+export default {
+  'Version Monitor': '版本监控',
+  'Version Monitor Logs': '版本监控日志',
+  'New Version': '新版本',
+  'Task Run': '任务运行',
+  'Current Task': '当前任务',
+  'Last Version': '上个版本',
+  'Current Version':'当前版本',
+  'Version Update Time': '版本更新时间',
+  'Last Detection Time': '上次检测时间',
+  'Create Date': '创建日期',
+  'Before Change': '变更前',
+  'After Change': '变更后',
+  'Change Customer Type': '变更客户类型',
+  'Pause Ad Group': '暂停广告组',
+};

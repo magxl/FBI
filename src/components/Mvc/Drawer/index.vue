@@ -1,7 +1,6 @@
 <template>
   <div class="MvcDrawer">
     <el-drawer
-      ref="drawer"
       v-model="state.drawerInfo.visible"
       v-bind="$attrs"
       :title="state.drawerInfo.title"
@@ -9,16 +8,27 @@
       append-to-body
       :size="state.drawerInfo.size"
       :direction="state.drawerInfo.direction"
-      :destroy-on-close="destroy"
+      :destroy-on-close="true"
       @closed="closed"
     >
-      <component
-        v-if="state.drawerInfo.cpt"
-        :is="state.drawerInfo.cpt"
-        v-bind="$attrs"
-        :params="state.drawerInfo.params"
-        @close="close"
-      />
+      <template v-if="state.drawerInfo.cpt">
+        <keep-alive>
+          <component
+            v-if="state.drawerInfo.keepalive"
+            :is="state.drawerInfo.cpt"
+            v-bind="$attrs"
+            :params="state.drawerInfo.params"
+            @close="close"
+          />
+        </keep-alive>
+        <component
+          v-if="!state.drawerInfo.keepalive"
+          :is="state.drawerInfo.cpt"
+          v-bind="$attrs"
+          :params="state.drawerInfo.params"
+          @close="close"
+        />
+      </template>
       <slot v-else />
     </el-drawer>
   </div>
@@ -42,7 +52,7 @@ const state = reactive({
     visible: false,
     title: '',
     cpt: '',
-    size: 500,
+    size: 640,
     params: {},
     direction: 'rtl',
     keepalive: false,
@@ -87,16 +97,17 @@ const closed = () => {
       visible: false,
       title: '',
       cpt: '',
-      size: 500,
+      size: 640,
       direction: 'rtl',
+      params: {},
     };
   }
   emit('update:current', '');
 };
 // 主动关闭
-const { proxy } = getCurrentInstance();
+
 const close = () => {
-  proxy.$refs.drawer.handleClose();
+  state.drawerInfo.visible = false;
 };
 </script>
 <style lang="scss" scoped></style>

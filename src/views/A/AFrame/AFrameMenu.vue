@@ -1,60 +1,62 @@
 <template>
   <div class="AFrameMenu">
-    <el-scrollbar class="scrollbarArea">
-      <el-menu
-        :default-active="state.active"
-        :default-openeds="state.openeds"
-        :collapse="collapseMenu"
-      >
-        <template v-for="it in prop.menu">
-          <template v-if="!it.meta.hide">
-            <el-sub-menu
-              v-if="it.children && it.children.length"
-              :key="it.name"
-              :index="it.name"
-            >
-              <template #title>
-                <em class="w24 txt-dark5 noShrink">
+    <el-scrollbar>
+      <div class="p8-0">
+        <el-menu
+          :default-active="state.active"
+          :default-openeds="state.openeds"
+          :collapse="collapseMenu"
+        >
+          <template v-for="it in prop.menu">
+            <template v-if="!it.meta.hide">
+              <el-sub-menu
+                v-if="it.children && it.children.length"
+                :key="it.name"
+                :index="it.name"
+              >
+                <template #title>
+                  <em class="w24 txt-dark5 noShrink">
+                    <i class="adicon" :class="it.meta.icon" />
+                  </em>
+                  <span class="txt-nowrap" :title="it.meta[`label_${lang}`]">
+                    {{ it.meta[`label_${lang}`] }}
+                  </span>
+                </template>
+                <el-menu-item-group>
+                  <template v-for="ct in it.children">
+                    <el-menu-item
+                      v-if="!ct.meta.hide"
+                      :key="ct.name"
+                      :index="ct.name"
+                      @click="goto(ct.name)"
+                      :title="ct.meta[`label_${lang}`]"
+                    >
+                      <em class="w24 txt-dark5 noShrink">
+                        <i class="adicon" :class="ct.meta.icon" />
+                      </em>
+                      <span class="pl4 txt-nowrap">{{
+                        ct.meta[`label_${lang}`]
+                      }}</span>
+                    </el-menu-item>
+                  </template>
+                </el-menu-item-group>
+              </el-sub-menu>
+              <el-menu-item
+                v-else-if="!it.meta.hide"
+                :index="it.name"
+                @click="goto(it.name)"
+                :title="it.meta[`label_${lang}`]"
+                class="hover-txt-shadow-blue3"
+              >
+                <em class="w24 noShrink">
                   <i class="adicon" :class="it.meta.icon" />
                 </em>
-                <span class="txt-nowrap" :title="it.meta[`label_${lang}`]">
-                  {{ it.meta[`label_${lang}`] }}
-                </span>
-              </template>
-              <el-menu-item-group>
-                <template v-for="ct in it.children">
-                  <el-menu-item
-                    v-if="!ct.meta.hide"
-                    :key="ct.name"
-                    :index="ct.name"
-                    @click="goto(ct.name)"
-                    :title="ct.meta[`label_${lang}`]"
-                  >
-                    <em class="w24 txt-dark5 noShrink">
-                      <i class="adicon" :class="ct.meta.icon" />
-                    </em>
-                    <span class="pl4 txt-nowrap">{{
-                      ct.meta[`label_${lang}`]
-                    }}</span>
-                  </el-menu-item>
-                </template>
-              </el-menu-item-group>
-            </el-sub-menu>
-            <el-menu-item
-              v-else-if="!it.meta.hide"
-              :index="it.name"
-              @click="goto(it.name)"
-              :title="it.meta[`label_${lang}`]"
-              class="hover-txt-shadow-blue3"
-            >
-              <em class="w24 noShrink">
-                <i class="adicon" :class="it.meta.icon" />
-              </em>
-              <span class="txt-nowrap">{{ it.meta[`label_${lang}`] }}</span>
-            </el-menu-item>
+                <span class="txt-nowrap">{{ it.meta[`label_${lang}`] }}</span>
+              </el-menu-item>
+            </template>
           </template>
-        </template>
-      </el-menu>
+        </el-menu>
+      </div>
     </el-scrollbar>
     <div class="collaspeArea" @click="toCollaspeMenu">
       <div class="collaspe" :class="{ collapseMenu }"></div>
@@ -134,15 +136,20 @@ const toCollaspeMenu = () => {
   flex-shrink: 0;
   height: calc(100vh - 56px);
   width: 200px;
-  padding: 10px 0;
   border-radius: 0 0 4px 0;
   overflow: hidden;
   background: $white9;
   user-select: none;
-  transition: $trans3;
+  transition: width .3s ease-in;
   flex-shrink: 0;
   .scrollbarArea {
     height: calc(100% - 56px);
+  }
+  .el-menu--collapse {
+    em.w24 {
+      display: flex;
+      justify-content: center;
+    }
   }
   .collaspeArea {
     position: absolute;

@@ -1,5 +1,5 @@
 <template>
-  <div class="SuperCountry">
+  <div class="SuperCountry" :class="prop.nowrap && 'nowrap'">
     <component :is="cpt" v-bind="$attrs" />
   </div>
 </template>
@@ -18,6 +18,10 @@ const prop = defineProps({
   type: {
     type: String,
     default: 'all',
+  },
+  nowrap: {
+    type: Boolean,
+    default: false,
   },
 });
 // 数据

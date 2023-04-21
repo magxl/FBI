@@ -23,6 +23,7 @@ $vars: 1,12,
 240,
 300,
 320,
+360,
 400,
 480,
 600,
@@ -52,7 +53,12 @@ $vars: 1,12,
     max-height: #{$var}px;
   }
 }
-
+.wp24 {
+  width: 24%;
+}
+.wp25 {
+  width: 25%;
+}
 .wp30 {
   width: calc(100% / 3);
 }
@@ -168,6 +174,9 @@ $mp: 0,
       .m#{$var} {
         margin: #{$var}px;
       }
+      .g#{$var} {
+        gap: #{$var}px;
+      }
     }
 
     @else {
@@ -177,6 +186,10 @@ $mp: 0,
 
       .m#{$var}-#{$var2} {
         margin: #{$var}px #{$var2}px;
+      }
+
+      .g#{$var}-#{$var2} {
+        gap: #{$var}px #{$var2}px;
       }
     }
   }

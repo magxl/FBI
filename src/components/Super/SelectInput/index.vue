@@ -4,16 +4,14 @@
       ref="selector"
       class="wp100"
       v-model="state.v"
-      multiple
       clearable
       filterable
       allow-create
       collapse-tags
       default-first-option
       collapse-tags-tooltip
-      :multiple-limit="prop.limit"
       :placeholder="prop.placeholder"
-      @visible-change="visibleChange"
+      v-bind="$attrs"
       @change="change"
     >
       <el-option
@@ -37,7 +35,7 @@ const prop = defineProps({
     default: 5,
   },
   modelValue: {
-    type: [String, Number],
+    type: [String, Number, Array],
     default: '',
   },
   placeholder: {
@@ -46,7 +44,7 @@ const prop = defineProps({
   },
 });
 // 数据
-const state = reactive({ v: [] });
+const state = reactive({ v: '' });
 const { proxy } = getCurrentInstance();
 // 挂载
 
@@ -63,29 +61,33 @@ const visibleChange = (v) => {
   }
 };
 const change = (v) => {
-  if (window.$getType(prop.modelValue) === 'String') {
+  if (window.$getType(v) === 'Array') {
     emit('update:modelValue', v.join(','));
   } else {
     emit('update:modelValue', v);
   }
-  nextTick(() => {
-    proxy.$refs.selector.blur();
-  });
+  // nextTick(() => {
+  //   proxy.$refs.selector.blur();
+  // });
 };
 // 计算属性
-
+const multiple = computed(() => {
+  return proxy.$attrs.multiple;
+});
 // 监听
 watch(
   () => prop.modelValue,
   (n, o) => {
-    const type = window.$getType(n);
-    if (n !== o) {
+    if (n && n !== o) {
+      const type = window.$getType(n);
       if (type === 'String') {
-        if (n) {
-          state.v = n.split(',');
-        }
+        state.v = n.split(',');
       } else {
         state.v = n;
+      }
+    } else {
+      if (multiple.value) {
+        state.v = [];
       }
     }
   },

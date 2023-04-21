@@ -51,14 +51,13 @@ export default {
       // 传入name使用此name进行alpha随机
       const colorNames = ['blue', 'red', 'orange', 'green', 'pink', 'purple'];
       const colorAlphas = ['', 1, 3, 5, 7];
-      const randomName =
-        name || colorNames[parseInt(Math.random() * colorNames.length)];
-      const randomAlpha =
-        alpha || colorAlphas[parseInt(Math.random() * colorAlphas.length)];
+      const randomName = name || colorNames[parseInt(Math.random() * colorNames.length)];
+      const randomAlpha = alpha || colorAlphas[parseInt(Math.random() * colorAlphas.length)];
       return `${randomName}${randomAlpha}`;
     };
     window.$randomColor = randomColor;
     window.$rc = randomColor;
+    app.config.globalProperties.$rc = randomColor;
 
     const fakeData = (total, v) => {
       let dt = [];
@@ -108,10 +107,11 @@ export default {
       let r = prev;
       if (window.$getType(fixed) === 'Number') {
         if (fixed > 0) {
-          r = prev;
+          r += '.';
           if (arr[1]) {
-            r += '.';
             r += arr[1].padEnd(fixed, 0).substr(0, fixed);
+          } else {
+            r += '0'.padEnd(fixed, '0');
           }
         }
       }
@@ -122,10 +122,12 @@ export default {
     app.config.globalProperties.$fa = formatAmount;
     // 异步
     window.$promise = (cb = () => {}, time = 3) => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          cb();
-          resolve();
+      let timer = null;
+      return new Promise((resolve, reject) => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          cb(resolve, reject);
+          resolve(true);
         }, window.$rn(time * 1000, time * 100));
       });
     };

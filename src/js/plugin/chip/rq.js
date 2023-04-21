@@ -4,12 +4,12 @@ import { ElMessage } from 'element-plus';
 
 axios.defaults.withCredentials = true;
 const baseURL = import.meta.env.VITE_APP_BASE_URL;
-const auth = '90104c7c372cb622415c7c247c116933';
-const session = '154006e4b1bff4a8eba2446445b5651a';
-document.cookie = 'auth=1|' + auth + ';beegosessionID=' + session;
+// const auth = '90104c7c372cb622415c7c247c116933';
+// const session = '154006e4b1bff4a8eba2446445b5651a';
+// document.cookie = 'auth=1|' + auth + ';beegosessionID=' + session;
 const service = axios.create({
   baseURL,
-  timeout: 10 * 1000,
+  timeout: 0,
 });
 let pending = []; // 请求栈
 const CancelToken = axios.CancelToken;

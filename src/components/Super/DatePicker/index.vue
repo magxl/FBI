@@ -16,8 +16,6 @@
   </div>
 </template>
 <script setup>
-import { watchEffect } from 'vue';
-
 // 定义
 defineOptions({
   name: 'SuperDatePicker',
@@ -31,16 +29,6 @@ const prop = defineProps({
   defaultDate: {
     type: Array,
     default: () => [],
-  },
-  // 返回v-model的类型，obj时格式为{startDate,endDate}
-  type: {
-    type: String,
-    default: 'arr',
-    validate: (v) => {
-      if (['arr', 'obj', 'str'].indexOf(v) > -1) {
-        return true;
-      }
-    },
   },
   // 开始，结束的分割符号，也是v-model str时的分割符号
   separator: {
@@ -64,13 +52,14 @@ const prop = defineProps({
 });
 // 数据
 const state = reactive({
+  type: '',
   date: [],
   shortBtn: [],
 });
-const store = inject('store');
-const launch = store.launch();
+
 // 挂载
 onMounted(() => {
+  state.type = window.$getType(prop.modelValue)
   if (!prop.defaultDate.length) {
     const start = -6 + offsetDay.value;
     const end = offsetDay.value;
@@ -94,9 +83,9 @@ const disabledDate = (t) => {
 };
 const dateChange = (v) => {
   let r;
-  if (prop.type === 'arr') {
+  if (state.type === 'Array') {
     r = v;
-  } else if (prop.tupe === 'obj') {
+  } else if (state.type === 'Object') {
     r = {
       startDate: v[0],
       endDate: v[1],
@@ -111,7 +100,7 @@ const initShortBtn = () => {
   const { shortcuts } = prop;
   let combineShortcuts = {};
   if (shortcuts === false) {
-    state.shortBtn = false;
+    state.shortBtn = [];
   } else {
     if (shortcuts === true) {
       combineShortcuts = defaultShortcuts;
@@ -157,6 +146,9 @@ const initToday = () => {
       const now = window.$moment().format('YYYY-MM-DD');
       return [now, now];
     },
+    onClick: (v) => {
+      console.info('click', v);
+    },
   };
 };
 const initYesterday = () => {
@@ -167,8 +159,11 @@ const initYesterday = () => {
   return {
     text: map[lang.value],
     value: () => {
-      const now = window.$moment().add(-1, 'days').format('YYYY-MM-DD');
-      return [now, now];
+      const yersterday = window.$moment().add(-1, 'days').format('YYYY-MM-DD');
+      return [yersterday, yersterday];
+    },
+    onClick: (v) => {
+      console.info('click', v);
     },
   };
 };
@@ -180,7 +175,6 @@ const initThisWeek = () => {
   return {
     text: map[lang.value],
     value: () => {
-      const now = window.$moment();
       let day = 0;
       if (prop.notoday) {
         day -= 1;
@@ -189,6 +183,9 @@ const initThisWeek = () => {
         window.$moment().weekday(1).format('YYYY-MM-DD'),
         window.$moment().add(day, 'days').format('YYYY-MM-DD'),
       ];
+    },
+    onClick: (v) => {
+      console.info('click', v);
     },
   };
 };
@@ -211,6 +208,9 @@ const initLast7Days = () => {
         window.$moment().add(dayE, 'days').format('YYYY-MM-DD'),
       ];
     },
+    onClick: (v) => {
+      console.info('click', v);
+    },
   };
 };
 const initThisMonth = () => {
@@ -229,6 +229,9 @@ const initThisMonth = () => {
         window.$moment().date(1).format('YYYY-MM-DD'),
         window.$moment().add(day, 'days').format('YYYY-MM-DD'),
       ];
+    },
+    onClick: (v) => {
+      console.info('click', v);
     },
   };
 };
@@ -251,6 +254,9 @@ const initLast30Days = () => {
         window.$moment().add(dayE, 'days').format('YYYY-MM-DD'),
       ];
     },
+    onClick: (v) => {
+      console.info('click', v);
+    },
   };
 };
 const initLastMonth = () => {
@@ -270,11 +276,14 @@ const initLastMonth = () => {
         window.$moment().date(1).add(day, 'days').format('YYYY-MM-DD'),
       ];
     },
+    onClick: (v) => {
+      console.info('click', v);
+    },
   };
 };
 // 计算属性
 const lang = computed(() => {
-  return launch.lang;
+  return window.$getLang();
 });
 const placeholder = computed(() => {
   return placeholderMap[lang.value];

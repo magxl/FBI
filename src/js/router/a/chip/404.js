@@ -9,6 +9,7 @@ export default {
     label_zh_cn: '404',
     icon: 'ad-chart1',
     position: ['menu'],
+    unsave: true,
   },
   component: () => import('@views/A/Launch/404.vue'),
   children: [

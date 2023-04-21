@@ -1,20 +1,23 @@
 <template>
-  <div class="SuperAdGroup">
+  <div class="SuperAdGroup relative">
+    <div v-if="loading" class="selectLoadingIcon">
+      <i class="adicon ad-loading el-icon is-loading"></i>
+    </div>
     <el-select
       v-model="state.v"
-      :multiple="multiple"
-      clearable
-      v-bind="$attrs"
-      :filterable="filterable"
-      collapse-tags
-      collapse-tags-tooltip
-      :placeholder="placeholder"
       @change="change"
-      @clear="clear"
+      @clear="toClear"
       class="wp100"
+      filterable
+      v-bind="$attrs"
+      :multiple="multiple"
+      :placeholder="placeholder"
       :loading="loading"
     >
-      <el-option v-if="prop.multiple" label="All" value="all"></el-option>
+      <template v-if="current.icon" #prefix>
+        <i :class="current.icon" :title="current.status"></i>
+      </template>
+      <el-option v-if="multiple" label="All" value="all"></el-option>
       <el-option
         v-for="(it, i) in state.adgroupOptions"
         :key="i"
@@ -28,7 +31,7 @@
   </div>
 </template>
 <script setup>
-import { watchEffect } from 'vue';
+import { watch } from 'vue';
 
 defineOptions({
   name: 'SuperAdGroup',
@@ -39,25 +42,17 @@ const prop = defineProps({
     type: [Array, String, Number],
     default: '',
   },
+  defaultValue: {
+    type: [Array, String, Number],
+    default: '',
+  },
   orgId: {
-    type: [Number, String],
+    type: [Number, String, Array],
     default: '',
   },
   campaignId: {
     type: [Array, String, Number],
     default: '',
-  },
-  multiple: {
-    type: Boolean,
-    default: false,
-  },
-  filterable: {
-    type: Boolean,
-    default: false,
-  },
-  placeholder: {
-    type: String,
-    default: 'Ad Group',
   },
 });
 const store = inject('store');
@@ -67,12 +62,21 @@ const state = reactive({
   loading: true,
   v: null,
   adgroupOptions: [],
+  current: {},
 });
-
+const { proxy } = getCurrentInstance();
 // 挂载
 
 // 事件
 const emit = defineEmits();
+const initOptions = async () => {
+  state.loading = true;
+  state.v = prop.modelValue;
+  state.current = {};
+  state.adgroupOptions = [];
+  state.adgroupOptions = await common.getAdGroup(orgId.value, campaignId.value);
+  state.loading = false;
+};
 const change = (v) => {
   if (prop.multiple) {
     if (v[v.length - 1] === 'all') {
@@ -81,12 +85,20 @@ const change = (v) => {
       state.v = [v[1]];
     }
   } else {
-    const has = state.adgroupOptions.filter((ft) => ft.id === v)[0];
-
-    emit('update:adgroupName', has ? has.name : '');
+    if (v) {
+      const has = state.adgroupOptions.filter((ft) => ft.id === v)[0];
+      if (has) {
+        state.current = has;
+        emit('update:adgroupName', has);
+      } else {
+        emit('update:adgroupName', '');
+      }
+    } else {
+      state.current = {};
+      emit('update:adgroupName', '');
+    }
   }
   emit('update:modelValue', v);
-  emit('change', v);
 };
 const getName = () => {
   const { v } = state;
@@ -104,7 +116,7 @@ const getName = () => {
     const has = state.adgroupOptions.filter((ft) => ft.id === v)[0];
     nameObj = has ? has.name : '';
   }
-  // emit('update:adgroupName', nameObj);
+  emit('update:adgroupName', nameObj);
   return nameObj;
 };
 const getValue = () => {
@@ -114,44 +126,89 @@ const getValue = () => {
     return state.v;
   }
 };
-const clear = () => {
-  emit('update:modelValue', prop.multiple ? [] : '');
-  emit('clear');
+const toClear = () => {
+  const v = multiple.value ? [] : '';
+  state.v = v;
+  emit('update:modelValue', v);
 };
 // 计算属性
+
 const loading = computed(() => {
-  return state.adgroupOptions.length && state.loading;
+  return Boolean(
+    !state.adgroupOptions?.length &&
+      state.loading &&
+      orgId.value &&
+      campaignId.value,
+  );
+});
+
+const multiple = computed(() => {
+  return window.$getType(prop.modelValue) === 'Array';
+});
+const current = computed(() => {
+  if (multiple.value) {
+    return {};
+  } else {
+    const { data } = state.adgroupOptions.filter1((ft) => ft.id === state.v);
+    return data || {};
+  }
 });
 const placeholder = computed(() => {
-  if(prop.placeholder===' '){
+  if (proxy.$attrs.placeholder === ' ') {
     return ' ';
-  }else{
-    return window.$l(prop.placeholder)
+  } else if (!proxy.$attrs.placeholder) {
+    return window.$l('Ad Group');
+  } else {
+    return window.$l(proxy.$attrs.placeholder);
   }
+});
+const orgId = computed(() => {
+  const type = window.$getType(prop.orgId);
+  if (type === 'Array') {
+    return prop.orgId.join(',');
+  } else {
+    return prop.orgId;
+  }
+});
+const campaignId = computed(() => {
+  const type = window.$getType(prop.campaignId);
+  if (type === 'Array') {
+    return prop.campaignId.join(',');
+  } else {
+    return prop.campaignId;
+  }
+});
+const idChange = computed(() => {
+  if (orgId.value) {
+    return `org${orgId.value}`;
+  }
+  if (campaignId.value) {
+    return `campaign${orgId.value}`;
+  }
+  return false;
 });
 // 监听
-// watch(
-//   () => prop.orgId,
-//   (n) => {
-//     state.v = prop.multiple ? [] : '';
-//     state.loading = true;
-//   },
-//   {
-//     immediate: true,
-//   },
-// );
-watchEffect(async () => {
-  if (prop.campaignId) {
-    state.adgroupOptions = await common.getAdgroup(prop.orgId, prop.campaignId);
-    state.loading = false;
-  } else {
-    state.loading = true;
-    state.adgroupOptions = [];
-  }
-  if (prop.modelValue) {
-    state.v = prop.modelValue;
-  }
-});
+watch(
+  () => campaignId.value,
+  (n, o) => {
+    if ((n || n.length) && JSON.stringify(n) !== JSON.stringify(o)) {
+      initOptions();
+    } else if (!n && o) {
+      toClear();
+    }
+  },
+  {
+    immediate: true,
+  },
+);
+watch(
+  () => prop.modelValue,
+  (n, o) => {
+    if (!n && o) {
+      toClear();
+    }
+  },
+);
 defineExpose({
   getValue,
   getName,

@@ -1,5 +1,5 @@
 <template>
-  <div class="tabPagesArea">
+  <div class="AFrameHeaderTabPages">
     <el-scrollbar ref="scrollbar" class="tabScrollArea">
       <div class="tabArea flexMode vs">
         <div
@@ -7,16 +7,14 @@
           :key="it.key"
           :id="it.key"
           class="tab flexMode vc noselect txt-nowrap noShrink"
-          :class="currentPage.key === it.key && 'current'"
+          :class="[currentPage.key === it.key && 'current', tabPages.length === 1 && 'onlyOne']"
           @click.stop="toPage(it)"
           @contextmenu="(e) => showRightMenu(e, i)"
         >
           <div class="tabTxt flexMode vc fs12 lh12 pr2">
-            <!-- <span v-if="it.meta.multiple" class="pr2"> {{ it.params.nameLabel }} -</span> -->
             <span>{{ it.meta[`label_${lang}`] }}</span>
           </div>
           <Icon
-            v-if="tabPages.length > 1"
             name="close"
             class="icon ml5 fs16"
             :class="
@@ -34,7 +32,7 @@
 </template>
 <script setup>
 defineOptions({
-  name: 'TabPages',
+  name: 'AFrameHeaderTabPages',
 });
 // 数据
 const state = reactive({
@@ -62,9 +60,10 @@ const toClose = (i) => {
 };
 const scrollToTab = (v) => {
   // 定位到tab
-  const scrollAim = state.scrollbar.wrap$.querySelector(`#${v}`);
-  state.scrollbar.setScrollLeft(scrollAim.offsetLeft);
-  // scrollAim.scrollIntoView({ behavior: 'smooth' });
+  if (state.scrollbar.wrapRef) {
+    const scrollAim = state.scrollbar.wrapRef.querySelector(`#${v}`);
+    state.scrollbar.setScrollLeft(scrollAim.offsetLeft);
+  }
 };
 const showRightMenu = (el, i) => {
   el.preventDefault();
@@ -75,6 +74,16 @@ const showRightMenu = (el, i) => {
     el,
     visible: true,
     list: [
+      {
+        label: $l('Refresh'),
+        value: 'refresh',
+        icon: 'refresh',
+        cb: () => {
+          // console.info(currentPage.value);
+          // router.replace(currentPage.value);
+          launch.refreshPage()
+        },
+      },
       {
         label: $l('Close'),
         value: 'close',
@@ -156,11 +165,8 @@ watch(
     position: relative;
     padding: 4px 12px;
     margin-left: 4px;
-    border: 1px solid transparent;
-    border-bottom: none;
     border-radius: 6px 6px 0 0;
     color: $white9;
-    border: 1px sloid transparent;
     &::after {
       content: '';
       position: absolute;
@@ -193,18 +199,23 @@ watch(
         opacity: 1;
       }
     }
-    &:hover {
-      color: $dark7;
-      border-color: $dark1;
-      background-color: #b3b6f8;
+    &:hover:not(.current) {
+      // color: $white;
+      // background-color: #b3b6f8;
+      background-image: linear-gradient(to right, $white5, $primary3);
+      transition: $trans3;
       &::after {
-        background-image: linear-gradient(
-          to right,
-          rgba(179, 182, 248, 0.1),
-          #b3b6f8
-        );
+        background-image: none;
       }
       // box-shadow: 0 -2px 4px $littleBlue;
+    }
+    &.onlyOne {
+      &::after {
+        display: none;
+      }
+      .icon {
+        display: none;
+      }
     }
   }
 }
